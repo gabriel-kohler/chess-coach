@@ -13,20 +13,29 @@ describe('scoring', () => {
   });
 
   it('a move that keeps the win chance is 100% accurate', () => {
-    expect(moveAccuracy(60, 60)).toBe(100);
-    expect(moveAccuracy(60, 65)).toBe(100);
-    expect(moveAccuracy(80, 20)).toBeLessThan(10);
+    expect(moveAccuracy('white', { cp: 50 }, { cp: 50 })).toBe(100);
+    expect(moveAccuracy('white', { cp: 50 }, { cp: 80 })).toBe(100);
+    expect(moveAccuracy('black', { cp: -50 }, { cp: -80 })).toBe(100);
+    expect(moveAccuracy('white', { cp: 300 }, { cp: -300 })).toBeLessThan(10);
+    expect(moveAccuracy('black', { cp: -300 }, { cp: 300 })).toBeLessThan(10);
   });
 
-  it('game accuracy punishes a blunder but not to zero', () => {
-    const flat = Array.from({ length: 41 }, () => 50);
-    expect(gameAccuracy(flat).white).toBeGreaterThan(99);
-    const blunder = [...flat];
-    for (let i = 21; i < blunder.length; i++) blunder[i] = 10; // White collapses on ply 21
+  it('small losses cost more than on the Lichess curve, as on chess.com', () => {
+    // Half a pawn thrown away at equality.
+    expect(moveAccuracy('white', { cp: 0 }, { cp: -50 })).toBeLessThan(80);
+    expect(moveAccuracy('white', { cp: 0 }, { cp: -50 })).toBeGreaterThan(60);
+    // Still counts when already winning: +8 down to +5.
+    expect(moveAccuracy('white', { cp: 800 }, { cp: 500 })).toBeLessThan(70);
+  });
+
+  it('game accuracy punishes a blunder but one disaster cannot sink it', () => {
+    const flat = Array.from({ length: 40 }, (_, i) => ({ color: i % 2 ? 'black' : 'white', accuracy: 100 }) as const);
+    expect(gameAccuracy(flat).white).toBeCloseTo(100, 6);
+    const blunder = flat.map((m, i) => (i === 20 ? { ...m, accuracy: 0 } : m));
     const acc = gameAccuracy(blunder);
     expect(acc.white).toBeLessThan(90);
-    expect(acc.white).toBeGreaterThan(40);
-    expect(acc.black).toBeGreaterThan(95);
+    expect(acc.white).toBeGreaterThan(80);
+    expect(acc.black).toBeCloseTo(100, 6);
   });
 });
 
@@ -68,5 +77,55 @@ describe('classifyGame', () => {
   it('flags book moves when a book lookup is given', () => {
     const withBook = classifyGame({ plies, evals, isBook: () => true });
     expect(withBook[0]!.classification).toBe('book');
+  });
+
+  it("uses chess.com's book depth when known, whatever the lookup says", () => {
+    const r = classifyGame({ plies, evals, bookPlies: 2, isBook: () => true });
+    expect(r.map((m) => m.classification).slice(0, 3)).toEqual(['book', 'book', 'best']);
+  });
+
+  it('calls a quiet only move great', () => {
+    // 2.Qh5 is the only good move: 2.Nf3 would drop two pawns' worth.
+    const only = evals.map((e, i) => (i === 2 ? { ...e, lines: [line(30, ['d1h5']), line(-200, ['g1f3'])] } : e));
+    expect(classifyGame({ plies, evals: only })[2]!.classification).toBe('great');
+  });
+});
+
+describe('brilliant moves', () => {
+  const at = (fen: string, san: string, before: EngineLine[], after: EngineLine[]) => {
+    const plies = replay([san], fen);
+    return classifyGame({ plies, evals: [{ fen, lines: before }, { fen: plies[0]!.fenAfter, lines: after }] })[0]!;
+  };
+
+  it('taking a queen and leaving a rook en prise is not a sacrifice', () => {
+    // Nxd5 wins the queen and opens the long diagonal onto the a1 rook.
+    const m = at('6kb/8/8/3q4/8/2N5/8/R5K1 w - - 0 1', 'Nxd5', [line(0, ['c3d5']), line(-800, ['g1f2'])], [line(0, ['h8a1', 'g1f2'])]);
+    expect(m.classification).toBe('best');
+  });
+
+  it("does not credit the next move's sacrifice to a quiet move", () => {
+    // After a3 a6 the engine goes Bxh7+ Kxh7: the sacrifice is Bxh7+, not a3.
+    const m = at('6k1/p6p/8/8/8/3B4/P7/6K1 w - - 0 1', 'a3', [line(0, ['a2a3']), line(0, ['g1f2'])], [line(0, ['a7a6', 'd3h7', 'g8h7', 'g1f2'])]);
+    expect(m.classification).toBe('best');
+  });
+});
+
+describe('great moves', () => {
+  // 1.e4 d5 2.exd5 Qxd5: the recapture is the only good move but it is natural.
+  const plies = replay(['e4', 'd5', 'exd5', 'Qxd5']);
+  const evals: PositionEval[] = [
+    { fen: '', lines: [line(30, ['e2e4']), line(25, ['d2d4'])] },
+    { fen: '', lines: [line(40, ['d7d5']), line(45, ['e7e5'])] },
+    { fen: '', lines: [line(40, ['e4d5']), line(-20, ['b1c3'])] },
+    { fen: '', lines: [line(30, ['d8d5']), line(250, ['g8f6'])] },
+    { fen: '', lines: [line(35, ['b1c3'])] },
+  ];
+  evals.forEach((e, i) => (e.fen = i === 0 ? plies[0]!.fenBefore : plies[i - 1]!.fenAfter));
+
+  it('never marks a capture as great, even as the only move', () => {
+    const r = classifyGame({ plies, evals });
+    expect(r[2]!.classification).toBe('best'); // exd5, only move for White
+    expect(r[3]!.classification).toBe('best'); // Qxd5, only move for Black
+    expect(r[3]!.tags).toContain('only-move');
   });
 });

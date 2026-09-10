@@ -108,8 +108,14 @@ export interface MoveReview {
  */
 export type MoveTag = 'obvious-miss' | 'obvious-blunder' | 'only-move' | 'hard-find';
 
-/** Bumped when the analysis format changes; older analyses get redone. */
-export const ANALYSIS_VERSION = 2;
+/** Bumped when the analysis format or scoring changes; older analyses get redone. */
+export const ANALYSIS_VERSION = 3;
+/**
+ * Oldest version whose engine lines are still valid: those only get their
+ * classification and accuracy recomputed, without running the engine again.
+ * v3: accuracy calibrated to chess.com, chess.com's book, stricter "great".
+ */
+export const RESCORABLE_VERSION = 2;
 
 export interface GameAnalysis {
   gameId: string;

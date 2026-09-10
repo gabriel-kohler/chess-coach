@@ -18,6 +18,10 @@ export function Layout() {
   const account = useAccount();
   const settings = useSettings();
   useEffect(() => setSoundEnabled(settings.sound), [settings.sound]);
+  // Analyses from an older scoring get recomputed from their engine lines.
+  useEffect(() => {
+    void import('@/lib/review/analyze').then((m) => m.rescoreOutdated());
+  }, []);
 
   return (
     <div className="flex h-full min-h-0">

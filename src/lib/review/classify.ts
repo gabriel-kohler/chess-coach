@@ -6,13 +6,18 @@
 import { Chess } from 'chess.js';
 import { epdOf, materialBalance, uciToSan, type PlyInfo } from '../chess/replay.ts';
 import { payoff, perpetualLine } from '../explain/facts.ts';
-import { enPrise, see, VALUE } from '../explain/motifs.ts';
+import { enPrise, VALUE } from '../explain/motifs.ts';
 import type { Classification, Color, EngineLine, MoveReview, MoveTag, PositionEval, Score } from '../types.ts';
 import { moveAccuracy, winPercent } from './scoring.ts';
 
 export interface ClassifyInput {
   plies: PlyInfo[];
   evals: PositionEval[]; // evals[i] = position after ply i, evals[0] = start
+  /**
+   * Plies chess.com counts as book (see bookPliesFromEcoUrl). When known,
+   * exactly these are book; otherwise `isBook` decides position by position.
+   */
+  bookPlies?: number;
   isBook?: (epd: string) => boolean;
   clocks?: Array<number | null>;
   increment?: number;
@@ -50,13 +55,13 @@ function terminalScore(fenAfter: string, mover: Color): Score | undefined {
   return undefined;
 }
 
-const category = (win: number) => (win < 20 ? 0 : win < 40 ? 1 : win < 60 ? 2 : win < 80 ? 3 : 4);
-
 /**
  * A sacrifice leaves material the opponent can win: either the engine's line
- * shows the mover two points down after a few plies, or a static exchange on
- * one of the mover's pieces loses at least two points (net of what the move
- * itself captured).
+ * shows the mover two points down after the reply and the mover's next move,
+ * or a static exchange on one of the mover's pieces loses at least two points
+ * (net of what the move itself captured). The line stops before the mover's
+ * second move, so a sacrifice coming next (Bxe7 Nxe7 Bxh7+) isn't credited
+ * to the move before it.
  */
 function isSacrifice(ply: PlyInfo, after: PositionEval | undefined, mover: Color): boolean {
   const sign = mover === 'white' ? 1 : -1;
@@ -64,7 +69,7 @@ function isSacrifice(ply: PlyInfo, after: PositionEval | undefined, mover: Color
   const pv = after?.lines[0]?.pv ?? [];
   const chess = new Chess(ply.fenAfter);
   let worst = sign * materialBalance(ply.fenAfter);
-  for (const uci of pv.slice(0, 4)) {
+  for (const uci of pv.slice(0, 2)) {
     try {
       chess.move({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci[4] });
     } catch {
@@ -75,12 +80,11 @@ function isSacrifice(ply: PlyInfo, after: PositionEval | undefined, mover: Color
   const final = sign * materialBalance(chess.fen());
   if (worst <= before - 2 && final <= before - 2) return true;
 
+  // Net of the capture wherever the hanging piece stands: taking a queen and
+  // leaving a rook en prise is a win, not a sacrifice.
   const color = mover === 'white' ? 'w' : 'b';
   const captured = ply.captured ? VALUE[ply.captured]! : 0;
-  return enPrise(ply.fenAfter, color).some((p) => {
-    const net = p.square === ply.to ? see(new Chess(ply.fenAfter), p.square) - captured : p.loss;
-    return net >= 2;
-  });
+  return enPrise(ply.fenAfter, color).some((p) => p.loss - captured >= 2);
 }
 
 /**
@@ -97,9 +101,9 @@ function quickPayoff(fen: string, line: EngineLine | undefined, plies = 4, baseF
 }
 
 export function classifyGame(input: ClassifyInput): MoveReview[] {
-  const { plies, evals, isBook, clocks } = input;
+  const { plies, evals, isBook, clocks, bookPlies } = input;
   const reviews: MoveReview[] = [];
-  let inBook = !!isBook;
+  let inBook = !bookPlies && !!isBook;
 
   for (let i = 0; i < plies.length; i++) {
     const ply = plies[i]!;
@@ -117,9 +121,9 @@ export function classifyGame(input: ClassifyInput): MoveReview[] {
     const winBefore = winFor(mover, scoreBefore);
     // Prefer the parent search for the played move when it has it: same
     // search, same depth, so best-vs-played is compared fairly.
-    const winAfterForLoss = ply.uci === bestUci ? winBefore : playedLine ? winFor(mover, lineScore(playedLine)) : winFor(mover, scoreAfter);
+    const scoreForLoss = ply.uci === bestUci ? scoreBefore : playedLine ? lineScore(playedLine)! : scoreAfter;
     const winAfter = winFor(mover, scoreAfter);
-    const loss = Math.max(0, winBefore - winAfterForLoss);
+    const loss = Math.max(0, winBefore - winFor(mover, scoreForLoss));
     const legalMoves = new Chess(ply.fenBefore).moves().length;
     const secondGap = legalMoves > 1 && secondLine && bestLine ? winFor(mover, lineScore(bestLine)) - winFor(mover, lineScore(secondLine)) : undefined;
 
@@ -131,8 +135,11 @@ export function classifyGame(input: ClassifyInput): MoveReview[] {
       }
     }
 
-    // Book: every move so far is a known opening position.
-    if (inBook) {
+    // Book: chess.com's opening line when we know it, otherwise every move so
+    // far is a known opening position.
+    if (bookPlies) {
+      if (i < bookPlies) cls = 'book';
+    } else if (inBook) {
       if (isBook!(epdOf(ply.fenAfter)) && loss <= 5) cls = 'book';
       else inBook = false;
     }
@@ -145,7 +152,11 @@ export function classifyGame(input: ClassifyInput): MoveReview[] {
     if (cls !== 'book') {
       if ((cls === 'best' || cls === 'excellent') && winBefore < 90 && winAfter >= 50 && isSacrifice(ply, after, mover)) {
         cls = 'brilliant';
-      } else if (cls === 'best' && winAfter >= 45 && secondGap !== undefined && (secondGap >= 10 || (opponentErred && category(winAfter) > category(winBeforeTheirError) && secondGap >= 5))) {
+      } else if (cls === 'best' && secondGap !== undefined && secondGap >= 10 && !ply.captured && winBefore < 97 && winAfter >= 45) {
+        // Great, as rare as on chess.com: the only good move, and one you had
+        // to see. Captures and recaptures are natural candidates (they were
+        // two thirds of the old "great" moves), and in a decided position
+        // (mate on, or +9) nothing is critical any more.
         cls = 'great';
       }
 
@@ -186,7 +197,7 @@ export function classifyGame(input: ClassifyInput): MoveReview[] {
       classification: cls,
       winBefore,
       winAfter,
-      accuracy: moveAccuracy(winBefore, winAfterForLoss),
+      accuracy: moveAccuracy(mover, scoreBefore, scoreForLoss),
       bestUci,
       bestSan: bestUci ? uciToSan(ply.fenBefore, bestUci) ?? undefined : undefined,
       bestLine: bestLine?.pv,

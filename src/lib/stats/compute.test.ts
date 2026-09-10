@@ -22,8 +22,7 @@ describe('sittings', () => {
 describe('game accuracy colors', () => {
   it('credits each move to its real mover when Black starts', () => {
     // Black moves first and blunders; White then plays perfectly.
-    const wins = [50, 90, 90, 90];
-    const acc = gameAccuracy(wins, undefined, ['black', 'white', 'black']);
+    const acc = gameAccuracy([{ color: 'black', accuracy: 10 }, { color: 'white', accuracy: 100 }, { color: 'black', accuracy: 100 }]);
     expect(acc.black).toBeLessThan(acc.white);
   });
 });

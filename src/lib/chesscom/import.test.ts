@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { CCGame } from './api';
-import { openingFromEcoUrl, outcomeOf, parseTimeControl, toStoredGame } from './import';
+import { bookPliesFromEcoUrl, openingFromEcoUrl, outcomeOf, parseTimeControl, toStoredGame } from './import';
 
 const game: CCGame = {
   url: 'https://www.chess.com/game/live/1',
@@ -45,5 +45,17 @@ describe('chess.com import', () => {
     expect(parseTimeControl('180+2')).toEqual({ base: 180, increment: 2 });
     expect(parseTimeControl('1/86400')).toBeNull();
     expect(openingFromEcoUrl('https://www.chess.com/openings/Sicilian-Defense-Kan-Variation-5.Nc3')).toBe('Sicilian Defense Kan Variation');
+  });
+
+  it("reads chess.com's book depth from the ECO URL", () => {
+    const url = (slug: string) => `https://www.chess.com/openings/${slug}`;
+    expect(bookPliesFromEcoUrl(url('Van-t-Kruijs-Opening-1...c5'), ['e3', 'c5', 'd3'])).toBe(2);
+    expect(bookPliesFromEcoUrl(url('Italian-Game-3...d6'), ['e4', 'e5', 'Nf3', 'Nc6', 'Bc4', 'd6', 'c3'])).toBe(6);
+    // Canonical order 2.Bf4 g6 3.Nc3 Bg7, reached as 2.Nc3 g6 3.Bf4 Bg7.
+    expect(bookPliesFromEcoUrl(url('Indian-Game-2.Bf4-g6-3.Nc3-Bg7'), ['d4', 'Nf6', 'Nc3', 'g6', 'Bf4', 'Bg7', 'Qd2'])).toBe(6);
+    expect(bookPliesFromEcoUrl(url('Kings-Indian-Defense-Orthodox-Variation-6...Nbd7-7.O-O'), ['d4', 'Nf6', 'c4', 'g6', 'Nc3', 'Bg7', 'e4', 'd6', 'Nf3', 'O-O', 'Be2', 'Nbd7', 'O-O'])).toBe(13);
+    expect(bookPliesFromEcoUrl(url('Sicilian-Defense'), ['e4', 'c5'])).toBe(0);
+    expect(bookPliesFromEcoUrl(url('Italian-Game-3...d6'), ['e4', 'e5', 'Nf3', 'Nc6', 'Bc4', 'Nf6'])).toBe(0);
+    expect(bookPliesFromEcoUrl(undefined, ['e4'])).toBe(0);
   });
 });

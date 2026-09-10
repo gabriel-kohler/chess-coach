@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react';
 import { db } from '../db.ts';
 import { addMistakePuzzles, refreshGameMotifs } from '../tactics/trainer.ts';
 import { ANALYSIS_VERSION } from '../types.ts';
-import { analyzeGame } from './analyze.ts';
+import { analyzeGame, canRescore, rescoreGame } from './analyze.ts';
 
 export interface QueueState {
   running: boolean;
@@ -57,9 +57,11 @@ async function run() {
     const game = await db.games.get(id!);
     if (!game) continue;
     const existing = await db.analyses.get(id!);
-    let analysis = existing && existing.depth >= options.depth && existing.version === ANALYSIS_VERSION ? existing : null;
+    const deepEnough = !!existing && existing.depth >= options.depth;
+    let analysis = deepEnough && existing.version === ANALYSIS_VERSION ? existing : null;
     controller = new AbortController();
     try {
+      if (!analysis && deepEnough && canRescore(existing)) analysis = await rescoreGame(game, existing);
       analysis ??= await analyzeGame(game, {
         ...options,
         signal: controller.signal,

@@ -52,17 +52,40 @@ Outros scripts:
 
 ## Como a revisão classifica os lances
 
-Precisão pela fórmula pública do Lichess (a do chess.com é fechada). A
-classificação usa os limiares que o chess.com publica, em pontos de chance de
+A classificação usa os limiares que o chess.com publica, em pontos de chance de
 vitória perdidos: melhor (0), excelente (até 2), bom (até 5), imprecisão (até
 10), erro (até 20), capivarada (acima de 20). Por cima disso:
 
-- **Brilhante**: melhor lance (ou quase) que sacrifica material, com a posição
-  continuando boa e sem já estar totalmente ganha.
-- **Ótimo**: o único lance bom (o segundo melhor perde 15 pontos ou mais).
+- **Brilhante**: melhor lance (ou quase) que sacrifica material (descontado o
+  que o próprio lance capturou), com a posição continuando boa e sem já estar
+  totalmente ganha.
+- **Ótimo**: o único lance bom (o segundo melhor perde 10 pontos ou mais), desde
+  que não seja captura e a partida não esteja decidida. Recapturar ou pegar
+  peça solta fica como "melhor", como no chess.com.
 - **Chance perdida**: o adversário tinha acabado de errar (ou havia mate) e o
   lance deixou a chance escapar.
-- **Teoria**: posição conhecida da base de aberturas.
+- **Teoria**: os lances que o chess.com conta como teoria, lidos do fim do link
+  da abertura da partida (`...-Old-Sicilian-Variation-3.Bc4-e6` é teoria até o
+  6º meio-lance, mesmo por transposição). Sem esses lances no link, as posições
+  da base de aberturas do Lichess.
+
+A precisão do chess.com é fechada. A nossa usa o formato da fórmula do Lichess,
+com as constantes ajustadas contra a precisão que o chess.com publicou em 68
+das suas partidas (nível ~1350, rápidas e bullet): erro médio de 2,6 pontos por
+jogador, contra 7,7 da fórmula do Lichess pura, que dava em média 4 pontos a
+mais. As diferenças para o Lichess: a curva de chance de vitória é mais
+achatada (no nível de clube, +3 ainda se perde, então errar numa posição ganha
+continua custando), a precisão cai mais rápido por ponto perdido, e a média é
+harmônica com cada lance contando no mínimo 25, então um lance desastroso pesa
+como no chess.com em vez de derrubar a partida inteira. As constantes ficam em
+`ACCURACY` (`src/lib/review/scoring.ts`). O modelo do chess.com depende do
+rating, então o ajuste vale para esse nível.
+
+O motor também é outro (o chess.com revisa com o Torch), então o melhor lance
+às vezes difere e a contagem de "melhor" não bate exatamente.
+
+Mudar a classificação ou a precisão não roda o motor de novo: ao abrir o app,
+as análises guardadas são recalculadas a partir das linhas do Stockfish.
 
 ## O algoritmo de tática
 

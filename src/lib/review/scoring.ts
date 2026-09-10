@@ -1,9 +1,31 @@
-// Win chance and accuracy, using the formulas Lichess publishes
-// (lila: WinPercent.scala / AccuracyPercent.scala). chess.com's CAPS model is
-// proprietary; these track it closely enough to compare games.
-import type { Score } from '../types.ts';
+// Win chance and accuracy. Win chance is Lichess's published curve
+// (lila: WinPercent.scala); it drives the eval bar, the graph and the
+// classification thresholds.
+//
+// Accuracy follows the shape of Lichess's AccuracyPercent.scala, but chess.com's
+// CAPS model is proprietary and scores club games much lower, so its constants
+// were fitted to the accuracies chess.com published for 68 of our games (club
+// level, ~1350, rapid and bullet): mean absolute error 2.6 points per player,
+// against 7.7 (and +4.4 on average) with Lichess's formula as is. See ACCURACY.
+import type { Color, Score } from '../types.ts';
 
 const MULTIPLIER = -0.00368208;
+
+export const ACCURACY = {
+  /**
+   * Win-chance curve accuracy is measured on. Flatter than MULTIPLIER, like
+   * chess.com's rating-aware expected points: at club level a +3 still gets
+   * lost often, so losses in lopsided positions keep costing accuracy.
+   */
+  multiplier: -0.002,
+  /** How fast a move's accuracy falls per win-chance point lost. */
+  decay: 0.115,
+  /**
+   * Game accuracy is the harmonic mean of move accuracies, each counted as at
+   * least this much, so one disaster weighs like chess.com and not like zero.
+   */
+  floor: 25,
+};
 
 export function cpOf(score: Score | undefined): number {
   if (!score) return 0;
@@ -12,57 +34,27 @@ export function cpOf(score: Score | undefined): number {
 }
 
 /** Win chance (0-100) for White given a White-POV score. */
-export function winPercent(score: Score | undefined): number {
+export function winPercent(score: Score | undefined, multiplier = MULTIPLIER): number {
   const cp = cpOf(score);
-  return 50 + 50 * (2 / (1 + Math.exp(MULTIPLIER * cp)) - 1);
+  return 50 + 50 * (2 / (1 + Math.exp(multiplier * cp)) - 1);
 }
 
-/** Accuracy (0-100) of a move given the mover's win chance before and after. */
-export function moveAccuracy(winBefore: number, winAfter: number): number {
-  if (winAfter >= winBefore) return 100;
-  const diff = winBefore - winAfter;
-  const raw = 103.1668100711649 * Math.exp(-0.04354415386753951 * diff) - 3.166924740191411;
+/** Accuracy (0-100) of a move from White-POV scores before it and after it. */
+export function moveAccuracy(color: Color, before: Score | undefined, after: Score | undefined): number {
+  const sign = color === 'white' ? 1 : -1;
+  const diff = sign * (winPercent(before, ACCURACY.multiplier) - winPercent(after, ACCURACY.multiplier));
+  if (diff <= 0) return 100;
+  const raw = 103.1668100711649 * Math.exp(-ACCURACY.decay * diff) - 3.166924740191411;
   return Math.max(0, Math.min(100, raw + 1));
 }
 
-function stdDev(xs: number[]): number {
-  const mean = xs.reduce((a, b) => a + b, 0) / xs.length;
-  return Math.sqrt(xs.reduce((a, b) => a + (b - mean) ** 2, 0) / xs.length);
-}
-
-/**
- * Game accuracy per color: the mean of a volatility-weighted mean and a
- * harmonic mean of move accuracies, as Lichess computes it.
- * `whiteWins[i]` is White's win chance after ply i (index 0 = start).
- * `moveAccuracies[i]`, when given, overrides the accuracy of ply i+1.
- */
-export function gameAccuracy(whiteWins: number[], moveAccuracies?: number[], colors?: Array<'white' | 'black'>): { white: number; black: number } {
-  const moves = whiteWins.length - 1;
-  if (moves < 1) return { white: 0, black: 0 };
-  const windowSize = Math.max(2, Math.min(8, Math.floor(moves / 10)));
-  const windows: number[][] = [];
-  const pad = Math.min(windowSize, whiteWins.length) - 2;
-  for (let i = 0; i < pad; i++) windows.push(whiteWins.slice(0, windowSize));
-  for (let i = 0; i + windowSize <= whiteWins.length; i++) windows.push(whiteWins.slice(i, i + windowSize));
-  const weights = windows.map((w) => Math.max(0.5, Math.min(12, stdDev(w))));
-
-  const acc: Record<'white' | 'black', Array<[number, number]>> = { white: [], black: [] };
-  for (let i = 0; i < moves; i++) {
-    const prev = whiteWins[i]!;
-    const next = whiteWins[i + 1]!;
-    // Games from a set-up position can start with Black to move.
-    const white = colors ? colors[i] === 'white' : i % 2 === 0;
-    const a = moveAccuracies?.[i] ?? (white ? moveAccuracy(prev, next) : moveAccuracy(100 - prev, 100 - next));
-    acc[white ? 'white' : 'black'].push([a, weights[i] ?? 1]);
-  }
-  const combine = (xs: Array<[number, number]>) => {
-    if (!xs.length) return 0;
-    const wsum = xs.reduce((s, [, w]) => s + w, 0);
-    const weighted = xs.reduce((s, [a, w]) => s + a * w, 0) / wsum;
-    const harmonic = xs.length / xs.reduce((s, [a]) => s + 1 / Math.max(1, a), 0);
-    return (weighted + harmonic) / 2;
+/** Game accuracy per color: a floored harmonic mean of its move accuracies. */
+export function gameAccuracy(moves: Array<{ color: Color; accuracy: number }>): { white: number; black: number } {
+  const of = (color: Color) => {
+    const xs = moves.filter((m) => m.color === color);
+    return xs.length ? xs.length / xs.reduce((s, m) => s + 1 / Math.max(ACCURACY.floor, m.accuracy), 0) : 0;
   };
-  return { white: combine(acc.white), black: combine(acc.black) };
+  return { white: of('white'), black: of('black') };
 }
 
 export function formatScore(score: Score | undefined): string {
