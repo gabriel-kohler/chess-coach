@@ -150,7 +150,37 @@ function lineFacts(fen: string, line: EngineLine, baseFen = fen): LineFacts {
   };
 }
 
+/**
+ * What the best move takes away from the opponent: the reply to the move
+ * played forces a perpetual or pays off (mate, promotion, material), and in
+ * the best line the opponent gets nothing like it. This is the point of a
+ * move with no tactic of its own, like 24.Qc4 covering b5 against
+ * ...Qa5+ Kf1 Qb5+.
+ */
+export function prevented(fenBefore: string, best: EngineLine, reply: LineFacts): Motif | null {
+  const draws = reply.motifs.some((m) => m.theme === PERPETUAL.theme);
+  const p = reply.payoff;
+  if (!draws && !p) return null;
+  const chess = new Chess(fenBefore);
+  if (!best.pv[0] || !tryUci(chess, best.pv[0])) return null;
+  const fen = chess.fen();
+  const rest = best.pv.slice(1);
+  if (draws) return perpetual(fen, rest) ? null : { theme: 'prevents', text: 'evita o xeque perpétuo' };
+  if (!p || payoff(fen, rest, 24, fenBefore)) return null;
+  const text = p.kind === 'mate' ? 'evita o mate' : p.kind === 'promotion' ? 'evita a promoção' : `evita perder ${p.swing} ponto${p.swing === 1 ? '' : 's'} de material`;
+  return { theme: 'prevents', text };
+}
+
+/** Facts for the engine's best line, told against the reply to the move played. */
+export function bestLineFacts(fenBefore: string, best: EngineLine, reply: LineFacts | null): LineFacts {
+  const facts = lineFacts(fenBefore, best);
+  const stop = reply && prevented(fenBefore, best, reply);
+  return stop ? { ...facts, motifs: [stop, ...facts.motifs] } : facts;
+}
+
 export interface Threat {
+  /** Where the line starts: your position with the opponent to move. */
+  fen: string;
   /** The opponent's best line if you passed. */
   line: LineFacts;
   /** How much the opponent would gain, in win-chance points. */
@@ -171,7 +201,7 @@ export async function threat(fen: string, depth = 16): Promise<Threat | null> {
   const them: Color = fen.split(' ')[1] === 'w' ? 'black' : 'white';
   const gain = winFor(them, lineScore(theirs)) - winFor(them, lineScore(now));
   if (gain < 8) return null;
-  return { line: lineFacts(flipped, theirs), gain };
+  return { fen: flipped, line: lineFacts(flipped, theirs), gain };
 }
 
 export interface Refutation {
@@ -201,12 +231,13 @@ export async function refute(fen: string, uci: string, rating: number, depth = 1
   if (!chess.isGameOver()) [reply] = await engine.analyse(chess.fen(), { depth });
   const afterScore: Score = chess.isCheckmate() ? { mate: mover === 'white' ? 1 : -1 } : lineScore(reply) ?? { cp: 0 };
   const loss = best.pv[0] === played.lan ? 0 : Math.max(0, winFor(mover, lineScore(best)) - winFor(mover, afterScore));
+  const replyFacts = reply ? lineFacts(chess.fen(), reply, fen) : { san: [], score: afterScore, payoff: null, motifs: [] };
   return {
     san: played.san,
     loss,
     relevant: loss >= relevanceThreshold(rating),
-    best: { ...lineFacts(fen, best), firstSan: lineToSan(fen, best.pv, 1)[0] ?? '' },
-    reply: reply ? lineFacts(chess.fen(), reply, fen) : { san: [], score: afterScore, payoff: null, motifs: [] },
+    best: { ...bestLineFacts(fen, best, replyFacts), firstSan: lineToSan(fen, best.pv, 1)[0] ?? '' },
+    reply: replyFacts,
   };
 }
 

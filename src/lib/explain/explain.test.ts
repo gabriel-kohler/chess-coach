@@ -1,9 +1,9 @@
 import { Chess } from 'chess.js';
 import { describe, expect, it } from 'vitest';
-import { replay } from '../chess/replay';
+import { lineLabels, replay } from '../chess/replay';
 import { classifyGame } from '../review/classify';
 import type { EngineLine, PositionEval } from '../types';
-import { lineFacts, nullMove, payoff, perpetual, relevanceThreshold } from './facts';
+import { bestLineFacts, lineFacts, nullMove, payoff, perpetual, prevented, relevanceThreshold } from './facts';
 import { enPrise, motifsOf, see } from './motifs';
 
 const themes = (fen: string, uci: string, mate?: number) => motifsOf(fen, uci, mate).map((m) => m.theme);
@@ -76,6 +76,46 @@ describe('perpetual check', () => {
   it('is not claimed when the engine does not score the line as a draw', () => {
     const facts = lineFacts('4k3/8/8/3q4/8/8/8/4K3 b - - 0 1', { depth: 20, cp: -400, pv: ['d5a5', 'e1f1', 'a5b5', 'f1e1', 'b5a5'] });
     expect(facts.motifs.map((m) => m.theme)).not.toContain('perpetualCheck');
+  });
+});
+
+describe('what the best move prevents', () => {
+  // Real game: 24.Qb1?? allows ...Qa5+ Kf1 Qb5+ with a perpetual; 24.Qc4
+  // covers b5, so after ...Qa5+ Kf1 the checks run out.
+  const before = '3rk3/1b2b2p/pqn3pB/2p1p3/4Q1P1/PP2P2P/5PB1/R3K1R1 w Q - 0 24';
+  const afterQb1 = '3rk3/1b2b2p/pqn3pB/2p1p3/6P1/PP2P2P/5PB1/RQ2K1R1 b Q - 1 24';
+  const reply = lineFacts(afterQb1, { depth: 20, cp: 0, pv: ['b6a5', 'e1f1', 'a5b5', 'f1e1', 'b5a5'] }, before);
+  const qc4: EngineLine = { depth: 20, cp: 272, pv: ['e4c4', 'b6a5', 'e1f1', 'a5d2', 'c4g8', 'e8d7'] };
+
+  it('says the best move stops the perpetual the played move allowed', () => {
+    expect(bestLineFacts(before, qc4, reply).motifs[0]!.text).toBe('evita o xeque perpétuo');
+  });
+
+  it('says nothing when the best line allows the same perpetual', () => {
+    // h3 or h4: the checks from a5 and b5 work either way.
+    const start = '4k3/8/8/3q4/8/8/7P/4K3 w - - 0 1';
+    const checks = ['d5a5', 'e1f1', 'a5b5', 'f1e1', 'b5a5'];
+    const drawn = lineFacts('4k3/8/8/3q4/8/7P/8/4K3 b - - 0 1', { depth: 20, cp: 0, pv: checks }, start);
+    expect(prevented(start, { depth: 20, cp: 0, pv: ['h2h4', ...checks] }, drawn)).toBeNull();
+  });
+
+  it('names the material the best move keeps', () => {
+    // Ke2 leaves the d4 knight to ...exd4; Nf5 saves it.
+    const start = '4k3/8/8/4p3/3N4/8/8/4K3 w - - 0 1';
+    const hung = lineFacts('4k3/8/8/4p3/3N4/8/4K3/8 b - - 1 1', { depth: 20, cp: -100, pv: ['e5d4'] }, start);
+    expect(prevented(start, { depth: 20, cp: 200, pv: ['d4f5', 'e8d7'] }, hung)!.text).toBe('evita perder 3 pontos de material');
+  });
+
+  it('says nothing when the reply wins nothing', () => {
+    const quiet = lineFacts(afterQb1, { depth: 20, cp: 150, pv: ['e7f6', 'b1c2'] }, before);
+    expect(prevented(before, qc4, quiet)).toBeNull();
+  });
+});
+
+describe('line labels', () => {
+  it('numbers White moves and marks a line that Black starts', () => {
+    expect(lineLabels('3rk3/1b2b2p/pqn3pB/2p1p3/6P1/PP2P2P/5PB1/RQ2K1R1 b Q - 1 24', 4)).toEqual(['24...', '25.', null, '26.']);
+    expect(lineLabels('3rk3/1b2b2p/pqn3pB/2p1p3/4Q1P1/PP2P2P/5PB1/R3K1R1 w Q - 0 24', 3)).toEqual(['24.', null, '25.']);
   });
 });
 

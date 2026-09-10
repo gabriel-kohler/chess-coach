@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import { Eye, Lightbulb, Loader2, MessageSquareText, RotateCcw, ShieldAlert, SkipForward } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ClassificationIcon } from '@/components/board/ClassificationIcon';
-import { RichText, San } from '@/components/San';
-import { lineFacts, relevanceThreshold, threat as findThreat, type Threat } from '@/lib/explain/facts';
+import { RichText, San, SanLine } from '@/components/San';
+import { bestLineFacts, lineFacts, relevanceThreshold, threat as findThreat, type Threat } from '@/lib/explain/facts';
 import { moveFacts, narrate, narrationAvailable, type Narration } from '@/lib/explain/narrate';
 import { explainMove } from '@/lib/review/coach';
 import { formatScore } from '@/lib/review/scoring';
@@ -68,8 +68,10 @@ export function CoachCard({ game, analysis, move, socratic, revealed, onReveal, 
   const bestLine = analysis.evals[move.ply - 1]?.lines[0];
   const replyLine = analysis.evals[move.ply]?.lines[0];
   const note = explainMove(move, bestLine, replyLine, game.userRating);
-  const reply = useMemo(() => (replyLine && isError ? lineFacts(move.fenAfter, replyLine, move.fenBefore) : null), [replyLine, isError, move.fenAfter, move.fenBefore]);
-  const best = useMemo(() => (bestLine && move.uci !== move.bestUci ? lineFacts(move.fenBefore, bestLine) : null), [bestLine, move.uci, move.bestUci, move.fenBefore]);
+  // The reply is also what the best move is measured against, so it is needed
+  // even when its own block (errors only) is not shown.
+  const reply = useMemo(() => (replyLine ? lineFacts(move.fenAfter, replyLine, move.fenBefore) : null), [replyLine, move.fenAfter, move.fenBefore]);
+  const best = useMemo(() => (bestLine && move.uci !== move.bestUci ? bestLineFacts(move.fenBefore, bestLine, reply) : null), [bestLine, move.uci, move.bestUci, move.fenBefore, reply]);
 
   // Answers belong to the move that asked; navigating away drops them.
   const currentPly = useRef(move.ply);
@@ -137,7 +139,7 @@ export function CoachCard({ game, analysis, move, socratic, revealed, onReveal, 
       {isError && reply && reply.san.length > 0 && (
         <div className="mt-2.5 rounded-md bg-black/20 p-2.5 text-[13px] leading-relaxed">
           <div className="font-bold text-cls-miss">Depois de <San san={move.san} />:</div>
-          <div className="text-ink-2">{reply.san.slice(0, 6).map((s, i) => <San key={i} san={s} className="mr-1.5" />)}</div>
+          <div className="text-ink-2"><SanLine fen={move.fenAfter} san={reply.san.slice(0, 6)} /></div>
           {reply.payoff && <div className="text-ink-3"><RichText text={`A punição se concretiza ${reply.payoff.text}.`} /></div>}
           {reply.motifs.slice(0, 2).map((m) => <div key={m.theme} className="text-ink-3">{m.text[0]!.toUpperCase() + m.text.slice(1)}.</div>)}
         </div>
@@ -146,10 +148,13 @@ export function CoachCard({ game, analysis, move, socratic, revealed, onReveal, 
       {best && relevant && (showBest || isError) && (
         <div className="mt-2 rounded-md bg-black/20 p-2.5 text-[13px] leading-relaxed">
           <div className="font-bold text-go-hover">O melhor era <San san={move.bestSan ?? ''} />:</div>
-          <div className="text-ink-2">{best.san.slice(0, 6).map((s, i) => <San key={i} san={s} className="mr-1.5" />)}</div>
+          <div className="text-ink-2"><SanLine fen={move.fenBefore} san={best.san.slice(0, 6)} /></div>
           {best.payoff && <div className="text-ink-3"><RichText text={`A ideia se concretiza ${best.payoff.text}.`} /></div>}
           {best.motifs.slice(0, 2).map((m) => <div key={m.theme} className="text-ink-3">{m.text[0]!.toUpperCase() + m.text.slice(1)}.</div>)}
-          {!best.payoff && !best.motifs.length && <div className="text-ink-4">Sem tática imediata: é uma melhora de posição.</div>}
+          {/* No detector fired: say what is known (the engine's numbers), not a guessed reason. */}
+          {!best.payoff && !best.motifs.length && (
+            <div className="text-ink-4">Sem ganho concreto na linha: a diferença está na avaliação do motor, {formatScore(best.score)} contra {formatScore(move.scoreAfter)}.</div>
+          )}
         </div>
       )}
 
@@ -190,7 +195,7 @@ function ThreatText({ threat }: { threat: Threat }) {
   return (
     <div className="mt-2 rounded-md bg-black/20 p-2.5 text-[13px] leading-relaxed">
       <div className="font-bold text-cls-mistake">Ameaça do adversário:</div>
-      <div className="text-ink-2">{threat.line.san.slice(0, 5).map((s, i) => <San key={i} san={s} className="mr-1.5" />)}</div>
+      <div className="text-ink-2"><SanLine fen={threat.fen} san={threat.line.san.slice(0, 5)} /></div>
       {threat.line.motifs.slice(0, 2).map((m) => <div key={m.theme} className="text-ink-3">{m.text[0]!.toUpperCase() + m.text.slice(1)}.</div>)}
       {threat.line.payoff && <div className="text-ink-3"><RichText text={`Se concretiza ${threat.line.payoff.text}.`} /></div>}
     </div>

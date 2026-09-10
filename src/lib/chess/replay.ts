@@ -106,3 +106,10 @@ export function moveNumberLabel(ply: number): string {
   const n = Math.ceil(ply / 2);
   return ply % 2 === 1 ? `${n}.` : `${n}...`;
 }
+
+/** Number labels for a line starting at `fen`: before each White move, and "24..." when Black starts. */
+export function lineLabels(fen: string, length: number): Array<string | null> {
+  const [, turn, , , , full] = fen.split(' ');
+  const first = (Number(full) || 1) * 2 - (turn === 'b' ? 0 : 1);
+  return Array.from({ length }, (_, i) => (i === 0 || (first + i) % 2 === 1 ? moveNumberLabel(first + i) : null));
+}

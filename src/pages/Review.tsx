@@ -13,7 +13,7 @@ import { EvalBar } from '@/components/review/EvalBar';
 import { EvalGraph } from '@/components/review/EvalGraph';
 import { MoveList } from '@/components/review/MoveList';
 import { PlayerBar } from '@/components/review/PlayerBar';
-import { RichText, San } from '@/components/San';
+import { RichText, San, SanLine } from '@/components/San';
 import { parseTimeControl } from '@/lib/chesscom/import';
 import { lineToSan, replay, START_FEN, tryMove, type PlyInfo } from '@/lib/chess/replay';
 import { db, setKV } from '@/lib/db';
@@ -526,11 +526,12 @@ function ExploreBox({ live, fen, variation, refutation, loadingRefutation, onBac
             <>
               <div className="text-cls-miss">Perde {Math.round(refutation.loss)} pontos de chance de vitória.</div>
               {refutation.reply.san.length > 0 && (
-                <div className="text-ink-2">Resposta: {refutation.reply.san.slice(0, 6).map((s, i) => <San key={i} san={s} className="mr-1.5" />)}</div>
+                <div className="text-ink-2">Resposta: <SanLine fen={first.fenAfter} san={refutation.reply.san.slice(0, 6)} /></div>
               )}
               {refutation.reply.payoff && <div className="text-ink-3"><RichText text={`A punição se concretiza ${refutation.reply.payoff.text}.`} /></div>}
               {refutation.reply.motifs.slice(0, 2).map((m) => <div key={m.theme} className="text-ink-3">{m.text[0]!.toUpperCase() + m.text.slice(1)}.</div>)}
               <div className="mt-1 text-ink-2">O motor prefere <San san={refutation.best.firstSan} className="font-bold" />{refutation.best.payoff ? <>, que se concretiza <RichText text={refutation.best.payoff.text} /></> : ''}.</div>
+              {refutation.best.motifs.filter((m) => m.theme === 'prevents').map((m) => <div key={m.theme} className="text-ink-3">{m.text[0]!.toUpperCase() + m.text.slice(1)}.</div>)}
             </>
           )}
         </div>
@@ -541,7 +542,7 @@ function ExploreBox({ live, fen, variation, refutation, loadingRefutation, onBac
           {lines.map((l, i) => (
             <li key={i} className="flex gap-2 text-[13px]">
               <span className="w-12 shrink-0 rounded bg-raise px-1 text-center font-bold tabular-nums">{formatScore(lineScore(l))}</span>
-              <span className="truncate text-ink-3">{lineToSan(fen, l.pv, 8).map((s, k) => <San key={k} san={s} className="mr-1.5" />)}</span>
+              <span className="truncate text-ink-3"><SanLine fen={fen} san={lineToSan(fen, l.pv, 8)} /></span>
             </li>
           ))}
           <li className="text-xs text-ink-4">profundidade {live?.depth}</li>

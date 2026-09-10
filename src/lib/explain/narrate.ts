@@ -3,7 +3,7 @@
 import { CLASS_LABEL } from '@/components/board/ClassificationIcon';
 import { db } from '../db.ts';
 import type { GameAnalysis, MoveReview, StoredGame } from '../types.ts';
-import { lineFacts, relevanceThreshold, type LineFacts, type Threat } from './facts.ts';
+import { bestLineFacts, lineFacts, relevanceThreshold, type LineFacts, type Threat } from './facts.ts';
 
 export type NarrationModel = 'claude-sonnet-5' | 'claude-opus-5';
 
@@ -45,8 +45,8 @@ export interface MoveFactsBundle {
 export function moveFacts(game: StoredGame, analysis: GameAnalysis, move: MoveReview, threat: Threat | null): MoveFactsBundle {
   const bestRaw = analysis.evals[move.ply - 1]?.lines[0];
   const replyRaw = analysis.evals[move.ply]?.lines[0];
-  const best = bestRaw && move.uci !== move.bestUci ? lineFacts(move.fenBefore, bestRaw) : null;
   const reply = replyRaw ? lineFacts(move.fenAfter, replyRaw, move.fenBefore) : null;
+  const best = bestRaw && move.uci !== move.bestUci ? bestLineFacts(move.fenBefore, bestRaw, reply) : null;
   const loss = move.loss ?? Math.max(0, move.winBefore - move.winAfter);
   const facts = {
     lance: `${Math.ceil(move.ply / 2)}${move.color === 'white' ? '.' : '...'} ${move.san}`,
