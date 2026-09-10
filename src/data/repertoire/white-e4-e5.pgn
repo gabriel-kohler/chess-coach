@@ -1,0 +1,170 @@
+[Id "white-e4-e5-italian-bc5"]
+[Side "white"]
+[Name "Italiana: 3...Bc5"]
+[Description "Giuoco Pianissimo com d3, c3, O-O, h3 e Re1: centro firme e o plano de preparar d4 sem pressa."]
+
+{Contra 3...Bc5 jogamos o Giuoco Pianissimo: d3, c3, O-O, h3 e Re1. O centro fica fechado e sólido, e o plano é melhorar as peças antes de romper com d3-d4: o cavalo faz Nbd2-f1-g3, o bispo recua para b3 ou a2 e a4 impede ...b5. Quem manobra melhor ganha o meio-jogo.}
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3 {Protege e4 com calma. O motor avalia 4.c3 e 4.d3 igualmente; com 4.d3 as pretas não têm nenhum truque tático contra e4.} Nf6
+(4... d6 5. c3 {O mesmo plano de sempre: O-O, h3, Re1 e só depois d4.} Nf6 (5... Bb6 6. O-O {Siga o plano: h3, Re1 e a4. O bispo em b6 não ameaça nada enquanto f2 estiver protegido.}) 6. O-O {Transpõe para a linha principal.})
+(4... h6 5. c3 {Prepara d4. O lance ...h6 é útil contra Bg5 e Ng5, mas é lento: siga com O-O, h3 e Re1.})
+(4... Nge7?! 5. Ng5! {Com o cavalo em e7, f7 só é defendido pelo rei: cavalo e bispo atacam f7 juntos. Se 5...O-O?, 6.Qh5 ameaça Qxh7# e Nxf7.} d5 (5... Rf8 6. Nxh7 {Peão a mais e o rei preto perde o roque pequeno.}) 6. exd5 Nxd5 (6... Na5 7. Qh5 {Três peças atacam f7. Peão a mais e ataque.}) 7. Qf3! {Ataca d5 e f7 ao mesmo tempo. Se ...Be6, Nxe6 fxe6 e o peão e6 fica fraco.})
+(4... Nd4?! 5. Nxe5! {As pretas deixaram e5 sem defesa. O truque ...Qg5 não funciona aqui: com o peão em d3, o bispo c1 protege g5, e 5...Qg5?? perde a dama para 6.Bxg5.} Qf6 (5... Ne6 6. Nf3 {Peão a mais, centro livre, e o cavalo em e6 atrapalha as próprias peças.}) 6. Bxf7+ Kf8 (6... Kd8 7. Bxg8 {Depois de ...Qxe5, Bb3 salva o bispo: dois peões a mais e o rei preto preso no centro.}) 7. Bxg8 {Dois peões a mais. Depois de ...Kxg8 ou ...Rxg8, Ng4 protege f2 e c3 expulsa o cavalo d4.})
+(4... f5?! 5. Nc3! {Desenvolve e pressiona e4 e f5. A diagonal a2-g8 ficou aberta e o rei preto não vai rocar com tranquilidade.} Nf6 (5... fxe4 6. dxe4 {A diagonal do bispo c4 fica aberta e Ng5 vira uma ameaça constante contra f7.}) 6. O-O {Plano: Bg5 e Nd5. Com o rei preto no centro, qualquer abertura de linhas favorece as brancas.})
+5. c3 {Prepara d4 e dá ao bispo a casa de retirada c2 ou b3.} d6
+(5... O-O 6. O-O d6 (6... Bb6 7. a4 {Ameaça a5, que empurra o bispo outra vez. Depois h3, Nbd2 e Re1.}) 7. h3 {Transpõe para a linha principal.})
+(5... d5 6. exd5 Nxd5 7. O-O {O centro se abriu cedo e o peão e5 ficou sem apoio de peão. Plano: Re1 e pressão em e5.} Nb6 (7... O-O 8. Re1 {Com o rei preto rocado, Re1 ataca e5 imediatamente.} Be6 (8... Bg4 9. h3 {Pergunta ao bispo. Se ...Bxf3, Qxf3 e a dama ataca d5 e f7.}) 9. Nbd2 {Plano: Ne4, b4 e pressão em e5.}) 8. Bb5 {Crava o cavalo c6, que defende e5: Bxc6 seguido de Nxe5 ganha o peão.})
+(5... Ng4?! 6. O-O! {Nunca 6.h3?? por causa de 6...Nxf2!, garfo na dama e na torre. Rocando, f2 fica protegido pela torre.} Nxf2? (6... d6 7. h3 {O cavalo tem que voltar e as brancas ganharam um tempo com h3.}) (6... Be7 7. d4 {O cavalo em g4 está fora do jogo: ocupe o centro. Depois h3 e Re1.}) 7. Rxf2 Bxf2+ 8. Kxf2 {Duas peças menores contra torre e peão: no meio-jogo as duas peças valem mais. Plano: Kg1, Nbd2 e d4.})
+6. O-O {Com o rei seguro, o próximo passo é h3 (tira ...Bg4 e ...Ng4) e Re1.} O-O
+(6... a6 7. Re1 {O bispo preto vai para a7. Siga com h3, a4 e Nbd2.})
+(6... Bg4 7. h3! {Pergunta ao bispo antes de tudo.} Bh5 (7... Bxf3 8. Qxf3! {Nunca gxf3: o rei ficaria sem abrigo. Com a dama em f3 você fica com o par de bispos e a dama ativa na ala do rei.}) (7... Be6 8. Bxe6 {Depois de ...fxe6 o peão e6 dobrado é um alvo: b4, a4 e Qb3.}) 8. Nbd2 {O cavalo vai para f1 e g3 para expulsar o bispo de h5. Só jogue g4 quando o rei estiver bem protegido.})
+(6... Ne7 7. d4! {O cavalo saiu de c6 e não pressiona mais d4: a ruptura central vem com ganho de tempo sobre o bispo c5. Depois de ...exd4 cxd4 você tem o centro ideal.})
+7. h3 {Tira as casas g4 do bispo e do cavalo preto. Agora Re1, a4 e Nbd2-f1-g3.} h6
+(7... Bb6 8. a4 {Ameaça a5 e ganha espaço na ala da dama. Depois Nbd2, Re1 e Bb3.})
+(7... a5 8. Re1 {Siga com Nbd2-f1-g3. A casa b4 é das pretas, mas d4 continua sendo sua ruptura.})
+(7... Be6 8. Bxe6 fxe6 9. b4 {O peão e6 dobrado é um alvo. Plano: a4, Qb3 e pressão em e6 e b7.})
+8. Re1 {A torre apoia e4 e prepara d4. Próximos passos: a4 e Nbd2.} a6
+(8... Bb6 9. Nbd2 {Siga com Nf1-g3 e a4. Só pense em d4 com tudo protegido.})
+9. a4 {Impede ...b5, que expulsaria o bispo. O bispo pode recuar para a2 ou b3 quando for preciso.} Ba7
+(9... Be6 10. Nbd2 {Se ...Bxc4, Nxc4 e o cavalo fica ótimo em c4.})
+10. Nbd2 {O cavalo vai para f1 e depois g3 ou e3.} Be6
+(10... Nh5 11. Nf1 {Sem medo: o cavalo em h5 não ataca nada. Ng3 ou Ne3 o expulsa.})
+11. Bb3 {Se ...Bxb3, Qxb3 ataca b7 e prepara d4.} Re8
+(11... Bxb3 12. Qxb3 {A dama olha b7 e f7. Plano: Nf1-g3, Be3 e d4.})
+12. Bc2 {O bispo fica na diagonal b1-h7, protegido contra trocas. Plano: Nf1-g3, Be3 para trocar o bispo a7, e d4.}
+
+[Id "white-e4-e5-two-knights"]
+[Side "white"]
+[Name "Italiana: 3...Nf6 (Dois Cavalos)"]
+[Description "Dois Cavalos com 4.d3: sem a teoria do Ng5 e com o mesmo plano calmo da Giuoco Pianissimo."]
+
+{Contra 3...Nf6 jogamos 4.d3: protege e4 e evita a teoria afiada do 4.Ng5. O plano é o mesmo da Giuoco Pianissimo: O-O, Re1, c3, h3 e Nbd2-f1-g3, preparando d4. Se as pretas abrirem o centro cedo com ...d5, o peão e5 fica sem apoio e a torre em e1 passa a atacá-lo.}
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. d3 {Protege e4 e mantém o jogo calmo.} Be7
+(4... Bc5 5. c3 {Transpõe para o capítulo 3...Bc5.})
+(4... h6 5. O-O {Roque primeiro: se as pretas empurrarem ...g5, o centro abre com d4 e o rei preto fica exposto.} Bc5 (5... d6 6. c3 {Mesmo plano: Re1, h3, Nbd2 e d4.}) (5... g5?! 6. d4! {Com o rei preto no centro e a ala do rei enfraquecida, abrir o jogo é o certo.}) 6. c3 {Transpõe para o capítulo 3...Bc5.})
+(4... d5 5. exd5 Nxd5 (5... Nd4 6. Nxd4 {Depois de ...exd4 o peão d4 isolado é fraco. Peão a mais e jogo simples: O-O, Re1 e Qf3.}) 6. O-O {O centro aberto favorece quem está desenvolvido. O alvo é o peão e5: Re1 vem a seguir, e com a torre na coluna aberta o lance Nxe5 aparece em várias linhas.})
+(4... d6 5. c3 {Mesmo plano: O-O, Re1, h3 e d4. Depois de ...Be7 e O-O você está na linha principal.})
+(4... Na5?! 5. Nxe5! {O cavalo em a5 não defende nada: e5 caiu de graça.} Nxc4 (5... d5 6. exd5 {Mais um peão, e o cavalo em e5 continua forte.}) 6. Nxc4 {Peão a mais e desenvolvimento normal. Plano: O-O, Re1, Nc3 e d4.})
+5. O-O O-O
+(5... d6 6. c3 O-O (6... h6 7. Re1 {Siga com a4, Nbd2-f1-g3 e d4.}) 7. Re1 {Transpõe para a linha principal.})
+6. Re1 {A torre apoia e4. Agora c3, h3 e Nbd2.} d6
+(6... h6 7. c3 {Siga com Bb3, Nbd2-f1-g3 e d4.})
+(6... d5? 7. exd5 Nxd5 (7... Na5 8. Nxe5 {Peão a mais: se ...Nxc4, dxc4 e o cavalo e5 continua forte.}) 8. Nxe5! {A torre em e1 transforma e5 em alvo.} Nxe5 (8... Na5 9. Bxd5 {Ganha o peão com calma: depois de ...Qxd5, Nc3 com tempo sobre a dama.}) 9. Rxe5 {Peão a mais. A torre em e5 ataca d5 e o bispo em c4 apoia a pressão.})
+7. c3 {Prepara d4 e dá a casa c2 para o bispo.} Na5
+(7... Re8 8. Nbd2 {O cavalo vai para f1 e g3. Siga com h3, Bb3 e d4.})
+(7... Bg4 8. h3 {Pergunta ao bispo. Se ...Bh5, Nbd2-f1-g3 o expulsa; se ...Bxf3, Qxf3.})
+8. Bb5 {O bispo recua para b5 e depois a4, mantendo a diagonal. Não entregue o bispo pelo cavalo de graça.} a6
+(8... Bd7 9. Bxd7 {Troca os bispos de casas brancas e mantém o centro. Depois Nbd2, b4 para expulsar o cavalo a5, e d4.})
+9. Ba4 c5
+(9... b5 10. Bc2 {O bispo fica em c2, protegido, mirando o roque preto. Plano: Nbd2-f1-g3 e d4.})
+10. Nbd2 {O cavalo vai para f1 e g3. As pretas têm espaço na ala da dama, mas o centro das brancas é firme. Plano: Nf1, Ng3, h3 e d4.}
+
+[Id "white-e4-e5-italian-sidelines"]
+[Side "white"]
+[Name "Italiana: desvios no 3º lance"]
+[Description "Como punir 3...h6, 3...d6, 3...Nd4, 3...Be7, 3...f5 e outros lances raros depois de 3.Bc4."]
+
+{Lances raros no terceiro lance custam tempo ou deixam f7 e e5 fracos. Regra geral: contra lances lentos (...h6, ...d6, ...g6, ...a6, ...Be7) abrimos o centro com d4; contra truques (...Nd4, ...Na5) capturamos o que ficou sem defesa; e contra a dama cedo em f6 ou e7 desenvolvemos com ganho de tempo.}
+1. e4 e5 2. Nf3 Nc6 3. Bc4 h6
+(3... d6 4. d4 {Ocupa o centro. As pretas precisam decidir entre ceder o centro ou ficar passivas.} exd4 (4... Nf6 5. Nc3 {Se ...exd4, Nxd4 e você está na linha principal. Plano: O-O, Re1 e Bf4.}) (4... Bg4 5. h3! Bh5 (5... Bd7 6. c3 {Centro sólido com c3 e d4. Plano: O-O, Re1 e Nbd2.}) 6. d5 {Ganha espaço com tempo sobre o cavalo. Depois Nc3, Be3 e g4 para empurrar o bispo para g6.}) 5. Nxd4 Nf6 (5... g6 6. Nxc6 bxc6 7. O-O {A estrutura preta ficou quebrada. Plano: Nc3, Bb3, Bg5 e Qf3.}) 6. Nc3 Be7 (6... Ne5 7. Bb3 {O cavalo em e5 não ameaça nada. Plano: O-O, f4 e Bf4.}) 7. O-O O-O (7... Nxd4 8. Qxd4 {Dama forte no centro. Plano: Bf4, Rad1 e e5.}) 8. Bf4 {Desenvolve com ideia de Qd2 e Rad1. Pressione d6 e mantenha o controle de d5.})
+(3... Nd4 4. Nxd4! {Nunca 4.Nxe5?? Qg5!: a dama ataca o cavalo e g2, e se 5.Nxf7?? Qxg2 6.Rf1 Qxe4+ 7.Be2 Nf3# é mate.} exd4 (4... Qg5? 5. Nf3 {Peça a mais. Se 5...Qxg2, 6.Rg1 e a dama tem que fugir.}) 5. O-O {Roque e depois Re1, c3 e d3: o peão d4 isolado cai ou fica fraco.} Nf6 (5... c6 6. Re1 {Pressão na coluna e. Plano: c3 e cxd4, com centro forte.}) (5... d5 6. exd5 {Peão a mais. Se ...Bd6, Re1+ e d3.}) (5... Bc5 6. Bxf7+! {Depois de ...Kxf7, Qh5+ recupera o bispo c5 com peão a mais; se o rei fugir para f8 ou e7, ele perde o roque.}) 6. Re1 {Protege e4 e prepara e5, que expulsa o cavalo f6. Plano: c3, cxd4 e centro forte.})
+(3... Be7 4. d4 {O mesmo remédio contra lances lentos: abrir o centro.} exd4 (4... d6 5. d5 {Espaço a mais com tempo sobre o cavalo. Plano: Bd3, c4, Nc3 e h3; as pretas ficam apertadas.}) 5. Nxd4 Nf6 (5... d6 6. Nc3 {Desenvolvimento rápido. Plano: O-O, Bf4 e Qd2.}) 6. Nc3 {Estrutura aberta, desenvolvimento rápido. Plano: O-O, Bf4 e Qd2.})
+(3... f5 4. d3 {Calmo e forte: o peão e4 fica protegido e a diagonal a2-g8 continua aberta contra o rei preto.} Nf6 (4... Be7 5. O-O {Plano: Nc3, a4 e Ng5 contra f7.}) (4... fxe4 5. dxe4 {A diagonal do bispo c4 fica aberta. Plano: O-O, Nc3 e Ng5 contra f7.}) 5. O-O {Plano: Nc3, Bg5 e Nd5. O rei preto não tem onde se esconder.})
+(3... g6 4. d4 {Abre o centro. Se ...exd4, Nxd4 e Nxc6 quebra a estrutura preta; depois O-O, Nc3 e Bg5.})
+(3... a6 4. d4 {Abre o centro. Se ...exd4, Nxd4 e desenvolvimento rápido com Nc3, O-O e Bf4.})
+(3... Qf6 4. Nc3 {Desenvolve e prepara Nd5, que ataca a dama. A dama cedo é um alvo: d3, Bg5 e Nd5 ganham tempo.})
+(3... Qe7 4. Nc3 {Desenvolve e prepara Nd5, que ataca a dama. Plano: O-O, d4 e Re1.})
+(3... Bb4 4. c3 {Ataca o bispo e prepara d4 com ganho de tempo. Depois O-O e b4.})
+(3... Nge7 4. d4 {Abre o centro: o cavalo em e7 não defende e5 nem d4. Plano: Nxd4, O-O e Nc3.})
+(3... Na5? 4. Nxe5! Nxc4 (4... Qg5 5. Bxf7+ {Peão a mais e o rei preto sem roque; depois d4 ou O-O defendem g2.}) 5. Nxc4 {Peão a mais com desenvolvimento normal. Plano: d4, Nc3 e O-O.})
+(3... d5?! 4. exd5 {Peão a mais. Se 4...Qxd5??, 5.Bxd5 e a dama cai. Se 4...Nd4, Nxd4 exd4 e O-O.})
+4. d4 {Contra um lance lento, abra o centro enquanto as pretas ainda não desenvolveram.} exd4
+(4... d6 5. dxe5 {Abre o jogo com as pretas atrasadas.} Qe7 (5... Bg4 6. h3 {Se ...Bxf3, Qxf3 e depois Qb3 ataca f7 e b7 ao mesmo tempo.}) (5... dxe5 6. Qxd8+ {Depois de ...Nxd8, Nxe5; depois de ...Kxd8, Bxf7. Em ambos os casos, peão a mais.}) 6. Nc3 {Desenvolvimento rápido. Plano: Be3, Qe2 e roque grande.})
+(4... Nxd4? 5. Nxe5! {O cavalo d4 ficou pendurado e f7 está sob ataque de cavalo e bispo: as pretas perdem material.})
+5. Nxd4 {O jogo que você já conhece: centro aberto e peças ativas.} Nf6
+(5... Ne5 6. Bb3 {O cavalo em e5 não ameaça nada. Plano: Nc3, Bf4 e O-O.})
+(5... Bc5 6. Bxf7+! {Depois de ...Kxf7, Qh5+ recupera o bispo c5 com peão a mais; se o rei for para f8 ou e7, ele perde o roque.})
+6. Nc3 {Desenvolve e protege e4.} Bb4
+(6... d6 7. Nxc6 bxc6 8. O-O {Estrutura preta quebrada. Plano: Bf4, Qf3 e e5.})
+7. Nxc6 {Troca antes que as pretas troquem em c3 e ataquem e4. Depois de ...dxc6, Qxd8+ Kxd8 deixa o rei preto no centro; se preferir manter as damas, O-O também é bom.}
+
+[Id "white-e4-e5-philidor"]
+[Side "white"]
+[Name "Philidor: 2...d6"]
+[Description "3.d4 contra a Philidor: centro, roque grande e ataque, com as armadilhas de 3...Bg4 e 3...Nd7."]
+
+{Contra a Philidor (2...d6) jogamos 3.d4 e tomamos o centro. Se as pretas cedem o centro com ...exd4, desenvolvemos com Nc3, Bf4, Qd2 e roque grande, e o plano é avançar f3, g4 e h4 contra o rei preto. Se mantêm e5 com ...Nd7 ou ...Nbd7, o bispo vai para c4 mirando f7, e vários lances naturais das pretas perdem material.}
+1. e4 e5 2. Nf3 d6 3. d4 {Ocupa o centro e pergunta às pretas o que fazer com e5.} exd4
+(3... Nf6 4. Nc3 {Protege e4 e mantém a tensão.} Nbd7 (4... exd4 5. Nxd4 {Transpõe para a linha principal.}) (4... Be7? 5. dxe5! {Depois de ...dxe5 Qxd8+ Bxd8 Nxe5 as brancas ganham um peão limpo.}) 5. Bc4 {O bispo mira f7.} Be7 (5... h6 6. O-O {Plano: a4, Re1, h3 e Be3.}) 6. O-O O-O (6... c6 7. a4 {Impede ...b5. Plano: Re1, h3 e Ba2.}) 7. a4 {Impede ...b5. Plano: Re1, h3, Be3 e Ba2. As pretas ficam sem espaço.})
+(3... Nd7 4. Bc4 {O bispo mira f7. Muitos lances naturais das pretas agora perdem material.} c6 (4... Ngf6 5. dxe5! {Depois de ...Nxe5 Nxe5 dxe5, Bxf7+! seguido de Qxd8 ganha um peão, com o rei preto no centro.}) (4... exd4 5. Nxd4 {Centro livre. Plano: Nc3, O-O e f4.}) (4... Be7? 5. dxe5! Nb6 (5... Nc5 6. Qe2 {Peão a mais. O cavalo em c5 é expulso com b4 ou Be3.}) (5... dxe5? 6. Qd5! {Ameaça Qxf7#: as pretas perdem material.}) 6. Bb3 {Peão a mais. Se ...dxe5, Qxd8+ e Nxe5.}) 5. O-O {Rei seguro. Agora a4 contra ...b5 e depois Nc3.} Be7 (5... a5 6. a4 {Trava a ala da dama. Plano: Nc3, Re1 e h3.}) 6. a4 {Impede ...b5. Plano: Nc3, Re1, h3 e Ba2, a estrutura clássica contra a Philidor.})
+(3... Bg4? 4. dxe5! {Ataca d6 e abre a coluna d. As pretas não conseguem manter o equilíbrio.} Bxf3 (4... Nc6 5. exd6 {Peão a mais. Plano: Be2, O-O e Nc3.}) (4... Nd7 5. exd6 {Peão a mais. Depois de ...Bxd6, Be2 desfaz a cravada.}) 5. Qxf3 dxe5 (5... Nd7 6. exd6 {Peão a mais e desenvolvimento livre. Plano: Nc3, Bf4 e O-O-O.}) 6. Bc4 {A dama e o bispo miram f7 juntos.} Nf6 (6... Qd7 7. Qb3 {Ataca b7 e f7. Plano: Nc3, Be3 e roque grande.}) (6... Qe7 7. Nc3 {Desenvolvimento rápido. Plano: Be3, roque grande e Nd5.}) 7. Qb3! {Ataca b7 e f7 ao mesmo tempo.} Qe7 (7... Bc5 8. Bxf7+ {Peão a mais e o rei preto perde o roque.}) 8. Nc3 {A Partida da Ópera (Morphy, 1858) seguiu 8...c6 9.Bg5 b5? 10.Nxb5! cxb5 11.Bxb5+ Nbd7 12.O-O-O: todas as peças brancas atacam d7. Plano: Bg5, roque grande e pressão na coluna d.})
+(3... f5?! 4. Bc4 {O bispo mira g8 e f7, justamente onde o rei preto ficou fraco.} Nc6 (4... exd4 5. Nxd4 {Plano: O-O, Nc3 e exf5.}) (4... fxe4 5. Nxe5! {Se 5...dxe5??, 6.Qh5+ e o rei preto fica perdido. Se 5...d5, 6.Qh5+ g6 7.Nxg6 com ataque.}) 5. Nc3 {Pressão em e4 e f5. Plano: dxe5, Qe2 e O-O.})
+4. Nxd4 {As pretas cederam o centro. Agora desenvolvimento rápido e roque grande.} Nf6
+(4... Be7 5. Nc3 Nf6 (5... Nc6 6. Bf4 {Plano: Qd2, roque grande e pressão em d6.}) 6. Bf4 {Transpõe para a linha principal.})
+(4... g6 5. Nc3 Bg7 (5... Nf6 6. Be3 {Plano: Qd2, roque grande, f3 e Bh6.}) 6. Be3 {Plano: Qd2, roque grande, f3 e Bh6 para trocar o bispo g7; depois h4-h5.})
+(4... Nc6 5. Nc3 Nf6 (5... Be7 6. Bf4 {Plano: Qd2, roque grande e pressão em d6.}) 6. Bf4 {Plano: Qd2, roque grande, f3 e g4.})
+5. Nc3 {Desenvolve e protege e4.} Be7
+(5... a6 6. Bf4 {Mesmo plano: Qd2, roque grande, f3 e g4.})
+(5... Nc6 6. Bf4 {Plano: Qd2, roque grande, f3 e g4.})
+6. Bf4 {O bispo pressiona d6. Agora Qd2 e roque grande.} O-O
+(6... Nc6 7. Qd2 {Plano: roque grande, f3 e g4.})
+7. Qd2 {Liga as torres e prepara o roque grande.} Nc6
+(7... Re8 8. O-O-O {Plano: f3, g4 e h4 contra o roque preto.})
+(7... d5 8. O-O-O {Se as pretas abrirem o centro, suas peças estão mais ativas e a torre já está em d1.})
+8. O-O-O {Reis em lados opostos: agora é uma corrida, e o seu ataque com peões chega primeiro.} Nxd4
+(8... Re8 9. f3 {Protege e4 e prepara g4-g5 para expulsar o cavalo f6.})
+9. Qxd4 {A dama centralizada controla tudo. Plano: f3, g4, h4 e g5 contra o cavalo f6.}
+
+[Id "white-e4-e5-petrov"]
+[Side "white"]
+[Name "Petrov: 2...Nf6"]
+[Description "3.Nxe5 contra a Petrov: 5.Nc3 com roque grande, o Gambito Stafford e as armadilhas de 3...Nxe4 e 3...Qe7."]
+
+{Contra a Petrov (2...Nf6) capturamos o peão com 3.Nxe5. Depois de 3...d6 4.Nf3 Nxe4 jogamos 5.Nc3: trocamos os cavalos e, com Be3, Qd2 e roque grande, o plano é empurrar h4 e g4 contra o rei preto. Aqui moram também as armadilhas mais comuns do clube: 3...Nxe4? 4.Qe2!, 3...Qe7 (bloqueie a coluna e com Be2) e o Gambito Stafford.}
+1. e4 e5 2. Nf3 Nf6 3. Nxe5 {Captura o peão. As pretas precisam gastar um tempo para recuperá-lo.} d6
+(3... Nxe4? 4. Qe2! {Cravada na coluna e. Qualquer recuo do cavalo e4 (4...Nf6??, 4...Ng5??, 4...Nc5??) perde a dama para 5.Nc6+, xeque descoberto.} Qe7 (4... Nf6?? 5. Nc6+ {Xeque descoberto e a dama d8 cai.}) (4... d5 5. d3 {Ataca o cavalo cravado. Depois de ...Qe7 dxe4 Qxe5 exd5 as brancas ficam com um peão a mais.}) 5. Qxe4 d6 (5... f6 6. d4 {Depois de ...fxe5 Qxe5 e a troca de damas, as brancas ficam com um peão a mais.}) 6. d4 dxe5 (6... f5 7. Qf4 {Depois de ...dxe5 dxe5 as brancas ficam com um peão a mais e desenvolvimento livre.}) 7. dxe5 {Peão a mais.} Nc6 (7... Qb4+ 8. Nc3 {Mantém as damas e desenvolve com tempo.}) 8. Bb5 {Crava o cavalo e protege e5 indiretamente. Plano: Nc3, Bf4 e O-O.})
+(3... Nc6 4. Nxc6 {O Gambito Stafford. Aceite o peão e jogue com calma: as armadilhas só funcionam contra lances apressados.} dxc6 (4... bxc6 5. d3 {Peão a mais. Plano: Be2, O-O e Nc3.}) 5. d3 {Protege e4 e abre a diagonal do bispo c1.} Bc5 (5... Qe7 6. Be2 {O bispo bloqueia a coluna e. Plano: O-O, Nc3 e Be3.}) (5... Ng4 6. f3 {O cavalo tem que voltar e f2 fica protegido.}) 6. Be2! {Nunca 6.Bg5?? Nxe4! 7.Bxd8 Bxf2+ 8.Ke2 Bg4# é mate. O bispo em e2 cobre g4 e h5.} h5 (6... Ng4 7. Bxg4 Qh4 8. Qf3 {Devolve a peça na hora certa e fica com o peão a mais.} Bxg4 (8... Qxg4 9. Qxg4 {Depois de ...Bxg4, Be3 e Nd2: final com peão a mais.}) 9. Qg3 {Troca as damas: final com peão a mais.}) (6... a5 7. c3 {Plano: d4 com ganho de tempo sobre o bispo, Nd2 e só depois o roque.}) 7. c3! {Prepara d4, que expulsa o bispo c5 e fecha a diagonal contra f2. Não roque cedo: com ...h5-h4 e ...Ng4 o roque pequeno vira alvo.} Ng4 (7... Bg4 8. Nd2 {Se ...Bxe2, Qxe2. Plano: Nf3, d4 e Be3.}) 8. d4 {Expulsa o bispo e fecha a diagonal contra f2. Plano: Nd2-f3, h3 e só depois o roque. Peão a mais e o ataque preto acabou.})
+(3... Qe7 4. Nf3 {Recua com calma. Atenção: agora a coluna e está aberta contra o seu rei.} Nxe4 (4... Qxe4+ 5. Be2 {Bloqueia a coluna. Plano: O-O, Re1 e Nc3 ganhando tempo sobre a dama.}) 5. Be2! {Nunca 5.d4?? Nc3+! 6.Qe2 Nxe2: xeque descoberto e a dama cai. Bloqueie a coluna e antes de mexer o peão d.} d5 (5... Qd8 6. O-O {As pretas perderam tempo com a dama. Plano: d4, c4 e Nc3.}) 6. O-O {Plano: Re1, d3 e Nc3. A dama em e7 atrapalha o desenvolvimento preto.})
+4. Nf3 {Recua para f3. As pretas recuperam o peão, mas agora é a sua vez de ganhar tempo.} Nxe4
+(4... Nc6 5. Nc3 {Peão a mais e desenvolvimento normal: d4, Bd3 e O-O.})
+5. Nc3 {Troca o cavalo mais ativo das pretas. Depois de dxc3 o bispo c1 e a dama ganham linhas abertas.} Nxc3
+(5... Nf6 6. d4 {As pretas perderam tempo com o cavalo. Plano: Bd3, O-O, h3 e Re1.})
+(5... Bf5? 6. Qe2! {Cravada na coluna e: se ...d5, d3 ganha o cavalo; se ...Qe7, Nd5 ataca a dama e o cavalo continua cravado.})
+6. dxc3 {Linhas abertas para os bispos e a dama.} Be7
+(6... Nd7 7. Be3 {Plano: Qd2, roque grande e h4.})
+7. Be3 {Prepara Qd2 e roque grande.} O-O
+(7... Nd7 8. Qd2 {Plano: roque grande, h4 e g4.})
+8. Qd2 {Liga as torres. O roque grande vem a seguir.} Nd7
+(8... c6 9. O-O-O {Plano: Bd3, h4 e g4.})
+9. O-O-O {Reis em lados opostos. Seu plano é empurrar h4, g4 e h5, abrindo linhas contra o rei preto.} Re8
+(9... Nf6 10. Bd3 {Plano: h4, Ng5 e g4.})
+(9... c6 10. Bd3 {O bispo mira h7. Plano: h4-h5 e Ng5.})
+10. Bd3 {O bispo mira h7. Plano: Rhe1, h4 e Ng5; a torre em d1 pressiona d6.}
+
+[Id "white-e4-e5-rare"]
+[Side "white"]
+[Name "Segundos lances raros"]
+[Description "Como punir 2...f6, 2...Qf6, 2...Bc5, 2...d5, 2...f5 e outros lances raros depois de 2.Nf3."]
+
+{Depois de 1.e4 e5 2.Nf3, quase todo segundo lance raro deixa o peão e5 sem defesa ou enfraquece o rei preto. Pergunte sempre: o peão e5 está defendido? Se não estiver, Nxe5. Se a dama preta aparecer em e7 para recuperar e4 com xeque, bloqueie a coluna com Be2 antes de mexer o peão d.}
+1. e4 e5 2. Nf3 f6? {A Defesa Damiano: enfraquece o rei e tira f6 do cavalo.}
+(2... Qf6 3. Nc3 {Desenvolve e prepara Nd5, que ataca a dama.} Nc6 (3... d6 4. d4 {Centro forte. Plano: Nd5, Bg5 e O-O.}) 4. Bc4 {Transpõe para os desvios da Italiana com 3...Qf6.})
+(2... Bc5 3. Nxe5! {O peão estava sem defesa.} Nc6 (3... d6 4. Nf3 {Peão a mais, limpo. Plano: d4, Be2 e O-O.}) (3... Qh4 4. d4 {Ataca o bispo. Se ...Qxe4+, Be3 e Nc3 ganham tempo sobre a dama.}) (3... Bxf2+ 4. Kxf2 {Peça a mais: o rei fica seguro depois de Kg1.}) 4. Nxc6 {Peão a mais. Plano: d3, Nc3 e Be2.})
+(2... d5 3. exd5 {O Gambito Elefante. Aceite o peão.} e4 (3... Qxd5 4. Nc3 {Ganha tempo sobre a dama. Plano: d4, Be2 e O-O.}) 4. Qe2 {Ataca e4 e crava a coluna e.} Nf6 (4... Qe7 5. Nd4 {O cavalo fica forte em d4. Plano: Nc3 e Qxe4.}) 5. d3 {Troque o peão e4 e fique com o peão a mais. Plano: dxe4, Nc3 e Bg5.})
+(2... f5 3. Nxe5 {O Gambito Letão. O cavalo em e5 é muito forte.} Qf6 (3... Nf6 4. Bc4 {O bispo mira g8: o rei preto não tem onde rocar.}) (3... d6? 4. Qh5+! {Se 4...Ke7??, Qf7# é mate; se 4...g6, Nxg6 ataca a torre h8 e as brancas ganham material.}) 4. d4 {Protege o cavalo e ocupa o centro.} d6 (4... Nc6 5. Nxc6 {Peão a mais.}) 5. Nc4 {O cavalo recua para uma casa segura.} fxe4 (5... Nc6 6. d5 {Ganha tempo sobre o cavalo.}) 6. Nc3 {Ataca e4. Plano: Ne3, d5, Be2 e O-O. O rei preto está exposto.})
+(2... Qe7 3. Bc4 {Desenvolve com calma. A dama em e7 bloqueia o bispo f8.} Nf6 (3... d6 4. Nc3 {Plano: d4, O-O e Nd5.}) 4. Nc3 {Plano: d3 ou d4, O-O e Nd5 com tempo sobre a dama.})
+(2... h6 3. Nxe5! {O peão estava sem defesa. Se ...Qe7, Nf3 e Be2 contra ...Qxe4+.})
+(2... a6 3. Nxe5! {O peão estava sem defesa. Se ...Qe7, Nf3 e Be2 contra ...Qxe4+.})
+(2... Bd6 3. Bc4 {Desenvolve. O bispo em d6 bloqueia o peão d7. Plano: O-O, c3 e d4.})
+(2... Ne7 3. Nxe5 {O peão estava sem defesa. Plano: d4 e Nc3.})
+(2... Bb4 3. c3 {Ataca o bispo e prepara d4 com ganho de tempo.})
+(2... Be7 3. Nxe5 {O peão estava sem defesa. Plano: d4, Nc3 e Bd3.})
+(2... c6 3. d4 {Centro forte. Se ...exd4, Qxd4 e desenvolvimento rápido.})
+(2... g6 3. d4 {Se ...exd4, Qxd4 ataca a torre h8 pela diagonal aberta.})
+3. Nxe5! {O sacrifício é só aparente: se as pretas capturarem, o rei preto é caçado.} fxe5?
+(3... Qe7 4. Nf3 {Recua. As pretas recuperam o peão, mas ficam atrasadas.} d5 (4... Qxe4+ 5. Be2 {Bloqueia a coluna. Plano: O-O, Re1 e Nc3 ganhando tempo sobre a dama.}) 5. d3 {Se ...dxe4 dxe4 Qxe4+, Be2 e O-O com desenvolvimento muito melhor.})
+(3... Ne7 4. Nf3 {Peão a mais e o rei preto enfraquecido. Plano: d4, Bd3 e O-O.})
+4. Qh5+ Ke7
+(4... g6 5. Qxe5+ {Garfo no rei e na torre h8.})
+5. Qxe5+ Kf7 6. Bc4+ {Todas as peças atacam o rei preto.} d5
+(6... Kg6 7. Qf5+ Kh6 8. d3+ {O rei preto está numa rede de mate: depois de ...g5, h4 abre a coluna h.})
+7. Bxd5+ Kg6 8. Qg3+ Qg5 9. Qxc7 {Quatro peões pela peça e o rei preto exposto. Plano: h4, d4 e Nc3.}

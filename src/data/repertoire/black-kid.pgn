@@ -1,0 +1,561 @@
+[Id "black-kid-classical"]
+[Side "black"]
+[Name "Índia do Rei clássica"]
+[Description "Contra c4, d4 e e4 com Nf3: ...Bg7, ...d6, ...O-O e ...e5, com o ataque ...f5 no flanco do rei."]
+
+{Você deixa o Branco montar o centro com c4, d4 e e4 e depois golpeia com ...e5. Se o Branco fecha com d5, o jogo fica claro: ele ataca na ala da dama (b4, c5) e você ataca no flanco do rei com ...Nd7 ou ...Nh5, ...f5, ...f4 e ...g5-g4. Se o Branco troca em e5, as damas saem e o final é igual: ocupe d4 com o cavalo e não tenha pressa.}
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2
+(6. h3 e5 {Mesmo golpe central. Com h3 o Branco quer g4 e Be3, então feche a ala da dama antes.} 7. d5
+  (7. dxe5 dxe5 {Final igual depois de Qxd8 Rxd8. Plano: ...Nc6, ...Nd4 e ...Be6.})
+  7... a5 {O peão a5 segura b4 e dá a casa c5 ao cavalo, que vai por a6. Depois vêm ...Nh5 e ...f5.})
+(6. Be3 e5 {Mesmo com o bispo em e3, ...e5 é bom: se dxe5 dxe5 Qxd8, o final é igual.} 7. d5
+  (7. Be2 Ng4 {Transposição para a linha 7.Be3 com o bispo em e2.})
+  (7. dxe5 dxe5 {Com o bispo em e3, o Negro está bem. Plano: ...Nc6, ...Nd4 e ...Be6.})
+  7... Ng4 {O cavalo ataca o bispo de e3 e abre caminho para ...f5.} 8. Bg5 f6 9. Bh4 Nh6 {O cavalo vai a f7 e o peão f6 avança a f5 no momento certo. O bispo de h4 fica fora do jogo.})
+6... e5 {O golpe clássico no centro. O peão e5 disputa d4 e prepara ...Nc6 ou, se o Branco fechar com d5, o ataque com ...f5.}
+7. O-O
+(7. d5 a5 {Sistema Petrosian. O peão a5 impede b4 e garante a casa c5 para o cavalo, que vai por a6.}
+  8. Bg5
+  (8. O-O Na6 9. Bg5 h6 10. Bh4 g5 11. Bg3 Nh5 {O cavalo ameaça trocar o bispo de g3 e vai a f4, casa perfeita para ele. O peão g5 não é fraqueza: ele sustenta f4.})
+  8... h6 {Pergunte ao bispo o que ele quer. Em h4 ele fica longe do centro e o cavalo de f6 se solta com ...Qe8.}
+  9. Bh4 Na6 10. Nd2
+  (10. O-O g5 11. Bg3 Nh5 {O cavalo vai a f4, casa perfeita. Troque-o pelo bispo de e2 se o Branco deixar.})
+  10... Qe8 {A dama sai da cravação e defende e5. Plano: ...Nh7 e ...f5, ou ...Nc5 e ...Bd7.})
+(7. dxe5 dxe5 8. Qxd8 Rxd8 {Final sem damas com peões simétricos. O Negro está bem: a casa d4 é boa para o cavalo e o bispo de g7 fica forte.} 9. Bg5 Re8 {A torre protege e5. Plano: ...Na6-c5, ...h6 e ...Be6. Se Nd5, troque com ...Nxd5 e ataque o peão d5 com ...c6.})
+(7. Be3 Ng4 {O cavalo ataca o bispo e prepara ...f5. Se dxe5 dxe5 Qxd8 Rxd8, o bispo de e3 fica atacado.}
+  8. Bg5 f6 9. Bh4 g5 10. Bg3 Nh6 {O cavalo vai a f7 e o peão f6 avança a f5 no momento certo. O plano é sempre ...f5.})
+7... Nc6 {Ataque d4. O Branco escolhe entre fechar com d5 (Mar del Plata), Be3 ou trocar em e5.}
+8. d5
+(8. Be3 Ng4 9. Bg5 f6 10. Bh4
+  (10. Bc1 f5 {Com o bispo de volta a c1, abra o jogo com ...f5 imediatamente.})
+  10... g5 11. Bg3 Nh6 {Plano: ...f5. O cavalo de h6 vai a f7 e o de c6 pode ir a d4.})
+(8. dxe5 dxe5 9. Qxd8 Rxd8 10. Bg5 Re8 {Final igual. Plano: ...h6, ...Nd4 e ...Be6. Não troque o cavalo de d4 sem motivo.})
+8... Ne7 {Mar del Plata. O cavalo vai a g6 ou apoia ...f5. A regra: o Branco ataca na ala da dama, você ataca no flanco do rei. Quem for mais rápido ganha.}
+9. Ne1
+(9. b4 Nh5 {Contra a Baioneta (b4) o cavalo vai a h5 e depois a f4, e o peão f vai a f5.}
+  10. Re1
+  (10. c5 Nf4 {O cavalo em f4 é o motor do seu ataque. Se Bxf4, ...exf4 e o bispo de g7 ganha a diagonal.})
+  10... f5 11. Ng5 Nf6 {Defenda e4 e e6. Plano: ...h6 para expulsar o cavalo e depois ...f4 ou ...fxe4.})
+(9. Nd2 a5 {Freie b4. O Branco precisa de a3 e Rb1 para abrir a ala da dama e você ganha tempo para ...f5.}
+  10. a3
+  (10. Rb1 Nd7 11. a3 f5 12. b4 Kh8 {O rei sai da diagonal g1-a7 e o cavalo pode ir a g8 ou f6. Plano: ...Nf6, ...f4 e ...g5.})
+  10... Nd7 11. Rb1 f5 12. b4 Kh8 {O rei sai da diagonal g1-a7 e o cavalo pode ir a g8 ou f6. Plano: ...Nf6, ...f4 e ...g5.})
+(9. Bd2 Nh5 {O cavalo abre caminho para ...f5 e vai a f4.})
+(9. Re1 Nd7 {Plano de sempre: ...f5, ...Nf6 e ...f4.})
+(9. Qc2 Nh5 {O cavalo vai a f4 e o peão f vai a f5.})
+9... Nd7 {Abre o caminho do peão f e cobre c5. O cavalo pode voltar a f6 depois de ...f5.}
+10. Be3
+(10. Nd3 f5 11. Bd2
+  (11. f3 Nf6 12. Bd2 f4 {Plano: ...g5, ...Ng6, ...h5 e ...g4.})
+  11... Nf6 12. f3 f4 {Feche o centro e ataque com ...g5, ...Ng6, ...h5 e ...g4. Não perca tempo na ala da dama.})
+(10. f3 f5 {Se Be3, ...f4 e Bf2 ...g5 transpõem para a linha principal. Se Nd3, ...Nf6 e ...f4.})
+10... f5 11. f3
+(11. exf5 Nxf5 {O cavalo ataca o bispo de e3 e pode pular para d4. Sua posição é muito boa.})
+(11. Nd3 f4 12. Bd2 g5 {Ataque com ...Nf6, ...Ng6, ...h5 e ...g4.})
+11... f4 {Ganha espaço no flanco do rei e expulsa o bispo. Agora os peões avançam: ...g5, ...h5 e ...g4.}
+12. Bf2
+(12. Bd2 g5 {O bispo em d2 não atrapalha: ...Nf6, ...Ng6, ...h5 e ...g4.})
+12... g5 {O peão vai a g4 para abrir linhas contra o rei branco.}
+13. Nd3
+(13. b4 Nf6 {O cavalo pressiona e4 e prepara ...Ng6, ...h5 e ...g4.})
+(13. c5? Nxc5! {Aceite o peão. Se Bxc5 dxc5, você troca o cavalo pelo bispo e fica com um peão a mais, e a ala da dama do Branco não anda.})
+13... Nf6 {O plano de ataque está montado: ...Ng6, ...Rf7 e ...Bf8 para proteger d6 e c7, depois ...h5 e ...g4. Contra c5 e Nb5, não defenda a7: o seu ataque no rei é mais rápido.}
+
+[Id "black-kid-samisch-fourpawns"]
+[Side "black"]
+[Name "Índia do Rei: Sämisch, Quatro Peões e Averbakh"]
+[Description "Os sistemas agressivos sem Nf3 cedo: f3, f4, Be2 com Bg5 e os lances h3, Nge2, Bd3 e Be3."]
+
+{Quando o Branco adia Nf3, ele quer atacar. Contra a Sämisch (f3 e Be3) e os sistemas com h3, Nge2 ou Bd3, jogue ...e5 e o plano de sempre: ...Nh5 e ...f5. Contra os Quatro Peões (f4) e a Averbakh (Be2 e Bg5), o golpe certo é ...c5: o centro branco fica alto demais e você o ataca com ...e6, ...exd5 e ...Re8.}
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. f3
+(5. f4 O-O 6. Nf3
+  (6. Be2 c5 {Mesmo golpe. Se d5, ...e6 e ...exd5; se Nf3, transposição.})
+  (6. e5 Nfd7 {O peão e5 está avançado demais. Ataque-o com ...c5 e ...dxe5: o centro branco não se sustenta.})
+  6... c5 {O golpe contra os Quatro Peões. O centro branco é grande, mas os peões avançados viram alvos.}
+  7. d5
+  (7. dxc5 Qa5 {Recupere o peão com ...Qxc5. Se Bd3, ...Nfd7 primeiro: se cxd6, ...Bxc3+ ganha material.})
+  7... e6 {Abra o centro. Depois de ...exd5, o Negro ganha a coluna e e a casa e4 fica fraca.}
+  8. Be2
+  (8. dxe6 fxe6 {Retome com o peão f: a coluna f fica aberta e o peão d6 é firme. Plano: ...Nc6 e ...Nd4 ou ...e5.})
+  8... exd5 9. cxd5
+  (9. exd5 Bf5 {O bispo sai com tempo e mira b1. Depois vem ...Ne4.})
+  9... Re8 {A torre ataca e4. O Branco precisa decidir já.}
+  10. e5
+  (10. O-O? Nxe4! {O peão e4 cai: Nxe4 Rxe4 e o Negro ganha um peão limpo.})
+  10... dxe5 11. fxe5 Ng4 {O cavalo ataca e5. Se Bg5, ...Qb6 ataca b2 e d4, e depois de O-O o peão e5 cai com ...Nxe5.})
+(5. Be2 O-O 6. Bg5
+  (6. Nf3 e5 {Transposição para a Índia do Rei clássica.})
+  6... c5 {Averbakh. Com o bispo em g5, a casa d4 fica fraca e ...c5 ataca na hora.}
+  7. d5
+  (7. Nf3 cxd4 {Depois de Nxd4, ...Nc6 ou ...Qa5 com jogo ativo contra a casa c3.})
+  (7. e5? cxd4! 8. exf6 exf6 {O bispo de g5 e o cavalo de c3 estão atacados ao mesmo tempo. Você ganha material.})
+  7... e6 8. Qd2
+  (8. Nf3 exd5 {Abra o centro. Plano: ...h6 para expulsar o bispo, ...Re8 e ...Bf5.})
+  8... exd5 9. exd5
+  (9. cxd5 a6 {Prepare ...b5. A maioria na ala da dama é o seu trunfo.})
+  9... Re8 {A torre na coluna aberta. Plano: ...Bf5, ...Ne4 e ...Nbd7.})
+(5. h3 O-O 6. Be3
+  (6. Nf3 e5 {Transposição para a linha 6.h3 da Índia do Rei clássica.})
+  6... e5 7. d5
+  (7. dxe5 dxe5 {Final igual depois de Qxd8 Rxd8. Plano: ...Nc6 e ...Nd4.})
+  7... Na6 {O cavalo vai a c5. Se o Branco avançar g4, jogue na ala da dama com ...a5, ...c6 e ...cxd5.})
+(5. Nge2 O-O {Plano: ...e5 e, se d5, ...a5 e ...Na6-c5. Se f3, você está na Sämisch.})
+(5. Bd3 O-O {Plano: ...Nc6 e ...e5. Se d5, o cavalo vai a e5 ou d4.})
+(5. Be3 O-O {Plano: ...e5. Se d5, ...Ng4 ataca o bispo de e3 e prepara ...f5.})
+5... O-O 6. Be3
+(6. Nge2 e5 {Mesmo plano da Sämisch.} 7. d5
+  (7. Be3 exd4 {Transposição para a linha 7.Nge2 da linha principal.})
+  7... Nh5 {O cavalo vai a f4 e prepara ...f5.})
+(6. Bg5 c5 {Contra o bispo em g5, ...c5 é o melhor: d4 fica fraco e o bispo não defende a ala da dama. Se d5, ...e6 e ...exd5.})
+6... e5 {Na Sämisch, o Branco quer o roque grande e o ataque com g4 e h4. O golpe ...e5 fecha o centro e o jogo vira corrida: você com ...f5 e ...a6-b5.}
+7. d5
+(7. Nge2 exd4 {Abra a coluna e. Depois de Nxd4, ...Nc6, ...Re8 e ...Nxd4 pressionam e4 e c4.})
+(7. Qd2 exd4! {O Branco não pode retomar bem: se Bxd4, ...Nc6 e ...Ne5 atacam c4 e f3; se Qxd4, ...Nc6 com tempo sobre a dama.})
+(7. dxe5 dxe5 8. Qxd8 Rxd8 {Final igual. Se Nd5, ...Nxd5 e ...c6. O bispo de g7 é bom.})
+7... Nh5 {O cavalo libera o peão f e ameaça ir a f4. O plano é ...f5.}
+8. Qd2
+(8. Nge2 f5 {Ataque e4 imediatamente.})
+(8. g4 Nf4 {O cavalo em f4 é intocável: se Bxf4, ...exf4 e o bispo de g7 fica enorme.})
+8... f5 9. O-O-O
+(9. exf5 gxf5 10. O-O-O Na6 {Retome com o peão g e mantenha os peões centrais. Plano: ...Nc5, ...Bd7 e ...b5 contra o rei branco.})
+9... Na6 {O cavalo vai a c5 e o rei branco na ala da dama vira alvo de ...a6, ...b5 e ...Bd7.}
+
+[Id "black-kid-fianchetto"]
+[Side "black"]
+[Name "Índia do Rei: fianqueto e desvios"]
+[Description "Contra g3 com Bg2 e contra os desvios no 3º e 4º lance: 3.Nf3, 3.g3, 3.f3, 4.h4, 4.Bg5, 4.Bf4 e 4.e3."]
+
+{Contra o fianqueto (g3 e Bg2) o Branco não tem pressa, e você também não precisa ter: ...d6, ...Nbd7 e ...e5, depois ...exd4, ...Re8 e ...Nc5 para pressionar e4. Contra os desvios no 4º lance (Bf4, e3), mantenha o esquema: roque e ...d6, e escolha ...c5 ou ...e5 conforme a posição do bispo branco.}
+1. d4 Nf6 2. c4 g6 3. Nf3
+(3. g3 Bg7 4. Bg2
+  (4. Nf3 O-O {Transposição para o fianqueto.})
+  4... O-O 5. Nc3
+  (5. Nf3 d6 {Transposição para o fianqueto.})
+  (5. e4 d6 {Se Nc3, ...e5. Plano: ...e5 e ...Nc6 ou ...c6.})
+  5... d6 6. Nf3
+  (6. e4 e5 {Golpeie o centro. Se Nge2, ...exd4 e ...Nc6; se d5, ...a5 e ...Na6-c5.})
+  6... Nbd7 {Transposição para o fianqueto clássico.})
+(3. f3 Bg7 {Mantenha o esquema. Se e4, você está na Sämisch.} 4. e4
+  (4. Nc3 O-O {Se e4, ...d6 e você está na Sämisch.})
+  4... d6 5. Nc3
+  (5. Ne2 O-O {Plano: ...c5 ou ...a6 e ...b5. Se Nbc3, você está na Sämisch com Nge2.})
+  5... O-O {Transposição para a Sämisch.})
+(3. Nc3 Bg7 4. e4
+  (4. Nf3 O-O {Se e4, ...d6 e você está na clássica.})
+  (4. g3 O-O {Plano: ...d6 e ...Nbd7 como no fianqueto.})
+  (4. f3 O-O {Se e4, ...d6: Sämisch.})
+  (4. Bg5 O-O {Se e4, ...d6 e ...c5 como na Averbakh.})
+  (4. h4 d6 {Contra o avanço h4, não faça roque ainda. Plano: ...c5 ou ...Nc6 e ...e5, golpeando o centro antes de pensar no rei.})
+  4... d6 {Transposição para a Índia do Rei clássica.})
+3... Bg7
+4. g3
+(4. Nc3 O-O 5. e4
+  (5. g3 d6 6. Bg2 Nbd7 {Transposição para o fianqueto.})
+  (5. Bg5 d6 {Se e4, você está nas linhas com Bg5: ...h6 e ...c5.})
+  5... d6 {Transposição para a Índia do Rei clássica.})
+(4. Bg5 Ne4 {O cavalo ataca o bispo. Se Bf4, ...c5 ataca d4 e b2 ao mesmo tempo.})
+(4. Bf4 O-O {Roque e ...d6. Se e3, você está no London com c4.})
+(4. e3 O-O {Esquema de sempre: ...d6, ...Nbd7 e ...e5.})
+4... O-O 5. Bg2
+(5. Nc3 d6 {Se Bg2, ...Nbd7 e transposição para o fianqueto.})
+5... d6 6. O-O
+(6. Nc3 Nbd7 {Transposição.})
+6... Nbd7 {O cavalo apoia ...e5 e pode ir a c5 depois da troca em d4.}
+7. Nc3
+(7. Qc2 e5 {Golpe central. Se dxe5, ...dxe5 e o cavalo vai a c5.})
+(7. b3 e5 {Mesmo plano: ...e5, ...Re8 e ...exd4.})
+7... e5 8. e4
+(8. h3 exd4 {Troque no centro. Depois de Nxd4, ...Re8 e ...Nc5.})
+(8. dxe5 dxe5 {Com o peão em e5, o cavalo vai a c5 e o bispo de c8 sai por e6.})
+(8. b3 exd4 {Troque no centro. Depois de Nxd4, ...Re8 e ...Nc5.})
+(8. Qc2 exd4 {Troque no centro. Depois de Nxd4, ...Re8 e ...Nc5 ou ...Nb6.})
+8... exd4 {Troque no centro. O peão e4 fica fraco e o bispo de g7 ganha a diagonal.}
+9. Nxd4 Re8 {A torre ataca e4. O cavalo de d7 vai a c5 para aumentar a pressão.} 10. h3
+(10. Re1 Nc5 {O cavalo ataca e4. Plano: ...a5, ...c6 e ...Qb6.})
+10... Nc5 {O cavalo pressiona e4. Plano: ...a5 para firmá-lo, ...c6 e ...Qe7 ou ...Nfd7-e5.}
+
+[Id "black-kid-london"]
+[Side "black"]
+[Name "Contra o London"]
+[Description "2.Bf4 e o Jobava com duas regras simples: sem h3, ...Nh5 caça o bispo; com h3, ...c5 e ...Qb6 atacam b2."]
+
+{Contra o London (d4 e Bf4), mantenha o esquema da Índia do Rei: ...g6, ...Bg7, ...O-O e ...d6. A regra de ouro: se o Branco ainda não jogou h3, responda ...Nh5 e cace o bispo de f4 para ganhar o par de bispos. Se ele já jogou h3, jogue ...c5 e ...Qb6: o bispo saiu da ala da dama e o peão b2 fica sem defesa. Contra o Jobava (Nc3 com Bf4), jogue ...d5 para impedir e4 e depois ...c5.}
+1. d4 Nf6 2. Bf4 g6 3. e3
+(3. Nc3 d5 {Contra o Jobava, ...d5 impede e4. Sem o peão em e4, o cavalo de c3 fica apenas na frente do peão c.}
+  4. e3
+  (4. Nb5 Na6 {O cavalo defende c7. Depois ...c6 expulsa o cavalo de b5 e o de a6 volta ao jogo por c7.})
+  (4. Nf3 Bg7 5. e3
+    (5. Qd2 O-O {Roque e ...c5. Se Bh6, troque os bispos e siga com ...c5 e ...Nc6.})
+    5... O-O {Transposição para a linha principal do Jobava.})
+  4... Bg7 5. Nf3
+  (5. Nb5 Na6 {Defenda c7 e expulse o cavalo com ...c6.})
+  (5. h4 h5 {Pare o peão h: sem h5 o ataque branco acabou. Depois vêm ...O-O e ...c5.})
+  5... O-O 6. Be2
+  (6. Nb5 Na6 {Defenda c7. Depois ...c6 e o cavalo branco precisa voltar.})
+  6... c5 {O golpe típico: ...c5 abre a diagonal do bispo de g7 contra c3 e b2. Contra Bd3 ou h3 o plano é o mesmo. Depois vêm ...Nc6, ...Bf5 ou ...Bg4 e ...Rc8.})
+(3. Nf3 Bg7 4. e3
+  (4. Nbd2 O-O {Plano: ...d6 e, conforme o caso, ...Nh5 ou ...c5.})
+  (4. h3 O-O {Com h3 já jogado, o plano é ...d6 e ...c5.})
+  (4. Nc3 d5 {Contra o cavalo em c3, ...d5 impede e4. Transposição para o Jobava.})
+  4... O-O {Transposição para a linha principal.})
+(3. Nd2 Bg7 4. e4
+  (4. c3 O-O {Plano: ...d6 e ...Nh5 ou ...c5.})
+  4... d6 {A posição parece uma Pirc. Plano: ...O-O, ...Nbd7 e ...e5 ou ...c5, e ...Nh5 se o bispo ficar em f4.})
+(3. c4 Bg7 4. Nc3
+  (4. Nf3 O-O {Plano: ...d6 e ...c5 ou ...Nh5. Se e3, você está na linha 5.c4 do London.})
+  4... O-O {Roque primeiro. Se e4, ...d6 e a estrutura é a da Índia do Rei.})
+(3. e4? Nxe4 {O peão e4 estava solto: um peão a mais de graça.} 4. Bd3
+  (4. Nf3 d5 {O cavalo de e4 fica firme no centro. Plano: ...Bg7, ...O-O e ...c5 com um peão a mais.})
+  4... Nf6 {O cavalo volta para casa. Plano: ...Bg7, ...O-O e ...d6 com um peão a mais.})
+3... Bg7 4. Nf3
+(4. c3 O-O {Se Nf3, transposição. Plano: ...d6 e ...Nh5.})
+(4. Nd2 O-O {Plano: ...d6, ...Nh5 ou ...c5.})
+(4. Be2 O-O {Plano: ...d6 e ...Nh5 enquanto o Branco não jogar h3.})
+(4. Nc3 d5 {Contra o cavalo em c3, ...d5. Transposição para o Jobava.})
+4... O-O 5. Be2
+(5. h3 d6 {Com h3 o bispo tem a casa h2, então o plano é ...c5 e ...Qb6.} 6. Be2
+  (6. c3 c5 {Mesma ideia: ...c5 e ...Qb6.})
+  6... c5 {Transposição para a linha principal.})
+(5. Bd3 d6 6. O-O c5 {Golpe no centro. Contra Bd3, se o Branco jogar c3 sem h3, prefira ...Nh5. Plano: ...Nc6, ...Bg4 e ...cxd4.})
+(5. c3 d6 6. h3
+  (6. Nbd2 Nh5 {Sem h3, ...Nh5. Se Bg5, ...h6 e ...Qe8 ou ...c5.})
+  6... c5 {Com h3 jogado, ...c5 e ...Qb6. Sem h3 (Be2, Bd3, Nbd2), ...Nh5.})
+(5. Nbd2 d6 {Mesma regra: se h3, ...c5; se c3, Be2 ou Bd3 sem h3, ...Nh5.})
+(5. c4 d6 {Com c4 o Branco transpõe para estruturas da Índia do Rei. Se Nc3, ...c5; se Be2, ...Nh5.})
+(5. Nc3 d5 {Contra o cavalo em c3, ...d5 impede e4. Transposição para o Jobava.})
+5... d6 {Agora vem a regra de ouro: sem h3, ...Nh5; com h3, ...c5.}
+6. h3
+(6. O-O Nh5! {O bispo de f4 não tem casa boa. Se ele fugir, você ganha o par de bispos ou tempo para ...e5.}
+  7. Bg5
+  (7. Bg3 Nxg3 8. hxg3 Nd7 {Par de bispos. Plano: ...e5 e o bispo de g7 fica muito forte.})
+  (7. Be5? dxe5! 8. dxe5 Nc6 {O bispo de e5 caiu: você ganhou uma peça por um peão.})
+  7... h6 8. Bh4 g5 9. Nfd2
+  (9. Bg3 Nxg3 10. hxg3 e5 {Par de bispos e o centro é seu. Plano: ...Nc6, ...f5 e ...e4.})
+  9... Nf4! {Tático: se exf4, ...gxh4 e o bispo de h4 caiu; se Bg3, ...Nxe2+ e você fica com o par de bispos.})
+(6. c3 Nh5 7. Bg5 h6 8. Bh4 g5 9. Nfd2
+  (9. g4 Bxg4 {O peão g4 cai. Se o Branco tentar Rg1 ou Nxg5, você fica com peça a mais por peões.})
+  9... gxh4 10. Bxh5 e5 {Par de bispos e peões centrais. Plano: ...Nc6, ...f5 e ...Kh8 com ...Rg8 na coluna g.})
+(6. Nbd2 Nh5 {Sem h3, ...Nh5. Se Bg5, ...h6 e ...c5; se Bg3, ...Nxg3.})
+(6. c4 Nh5 {Sem h3, ...Nh5. Se Bg5, ...h6, ...c5 e ...g5.})
+(6. Nc3 Nbd7 {Com o cavalo em c3 o Branco não joga c3, então prepare ...e5 com ...Re8.})
+6... c5! {Com h3 o bispo tem a casa h2, então mude o alvo: ...c5 e ...Qb6 atacam b2, que o bispo de f4 deixou sem defesa.}
+7. O-O
+(7. c3 Qb6 {A dama ataca b2.}
+  8. Qb3
+  (8. Qc1 cxd4 9. exd4 e5! {Golpe tático: se dxe5, ...Nd5 ataca o bispo e c3.} 10. dxe5 Nd5 11. Bh2 dxe5 {O peão e5 é seu de novo e as peças negras estão ativas. Plano: ...Nc6, ...Bf5 e ...Rd8.})
+  (8. O-O cxd4 9. cxd4 Qxb2 {O Branco esqueceu b2. Um peão a mais e jogo fácil.})
+  8... Be6 {O bispo ataca a dama. Se Qxb6, ...axb6: a coluna a abre para a torre.} 9. Qxb6 axb6 {Posição confortável: a torre de a8 pressiona a2 e os peões b dobrados controlam c5.})
+(7. dxc5 Qa5+ {Xeque e o peão c5 volta.} 8. c3
+  (8. Nbd2 Qxc5 {Plano: ...Nc6, ...Be6 e ...Rac8.})
+  8... Qxc5 {A dama em c5 é ativa. Plano: ...Nc6, ...Be6 e ...Rfd8.})
+(7. d5? Qb6! {Dois alvos: b2 e d5.}
+  8. Nbd2
+  (8. Qc1 Nxd5 {O peão d5 cai e o bispo de f4 fica atacado.})
+  (8. Nc3 Qxb2 {O peão b2 cai e o cavalo de c3 fica pendurado. O Negro ganha material.})
+  8... Nxd5 {Um peão a mais e o bispo de f4 está atacado.})
+(7. c4 Qb6 8. Qb3
+  (8. Qc1 Nc6 {Plano: ...cxd4 e ...Nb4 ou ...Bf5.})
+  (8. Nc3 Qxb2 {Um peão a mais. Se Rc1, ...Nc6; a dama sai por a3 quando precisar.})
+  8... Nc6 {Plano: ...cxd4 e ...Nb4 ou ...Be6. As peças negras estão mais ativas.})
+(7. Nbd2 cxd4 {Depois de exd4, ...Nc6 e depois ...Re8 com ...e5, ou ...Nd5 atacando o bispo de f4.})
+(7. Nc3 cxd4 {Depois de exd4, jogue ...a6 para tirar b5 dos cavalos brancos e depois ...Nc6, ...b5 e ...Bb7.})
+7... Qb6 {A dama ataca b2. O Branco precisa gastar um lance para defender.}
+8. Qc1
+(8. Nc3? Qxb2! 9. Nb5 Na6 {O cavalo de a6 defende c7. Um peão a mais e nenhum perigo.})
+(8. c3? cxd4! 9. exd4 Qxb2 {O Branco perdeu b2. Um peão a mais e desenvolvimento fácil com ...Bf5.})
+(8. b3 Nc6 {Plano: ...Bf5, ...Rac8 e ...cxd4.})
+(8. Nbd2 cxd4 {Depois de exd4, ...Nd5 ataca o bispo de f4. Plano: ...Nc6 e ...Nf4 ou ...Bf5.})
+(8. dxc5 Qxc5 {A dama em c5 ataca c2. Plano: ...Nc6, ...Be6 e ...Rfd8.})
+8... Nc6 {Pressione d4. Agora o Branco defendeu b2 e você desenvolve tudo.} 9. c3 Re8 {Plano: ...Bf5, ...cxd4 e ...e5. O peão e5 abre a diagonal do bispo de g7.}
+
+[Id "black-kid-nf3-systems"]
+[Side "black"]
+[Name "2.Nf3: Torre, Colle e outros sistemas"]
+[Description "Depois de 1.d4 Nf6 2.Nf3 g6: Torre (Bg5), Colle (e3 e Bd3), fianqueto, Barry (Nc3) e as transposições para o London e a Índia do Rei."]
+
+{Depois de 2.Nf3 g6 o Branco escolhe um sistema. Bf4 é o London (mesmas regras), c4 é a Índia do Rei e Nc3 pede ...d5, igual ao Jobava. Contra o Torre (Bg5) faça roque, ...d6 e ...c5 para atacar d4, que o bispo de g5 deixou sem apoio. Contra o Colle (e3 e Bd3) jogue ...d6, ...Nbd7 e ...e5: o bispo de g7 ganha a diagonal quando o centro abrir.}
+1. d4 Nf6 2. Nf3 g6 3. Bg5
+(3. Bf4 Bg7 {Transposição para o London: roque, ...d6 e a regra ...Nh5 sem h3 ou ...c5 com h3.})
+(3. c4 Bg7 {Transposição para a Índia do Rei.})
+(3. Nc3 d5 {Contra o cavalo em c3, ...d5 impede e4.} 4. Bf4
+  (4. Bg5 Bg7 {Plano: ...O-O, ...c5 ou ...Ne4.})
+  (4. g3 Bg7 {Plano: ...O-O, ...c5 ou ...c6 com ...Bf5.})
+  4... Bg7 5. e3 O-O {Transposição para o Jobava: agora vem ...c5.})
+(3. g3 Bg7 4. Bg2
+  (4. c4 O-O {Transposição para o fianqueto da Índia do Rei.})
+  4... O-O {Plano: ...d6, ...Nbd7 e ...e5, como no fianqueto da Índia do Rei.})
+(3. e3 Bg7 4. Bd3
+  (4. c4 O-O {Plano: ...d6 e ...e5 ou ...c5. Se Nc3, Índia do Rei com e3.})
+  (4. Be2 O-O {Plano: ...d6, ...Nbd7 e ...e5, ou ...c5.})
+  4... O-O 5. O-O
+  (5. e4 d6 {Uma Pirc com Bd3. Plano: ...Nbd7 e ...e5, ou ...Nc6 e ...e5.})
+  5... d6 {Contra o Colle, o plano é ...Nbd7 e ...e5.} 6. c3 Nbd7 {Plano: ...e5 e ...Re8. Se e4, ...e5 também, e o bispo de g7 fica forte quando o centro abrir.})
+(3. Nbd2 Bg7 4. e4
+  (4. e3 O-O {Plano: ...d6, ...Nbd7 e ...e5.})
+  4... d6 {A posição parece uma Pirc. Plano: ...O-O, ...Nc6 ou ...Nbd7 e ...e5.})
+(3. c3 Bg7 {Esquema de sempre. Se Bf4, você está no London; se Bg5, no Torre.})
+3... Bg7 4. Nbd2
+(4. e3 O-O {Plano: ...d6 e ...c5, ou ...Nbd7 e ...e5.})
+(4. c3 O-O {Plano: ...d6 e ...c5.})
+(4. Nc3 d5 {Contra o cavalo em c3, ...d5 impede e4. Plano: ...O-O e ...c5.})
+(4. Bxf6 Bxf6 {Par de bispos para você. Plano: ...d6, ...Nd7, ...c5 ou ...e5.})
+(4. Qd2 Ne4 {O cavalo ataca a dama e o bispo de g5. O Branco perde tempo.})
+4... O-O 5. e4
+(5. e3 d6 {Plano: ...c5 para atacar d4, que o bispo de g5 deixou sem apoio.})
+(5. c3 d6 {Plano: ...c5 ou ...Nbd7 e ...e5.})
+5... d6 {Deixe o Branco ter o centro e ataque-o. O golpe é ...c5.} 6. c3
+(6. Bd3 c5 {Ataque d4. Se d5, ...e6 e o jogo parece uma Benoni com o bispo branco fora de lugar em g5.})
+(6. Be2 c5 {Ataque d4. Se c3, ...cxd4 e ...Nc6.})
+(6. h3 c5 {Ataque d4 antes que o Branco complete o desenvolvimento.})
+6... c5 {Golpeie d4. Plano: ...Nc6, ...cxd4 e ...Qb6 contra b2, ou ...h6 para expulsar o bispo de g5.}
+
+[Id "black-kid-pirc"]
+[Side "black"]
+[Name "2.Nc3: Pirc e ...d5"]
+[Description "Contra 1.d4 Nf6 2.Nc3 g6: se e4, uma Pirc com ...d6, ...Bg7 e ...O-O; se não, ...d5 para impedir e4."]
+
+{Contra 2.Nc3 a regra é simples. Se o Branco joga e4 logo, você está numa Pirc: ...d6, ...Bg7, ...O-O e o contra-ataque com ...c5, ...Nc6 com ...e5, ou ...c6 com ...b5 contra o roque grande. Se ele não joga e4 (Bg5, Nf3, f3, g3), jogue ...d5: o cavalo de c3 fica apenas bloqueando o peão c e o Branco não tem centro.}
+1. d4 Nf6 2. Nc3 g6 {Escolha consciente: o motor prefere 2...d5 por pouco, mas ...g6 mantém o seu esquema de sempre e leva a uma Pirc sólida, com os mesmos planos da Índia do Rei.} 3. e4
+(3. Bg5 d5 {Impede e4. Plano: ...Bg7, ...O-O e ...c5 ou ...c6.}
+  4. e3
+  (4. Nf3 Bg7 {Plano: ...O-O, ...c5 ou ...Ne4.})
+  (4. Qd2 Bg7 {Se Bh6, troque com ...Bxh6 e Qxh6. Plano: ...c6, ...Bf5 e ...Nbd7.})
+  (4. Bxf6 exf6 {Par de bispos. Plano: ...Bg7 ou ...Bd6, ...O-O, ...c6 e ...f5.})
+  4... Bg7 5. Nf3 O-O {Plano: ...c5 ou ...c6 e ...Nbd7. O bispo de g7 é a sua melhor peça.})
+(3. Bf4 d5 {Transposição para o Jobava do capítulo do London.})
+(3. Nf3 d5 {Contra o cavalo em c3, ...d5 impede e4. Se Bf4, você está no Jobava.})
+(3. f3 d5 {Com f3 o Branco quer e4. Impeça: se e4, ...dxe4 e fxe4 deixa o centro branco fraco.}
+  4. e4
+  (4. Bg5 c5 {Ataque d4. O Branco está atrasado e o cavalo de g1 não tem f3.})
+  4... dxe4 5. fxe4
+  (5. Nxe4 Bg7 {Troque cavalos se o Branco quiser e jogue ...O-O e ...c5.})
+  5... Bg7 6. Nf3 O-O {Plano: ...c5 ou ...Bg4 contra d4, e ...Nc6. O peão e4 é alvo.})
+(3. g3 d5 {Impede e4. Plano: ...Bg7, ...O-O e ...c5 ou ...c6.})
+3... d6 {A Pirc. O Branco tem o centro, você tem peças flexíveis e o bispo de g7.}
+4. f4
+(4. Be3 c6 {Contra o Ataque 150 (Be3, Qd2, f3 e O-O-O), ...c6 prepara ...b5 e o ataque na ala da dama.}
+  5. Qd2
+  (5. f3 b5 {Mesmo plano: ...b5, ...Nbd7 e ...Bb7.})
+  (5. Nf3 Bg7 {Plano: ...O-O, ...Nbd7 e ...e5, ou ...b5.})
+  5... b5 6. f3
+  (6. Bd3 Nbd7 {Plano: ...e5 e ...Bb7. O rei pode ficar no centro por um tempo.})
+  6... Nbd7 {Plano: ...Bb7, ...Bg7 e ...a6 ou ...b4. Se O-O-O, ...b4 abre linhas contra o rei branco.})
+(4. Nf3 Bg7 5. Be2
+  (5. Be3 c6 {Transposição para a linha 4.Be3.})
+  5... O-O 6. O-O
+  (6. Be3 c6 {Plano: ...b5, ...Nbd7 e ...Qc7, ou ...e5 depois do roque branco.})
+  6... c6 {Pirc clássica. Plano: ...Qc7, ...Nbd7 e ...e5, ou ...b5 com ...Bb7. Estrutura sólida sem pressa.})
+(4. Bg5 Bg7 5. Qd2
+  (5. f4 O-O {Roque rápido e ...c5 ou ...Nc6 com ...e5, como no Ataque Austríaco.})
+  5... h6 {Pergunte ao bispo. Se Bf4 ou Be3, jogue ...c6 e ...b5; se Bh4, ...g5 e ...Nh5.})
+(4. f3 c6 5. Be3
+  (5. h4 b5 {Não se assuste com h4: ...b5, ...Bg7 e ...h5 se o peão chegar perto do seu rei.})
+  5... b5 {Transposição para a linha 4.Be3.})
+(4. Be2 Bg7 {Plano: ...O-O e ...c5 ou ...c6. Se h4, ...h5 para parar o peão.})
+4... Bg7 {O Ataque Austríaco: o Branco quer e5. Faça roque rápido e golpeie o centro com ...c5 ou ...Nc6 com ...e5.}
+5. Nf3
+(5. e5 Nfd7 {O peão e5 está avançado demais. Ataque-o com ...c5 e ...dxe5.} 6. Nf3 c5 {Golpeie d4. Se dxc5, ...dxe5 e ...Qa5.})
+(5. Bd3 Nc6 {Pressione d4. Se Nf3, ...O-O e transposição.})
+5... O-O 6. Bd3
+(6. Be2 c5 {Golpeie o centro. Se d5, ...e6 e ...exd5; se dxc5, ...Qa5.})
+(6. e5 dxe5 7. fxe5
+  (7. dxe5 Qxd1+ {Troque as damas: sem elas o peão e5 é só uma fraqueza.})
+  7... Nd5 {O cavalo ocupa d5 e o peão e5 fica isolado. Plano: ...c5 e ...Nc6.})
+6... Nc6 {O cavalo pressiona d4 e prepara ...e5 ou ...Nb4 para trocar o bispo de d3.}
+
+[Id "black-kid-tromp-rare"]
+[Side "black"]
+[Name "Trompowsky e segundos lances raros"]
+[Description "2.Bg5, 2.e3, 2.g3, 2.f3, 2.Nd2, 2.c3, 2.e4, 2.d5 e outros desvios depois de 1.d4 Nf6."]
+
+{Contra o Trompowsky (2.Bg5), continue com ...g6. Se o Branco trocar em f6, recapture com o peão e: você fica com o par de bispos e a coluna e aberta, e o plano é ...d5, ...Bd6, ...O-O, ...c6 e ...f5. Contra os outros segundos lances, mantenha ...g6 e ...Bg7, mas puna os lances fracos: se o peão e4 ficar solto, capture; se o Branco jogar f3 cedo, ...d5 impede e4.}
+1. d4 Nf6 2. Bg5
+(2. e3 g6 3. Bd3
+  (3. f4 d5 {Contra o esquema Stonewall, ...d5 fecha e4. Plano: ...Bg7, ...O-O e ...c5.})
+  (3. Nf3 Bg7 {Transposição para o capítulo 2.Nf3.})
+  (3. c4 Bg7 {Se Nc3, ...O-O e ...d6: Índia do Rei com e3.})
+  3... Bg7 4. Nf3
+  (4. e4 d6 {Uma Pirc com o bispo em d3. Plano: ...O-O, ...c5 ou ...e5.})
+  4... O-O {Transposição para o Colle: ...d6, ...Nbd7 e ...e5.})
+(2. g3 g6 3. Bg2
+  (3. Nf3 Bg7 {Transposição para o capítulo 2.Nf3.})
+  3... Bg7 {Plano: ...O-O, ...d6, ...Nbd7 e ...e5.})
+(2. f3 d5! {Impede e4 e o lance f3 fica sem sentido. Se e4, ...dxe4 e o peão f3 atrapalha o próprio Branco.}
+  3. e4
+  (3. Nc3 c5 {Ataque d4. O cavalo de g1 não tem a casa f3.})
+  (3. c4 c5 {Ataque o centro. O Branco está atrasado no desenvolvimento.})
+  (3. Bg5 c5 {Mesmo golpe: ...c5, ...Nc6 e ...Qb6.})
+  3... dxe4 4. Nc3
+  (4. fxe4 e5! {Golpe no centro: o peão d4 fica atacado e o rei branco sem abrigo.})
+  4... exf3 5. Nxf3
+  (5. Qxf3 g6 {Plano: ...Bg7, ...O-O e ...c6. Um peão a mais e posição sólida.})
+  5... g6 {Você aceitou o gambito. Plano: ...Bg7, ...O-O, ...c5 ou ...Bg4. Um peão a mais e posição sólida.})
+(2. Nd2 g6 3. e4
+  (3. Ngf3 Bg7 {Transposição para o capítulo 2.Nf3.})
+  3... d6 {Uma Pirc com o cavalo em d2. Plano: ...Bg7, ...O-O e ...e5.})
+(2. c3 g6 3. e4?
+  (3. Bf4 Bg7 {O London com c3: roque, ...d6 e ...Nh5 enquanto o Branco não jogar h3.})
+  (3. g3 Bg7 {Plano: ...O-O, ...d6 e ...e5, ou ...d5 com ...c5.})
+  3... Nxe4 {O peão e4 estava solto: um peão a mais. Plano: ...Nf6, ...Bg7, ...O-O e ...d6.})
+(2. e4?! Nxe4 {O Gambito Ômega: aceite o peão.}
+  3. Bd3
+  (3. Nf3 g6 {Plano: ...Bg7, ...d5 e ...O-O. O cavalo de e4 é forte.})
+  (3. Nc3 Nxc3 {Troque o cavalo. Depois de bxc3, ...g6, ...Bg7 e ...d6 com um peão a mais.})
+  (3. Qe2 d5 {O cavalo de e4 está defendido. Um peão a mais e o centro é seu.})
+  3... Nf6 {O cavalo volta. Plano: ...g6, ...Bg7, ...d6 e ...O-O com um peão a mais.})
+(2. d5 e6 {Ataque o peão d5 na hora, antes que o Branco o apoie com c4 e Nc3.}
+  3. c4
+  (3. dxe6 fxe6 {Plano: ...d5, ...Bd6 ou ...Be7 e ...O-O. O centro de peões é seu.})
+  (3. Nc3 Bb4 {Crave o cavalo que defende d5. Se dxe6, ...fxe6.})
+  (3. e4? Nxe4 {O peão e4 estava solto: um peão a mais.})
+  3... exd5 {Depois de cxd5, jogue ...d6, ...g6, ...Bg7 e ...O-O: a estrutura Benoni, com a maioria na ala da dama e o bispo de g7 forte.})
+(2. Qd3 d5 {Impede e4. A dama em d3 fica exposta a ...Bf5 ou ...c5.})
+(2. h4 d5 {Impede e4 e deixa o avanço h4 sem sentido. Plano: ...c5 e ...Nc6.})
+(2. f4 g6 {Plano: ...Bg7, ...O-O, ...d6 e ...c5. O bispo de c1 fica preso atrás dos peões.})
+2... g6 {Continue com o fianqueto. Se o Branco trocar em f6, você fica com o par de bispos.}
+3. Bxf6
+(3. Nc3 d5 {Transposição para a linha 2.Nc3 g6 3.Bg5.})
+(3. Nd2 d5 {Impede e4. Plano: ...Bg7, ...O-O e ...c5.})
+(3. e3 Bg7 {Plano: ...O-O, ...d6 ou ...d5 e ...c5.})
+(3. Nf3 Bg7 {Transposição para o Torre.})
+(3. Qd2 Ne4 {O cavalo ataca a dama e o bispo de g5.})
+(3. e4? Nxe4 {O peão e4 estava solto: um peão a mais.})
+3... exf6 {Recapture com o peão e: a coluna e abre e você fica com o par de bispos. Os peões f7 e f6 protegem bem o rei.}
+4. e3
+(4. c4 d5 {Plano: ...dxc4 ou ...Bb4+, ...O-O e ...c6.})
+(4. Nc3 d5 {Impede e4. Plano: ...c6, ...Bd6, ...O-O e ...f5.})
+(4. Nf3 d5 {Plano: ...Bd6, ...O-O, ...c6 e ...Re8.})
+(4. e4 d5 {Abra o centro para os bispos. Se exd5, ...Qxd5 e a dama fica ativa.})
+(4. h4 d5 {Com o peão em h4 o rei branco não terá um abrigo seguro. Plano: ...Bd6, ...c6 e ...Qe7.})
+4... d5 {Plano: ...Bd6, ...O-O, ...c6, ...Re8 e mais tarde ...f5. Os dois bispos compensam os peões dobrados.}
+5. c4
+(5. Bd3 Bd6 {Plano: ...O-O, ...c6, ...Re8 e ...f5.})
+(5. Nf3 c6 {Firme d5. Plano: ...Bd6, ...O-O, ...Re8 e ...Nd7.})
+5... dxc4 6. Bxc4 Bd6 {Os bispos apontam para o flanco do rei branco. Plano: ...O-O, ...Nd7-b6 e ...f5.}
+
+[Id "black-kid-reti-english"]
+[Side "black"]
+[Name "1.Nf3 e 1.c4: Réti e Inglesa"]
+[Description "O esquema da Índia do Rei contra os lances de flanco, com as mesmas respostas das linhas com 1.d4."]
+
+{Contra 1.Nf3 e 1.c4 use o mesmo esquema: ...Nf6, ...g6, ...Bg7, ...O-O e ...d6. Se o Branco jogar d4, você está numa Índia do Rei conhecida. Se ele ficar com d3 e e4 (sem d4), jogue ...c5 e ...Nc6: controle d4 e expanda na ala da dama com ...Rb8 e ...b5. Contra c4 com Nc3 e e4, ...d6 e ...Bg7 levam à Índia do Rei clássica.}
+1. Nf3
+(1. c4 Nf6 2. Nc3
+  (2. g3 g6 {Plano: ...Bg7, ...O-O e ...d6.})
+  (2. Nf3 g6 {Transposição para 1.Nf3 Nf6 2.c4 g6.})
+  (2. d4 g6 {Transposição para a Índia do Rei.})
+  2... g6 3. e4
+  (3. g3 Bg7 {Plano: ...O-O, ...d6 e ...Nbd7 com ...e5, ou ...c5.})
+  (3. d4 Bg7 {Transposição para a Índia do Rei.})
+  (3. Nf3 Bg7 {Se e4, ...d6; se d4, Índia do Rei.})
+  3... d6 {Com ...d6 você evita e5. Se d4, a Índia do Rei clássica.}
+  4. d4
+  (4. Nf3 Bg7 {Se d4, ...O-O e você está na clássica.})
+  4... Bg7 {Transposição para a Índia do Rei clássica.})
+1... Nf6 2. g3
+(2. c4 g6 3. Nc3
+  (3. g3 Bg7 {Plano: ...O-O, ...d6 e ...Nbd7 com ...e5, ou ...c5 com ...Nc6.})
+  (3. d4 Bg7 {Transposição para a Índia do Rei.})
+  3... Bg7 4. e4
+  (4. d4 O-O {Transposição para a Índia do Rei.})
+  (4. g3 O-O {Plano: ...d6 e ...Nbd7 com ...e5, ou ...c5.})
+  4... d6 5. d4
+  (5. d3 O-O {Sem d4, o plano é ...c5 e ...Nc6, ou ...e5.})
+  (5. Be2 O-O {Plano: ...e5. Se d4, a Índia do Rei clássica.})
+  5... O-O {Transposição para a Índia do Rei clássica.})
+(2. d4 g6 {Transposição para o capítulo 2.Nf3.})
+(2. b3 g6 {Plano: ...Bg7, ...O-O, ...d6 e ...e5, bloqueando a diagonal do bispo de b2.})
+(2. d3 g6 {Plano: ...Bg7, ...O-O, ...d6 e ...c5 ou ...e5.})
+(2. e3 g6 {Plano: ...Bg7, ...O-O e ...d6.})
+(2. Nc3 d5 {Contra o cavalo em c3, ...d5 impede e4.} 3. d4
+  (3. e3 g6 {Plano: ...Bg7, ...O-O e ...c5.})
+  3... g6 {Transposição para o Barry do capítulo 2.Nf3: ...Bg7, ...O-O e ...c5.})
+2... g6 3. Bg2
+(3. d4 Bg7 {Plano: ...O-O e ...d6 com ...Nbd7 e ...e5.})
+3... Bg7 4. O-O
+(4. c4 O-O {Plano: ...d6 e ...Nbd7 com ...e5, ou ...c5.})
+(4. d4 O-O {Plano: ...d6, ...Nbd7 e ...e5.})
+4... O-O 5. d3
+(5. d4 d6 6. c4 Nbd7 {Transposição para o fianqueto da Índia do Rei.})
+(5. c4 d6 6. Nc3
+  (6. d4 Nbd7 {Transposição para o fianqueto.})
+  6... Nbd7 {Plano: ...e5. Se d4, transposição para o fianqueto.})
+(5. b3 d6 {Plano: ...e5, bloqueando o bispo de b2, depois ...Nc6 e ...Re8.})
+(5. c3 d6 {Plano: ...Nbd7 e ...e5.})
+5... d6 6. e4
+(6. c4 c5 {Contra d3 e c4, ...c5 e ...Nc6. Plano: ...Rb8 e ...b5.})
+(6. Nc3 c5 {Plano: ...Nc6, ...Rb8 e ...b5.})
+6... c5 {Contra d3 e e4 (sem d4), ...c5 e ...Nc6 controlam d4. Plano: ...Nc6, ...Rb8 e ...b5.}
+
+[Id "black-kid-other-first-moves"]
+[Side "black"]
+[Name "Outros primeiros lances"]
+[Description "1.b3, 1.f4, 1.g3, 1.e3, 1.b4, 1.Nc3, 1.d3, 1.g4 e os lances raros: respostas curtas e sólidas."]
+
+{Contra os primeiros lances raros, siga duas regras. Se o lance prepara um fianqueto ou d4 (1.f4, 1.g3, 1.e3, 1.c3), jogue ...Nf6 e ...g6 como sempre. Se o lance é lento ou fraco (1.b3, 1.b4, 1.a3, 1.h3, 1.f3, 1.g4, 1.Na3, 1.Nh3), ocupe o centro com ...e5 ou ...d5 e desenvolva rápido. Contra 1.Nc3, jogue ...c5: se e4, você está na sua Siciliana.}
+1. b3
+(1. f4 Nf6 2. Nf3
+  (2. e3 g6 {Plano: ...Bg7, ...O-O, ...d6 e ...c5.})
+  (2. d4 g6 {Plano: ...Bg7, ...O-O e ...d6 com ...c5.})
+  2... g6 3. e3
+  (3. g3 Bg7 {Plano: ...O-O, ...d6 e ...c5 com ...Nc6.})
+  (3. d4 Bg7 {Plano: ...O-O, ...d6 e ...c5.})
+  (3. c4 Bg7 {Plano: ...O-O, ...d6 e ...c5 ou ...e5.})
+  3... Bg7 4. Be2
+  (4. d4 O-O {Plano: ...d6 e ...c5, ou ...d5 e ...c5 contra o Stonewall.})
+  (4. Nc3 O-O {Plano: ...d6, ...c5 e ...Nc6. Se e4, ...c5 ataca d4.})
+  4... O-O {Plano: ...d6, ...c5, ...Nc6 e ...e5. O peão e5 abre a diagonal do bispo de g7.})
+(1. g3 Nf6 2. Bg2
+  (2. Nf3 g6 {Transposição para 1.Nf3 Nf6 2.g3 g6.})
+  (2. d4 g6 {Transposição para 1.d4 Nf6 2.g3 g6.})
+  2... g6 {Plano: ...Bg7, ...O-O, ...d6 e ...e5 ou ...c5.})
+(1. e3 Nf6 {Plano: ...g6, ...Bg7, ...O-O e ...d6. Se d4, você está nas linhas com 1.d4.})
+(1. b4 e5 {O peão b4 fica atacado pelo bispo de f8.}
+  2. Bb2
+  (2. a3 d5 {Ocupe o centro. Plano: ...Nf6, ...Bd6 e ...O-O.})
+  2... Bxb4 3. Bxe5
+  (3. a3 Bd6 {O bispo defende e5 e o Branco ficou com um peão a menos por nada.})
+  3... Nf6 {O Branco recuperou o peão, mas você se desenvolveu com tempo. Plano: ...O-O, ...d5, ...c5 e ...Nc6 para expulsar o bispo de e5.})
+(1. Nc3 c5 2. e4
+  (2. Nf3 e6 {Se e4, você está na sua Siciliana.} 3. d4 cxd4 4. Nxd4
+    (4. Qxd4 Nc6 {O cavalo ataca a dama com tempo. Plano: ...Nf6, ...d5 e ...Be7.})
+    4... Nc6 {Se e4, você está na Taimanov da sua Siciliana.})
+  (2. d4 cxd4 {Depois de Qxd4, ...Nc6 ataca a dama com tempo. Plano: ...Nf6, ...g6 e ...Bg7.})
+  2... e6 {Transpõe para a Siciliana (1.e4 c5 2.Nc3 e6).})
+(1. d3 Nf6 2. e4
+  (2. c4 e5 {Uma Inglesa com um tempo a mais para você. Plano: ...Nc6, ...d5 e ...Be7.})
+  2... e5 {Com d3 o Branco jogou uma Philidor com as cores trocadas. Plano: ...Nc6, ...d5 ou ...Bc5 e ...O-O.})
+(1. g4 d5 {O peão g4 fica fraco. Ataque-o.}
+  2. Bg2
+  (2. h3 e5 {Ocupe o centro. O flanco do rei do Branco ficou esburacado.})
+  (2. e3 e5 {Ocupe o centro. O peão g4 continua fraco e o Branco não tem desenvolvimento.})
+  2... Bxg4 3. c4
+  (3. h3 Bf5 {O bispo volta com um peão a mais. Plano: ...e6, ...Nf6 e ...c6.})
+  3... c6 {Defenda d5. Se Qb3, ...e6: o peão b7 cai, mas você fica com um desenvolvimento enorme.}
+  4. Qb3
+  (4. cxd5 cxd5 5. Qb3
+    (5. Nc3 Nf6 {Defenda d5 e desenvolva. Plano: ...e6, ...Nc6 e ...Be7 com um peão a mais.})
+    5... Nf6 {Se Qxb7, ...Nbd7 e a dama branca fica presa. O peão a mais é seu.})
+  4... e6 {Se Qxb7, ...Nd7 e depois ...Ngf6 e ...Rb8: o Branco perdeu muito tempo com a dama.})
+(1. c3 Nf6 2. d4
+  (2. Nf3 g6 {Plano: ...Bg7, ...O-O e ...d6. Se d4, você está nas linhas com 1.d4.})
+  2... g6 {Transposição para 1.d4 Nf6 2.c3 g6.})
+(1. a3 e5 {Ocupe o centro. Plano: ...Nf6, ...d5 e ...Nc6.})
+(1. h3 e5 {Ocupe o centro. Plano: ...d5, ...Nf6 e ...Nc6.})
+(1. a4 e5 {Ocupe o centro. Plano: ...d5, ...Nf6 e ...Nc6.})
+(1. h4 e5 {Ocupe o centro. Plano: ...d5, ...Nf6 e ...Nc6.})
+(1. f3 e5 {O lance f3 tira a melhor casa do cavalo de g1. Ocupe o centro com ...d5 e desenvolva.}
+  2. e4
+  (2. Nc3 Nc6 {Plano: ...Bc5, ...d6 e ...Nge7. Se e4, ...Bc5 mira g1.})
+  2... Bc5 {O bispo mira g1 e impede o roque rápido. Plano: ...Nc6, ...Nge7 e ...d5.})
+(1. Na3 e5 {Ocupe o centro. O cavalo de a3 fica longe da ação. Plano: ...d5, ...Nf6 e ...Bxa3 se for bom.})
+(1. Nh3 e5 {Ocupe o centro. Plano: ...d5 e ...Bxh3 se o cavalo ficar em h3.})
+1... e5 {Contra 1.b3, ocupe o centro. O motor prefere ...e5 a ...Nf6 aqui: o peão e5 fica na diagonal do bispo de b2, mas o cavalo em c6 o defende com facilidade e o Branco fica sem centro.}
+2. Bb2
+(2. c4 Nf6 {Plano: ...d5 ou ...Nc6 e ...d5, uma Siciliana com as cores trocadas.})
+2... Nc6 3. e3
+(3. c4 Nf6 {Plano: ...d5. Uma Siciliana com as cores trocadas e um tempo a menos para o Branco.})
+(3. Nf3 e4 {Expulse o cavalo. Depois ...d5 e ...Nf6.})
+3... Nf6 4. Bb5
+(4. Nf3 e4 {Expulse o cavalo. Depois ...d5 e ...Bd6.})
+4... Bd6 {O bispo defende e5. Plano: ...O-O, ...Re8, ...a6 para expulsar o bispo e ...e4 se o cavalo for a f3.}

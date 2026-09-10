@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/* chess.com dark UI palette */
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --color-page: #312e2b;
+  --color-nav: #262421;
+  --color-panel: #262522;
+  --color-panel-2: #21201d;
+  --color-raise: #3c3a37;
+  --color-raise-2: #4b4847;
+  --color-line: #3d3a37;
+  --color-ink: #ffffff;
+  --color-ink-2: #c3c2c1;
+  --color-ink-3: #989795;
+  --color-ink-4: #6f6d6a;
+
+  --color-go: #81b64c;
+  --color-go-hover: #a3d160;
+  --color-go-shadow: #45753c;
+
+  --color-sq-light: #ebecd0;
+  --color-sq-dark: #739552;
+
+  --color-cls-brilliant: #26c2a3;
+  --color-cls-great: #749bbf;
+  --color-cls-best: #81b64c;
+  --color-cls-excellent: #81b64c;
+  --color-cls-good: #95b776;
+  --color-cls-book: #d5a47d;
+  --color-cls-inaccuracy: #f7c631;
+  --color-cls-mistake: #ffa459;
+  --color-cls-miss: #ff7769;
+  --color-cls-blunder: #fa412d;
+
+  --color-win: #81b64c;
+  --color-loss: #fa412d;
+  --color-draw: #989795;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* chess.com primary button: flat green with a darker bottom edge */
+.btn-go {
+  background: var(--color-go);
+  color: #fff;
+  font-weight: 800;
+  border-radius: 0.5rem;
+  box-shadow: inset 0 -0.25rem 0 var(--color-go-shadow);
+  padding: 0.6rem 1.1rem 0.8rem;
+  transition: background 0.1s;
+}
+.btn-go:hover:not(:disabled) {
+  background: var(--color-go-hover);
+}
+.btn-go:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-flat {
+  background: var(--color-raise);
+  color: var(--color-ink-2);
+  font-weight: 700;
+  border-radius: 0.4rem;
+  box-shadow: inset 0 -0.2rem 0 rgba(0, 0, 0, 0.25);
+  padding: 0.45rem 0.9rem 0.6rem;
+  transition: background 0.1s, color 0.1s;
+}
+.btn-flat:hover:not(:disabled) {
+  background: var(--color-raise-2);
+  color: var(--color-ink);
+}
+.btn-flat:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Thin dark scrollbars like chess.com side panels */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #5a5754 transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-go-hover);
+  outline-offset: 2px;
+}
