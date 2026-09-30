@@ -9,6 +9,7 @@ import { lossClass } from '@/lib/positions/grade';
 import { useTrainingActive } from '@/lib/renewal/activity';
 import { winPercent } from '@/lib/review/scoring';
 import type { Classification, Color, Puzzle } from '@/lib/types';
+import { TINT } from '@/components/board/colors';
 
 type Badge = { square: string; classification: Classification } | null;
 
@@ -276,8 +277,8 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
   }, [solutionToken]);
 
   const tints: Record<string, string> = {};
-  if (hintSquare) tints[hintSquare] = 'rgba(92, 139, 176, 0.75)';
-  if (wrongSquare) tints[wrongSquare] = 'rgba(250, 65, 45, 0.55)';
+  if (hintSquare) tints[hintSquare] = TINT.hint;
+  if (wrongSquare) tints[wrongSquare] = TINT.wrong;
 
   if (review?.enabled) {
     return <Board fen={review.fen} orientation={orientation} lastMove={review.lastMove} movable="both" onMove={review.onMove} arrows={review.arrows} badge={walkBadge(puzzle, review)} />;

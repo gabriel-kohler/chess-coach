@@ -1,6 +1,5 @@
 // Copies the single-threaded lite Stockfish build into public/ so the browser can
-// load it as a Web Worker. Single-threaded means no COOP/COEP headers are needed,
-// which keeps the chess.com piece images (served cross-origin) working.
+// load it as a Web Worker. Single-threaded means no COOP/COEP headers are needed.
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';

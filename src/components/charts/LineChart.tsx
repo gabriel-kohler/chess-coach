@@ -8,8 +8,8 @@ export interface Series {
 }
 
 const SURFACE = 'var(--color-panel)';
-const GRID = '#3a3835';
-const AXIS_TEXT = '#8b8987';
+const GRID = '#262626';
+const AXIS_TEXT = '#a3a3a3';
 
 function niceTicks(min: number, max: number, count = 4): number[] {
   const span = max - min || 1;
@@ -67,6 +67,8 @@ export function LineChart({ series, height = 220, yFormat = (v: number) => Strin
   const xFormat = xFormatProp ?? (x1 - x0 < 200 * 86400000 ? fmtDay : fmtMonth);
   const yTicks = useMemo(() => niceTicks(y0, y1), [y0, y1]);
   const xTicks = useMemo(() => {
+    // One day of data: one label, not the same date stacked on itself.
+    if (x1 === x0) return [x0];
     const n = Math.max(2, Math.min(6, Math.floor(W / 110)));
     return Array.from({ length: n }, (_, i) => x0 + ((x1 - x0) * i) / (n - 1));
   }, [x0, x1, W]);
@@ -137,7 +139,7 @@ export function LineChart({ series, height = 220, yFormat = (v: number) => Strin
         })}
         {hoverX !== null && hoverPoints.length > 0 && (
           <g pointerEvents="none">
-            <line x1={sx(hoverPoints[0]!.p.x)} x2={sx(hoverPoints[0]!.p.x)} y1={pad.t} y2={H - pad.b} stroke="#6f6d6a" strokeWidth={1} />
+            <line x1={sx(hoverPoints[0]!.p.x)} x2={sx(hoverPoints[0]!.p.x)} y1={pad.t} y2={H - pad.b} stroke="#525252" strokeWidth={1} />
             {hoverPoints.map(({ s, p }) => (
               <circle key={s.key} cx={sx(p.x)} cy={sy(p.y)} r={4.5} fill={s.color} stroke={SURFACE} strokeWidth={2} />
             ))}

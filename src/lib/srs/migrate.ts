@@ -67,7 +67,9 @@ export function migrateLegacy(reps: RepertoireCard[], puzzles: PuzzleCard[]): Mi
       continue;
     }
     const id = puzzleCardId(p.id);
-    cards.push({ id, kind: 'puzzle', note: id, primaryGameId: null, createdAt: p.createdAt, suspended: 0, puzzle: p.puzzle, ...fromLadder(p, 'puzzle') });
+    // The ladder retired a mastered puzzle for good: it stays out of the queue
+    // (its 35-day stability still counts it as mastered).
+    cards.push({ id, kind: 'puzzle', note: id, primaryGameId: null, createdAt: p.createdAt, suspended: p.mastered ? 1 : 0, puzzle: p.puzzle, ...fromLadder(p, 'puzzle') });
   }
   return { cards, mine };
 }

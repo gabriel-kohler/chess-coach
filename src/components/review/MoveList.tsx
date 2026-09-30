@@ -57,7 +57,7 @@ export function MoveList({ moves, ply, onSelect }: { moves: ListMove[]; ply: num
     m?.timeSpent !== undefined && m.timeSpent !== null ? (
       <div className="flex w-12 items-center justify-end gap-1" title={`${m.timeSpent.toFixed(1)}s`}>
         <span className="text-[10px] tabular-nums text-ink-4">{m.timeSpent < 10 ? m.timeSpent.toFixed(1) : Math.round(m.timeSpent)}s</span>
-        <span className={clsx('h-2.5 rounded-[1px]', side === 'w' ? 'bg-[#cfcfcf]' : 'bg-[#6f6d6a]')} style={{ width: `${Math.max(2, (m.timeSpent / maxTime) * 22)}px` }} />
+        <span className={clsx('h-2.5 rounded-[1px]', side === 'w' ? 'bg-ink-2' : 'bg-ink-4')} style={{ width: `${Math.max(2, (m.timeSpent / maxTime) * 22)}px` }} />
       </div>
     ) : null;
 

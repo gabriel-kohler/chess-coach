@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { BarChart3, BookOpen, Crown, Home, ListChecks, Puzzle, Settings as Cog, Swords } from 'lucide-react';
+import { BarChart3, BookOpen, Crown, Home, ListChecks, Settings as Cog, Swords, Target } from 'lucide-react';
 import { useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router';
 import { setSoundEnabled } from './board/assets';
@@ -7,15 +7,39 @@ import { db } from '@/lib/db';
 import { punishScanDue } from '@/lib/punish/keys';
 import { useAccount, useSettings } from '@/lib/settings';
 
+// Two groups: your games, then what you train.
 const NAV = [
-  { to: '/', label: 'Início', icon: Home, end: true },
-  { to: '/games', label: 'Partidas', icon: Swords },
-  { to: '/stats', label: 'Estatísticas', icon: BarChart3 },
-  { to: '/openings', label: 'Aberturas', icon: BookOpen },
-  { to: '/tactics', label: 'Tática', icon: Puzzle },
-  { to: '/positions', label: 'Posições', icon: ListChecks },
-  { to: '/endgames', label: 'Finais', icon: Crown },
+  [
+    { to: '/', label: 'Início', icon: Home, end: true },
+    { to: '/games', label: 'Partidas', icon: Swords },
+    { to: '/stats', label: 'Estatísticas', icon: BarChart3 },
+  ],
+  [
+    { to: '/openings', label: 'Aberturas', icon: BookOpen },
+    { to: '/tactics', label: 'Tática', icon: Target },
+    { to: '/positions', label: 'Posições', icon: ListChecks },
+    { to: '/endgames', label: 'Finais', icon: Crown },
+  ],
 ];
+
+const navItem = ({ isActive }: { isActive: boolean }) =>
+  clsx(
+    'flex min-h-10 items-center gap-3 rounded-[10px] px-3 text-sm font-medium transition-colors',
+    isActive ? 'bg-raise text-ink' : 'text-ink-3 hover:bg-white/5 hover:text-ink',
+  );
+
+/** The bishop's mitre with its diagonal cut: the app's mark. */
+export function Logo({ size = 24 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 48 48" width={size} height={size} aria-hidden="true" className="shrink-0">
+      <mask id="logo-cut">
+        <rect width="48" height="48" fill="#fff" />
+        <path d="M31 14 L19 29" stroke="#000" strokeWidth="4" strokeLinecap="round" />
+      </mask>
+      <path d="M24 4 C 32.5 11.5 37.5 19 37.5 26.5 A 13.5 13.5 0 0 1 10.5 26.5 C 10.5 19 15.5 11.5 24 4 Z" fill="currentColor" mask="url(#logo-cut)" />
+    </svg>
+  );
+}
 
 export function Layout() {
   const account = useAccount();
@@ -43,57 +67,49 @@ export function Layout() {
 
   return (
     <div className="flex h-full min-h-0">
-      <aside className="flex w-[64px] shrink-0 flex-col bg-nav py-3 md:w-[168px]">
-        <div className="mb-4 flex items-center gap-2 px-3 md:px-4">
-          <div className="grid h-8 w-8 grid-cols-2 overflow-hidden rounded">
-            <span className="bg-sq-light" /><span className="bg-sq-dark" /><span className="bg-sq-dark" /><span className="bg-sq-light" />
-          </div>
-          <span className="hidden text-lg font-extrabold tracking-tight md:block">Coach</span>
+      <aside className="flex w-[64px] shrink-0 flex-col border-r border-line bg-nav px-2 py-5 md:w-[232px] md:px-4">
+        <div className="mb-6 flex items-center gap-2.5 px-3 text-ink">
+          <Logo />
+          <span className="hidden text-[15px] font-semibold tracking-tight md:block">Chess Coach</span>
         </div>
-        <nav className="flex flex-1 flex-col gap-0.5">
-          {NAV.map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                clsx(
-                  'flex items-center gap-3 px-4 py-2.5 text-[15px] font-bold transition-colors',
-                  isActive ? 'bg-black/25 text-ink' : 'text-ink-2 hover:bg-black/15 hover:text-ink',
-                )
-              }
-            >
-              <Icon size={22} strokeWidth={2.2} className="shrink-0" />
-              <span className="hidden md:block">{label}</span>
-            </NavLink>
+        <nav className="flex flex-1 flex-col">
+          {NAV.map((group, g) => (
+            <div key={g} className={clsx('flex flex-col gap-0.5', g > 0 && 'mt-3 border-t border-line pt-3')}>
+              {group.map(({ to, label, icon: Icon, end }) => (
+                <NavLink key={to} to={to} end={end} className={navItem} title={label}>
+                  <Icon size={18} strokeWidth={1.75} className="shrink-0" />
+                  <span className="hidden md:block">{label}</span>
+                </NavLink>
+              ))}
+            </div>
           ))}
         </nav>
-        <NavLink
-          to="/settings"
-          className={({ isActive }) => clsx('flex items-center gap-3 px-4 py-2.5 text-[15px] font-bold', isActive ? 'text-ink' : 'text-ink-3 hover:text-ink')}
-        >
-          {account?.profile.avatar ? (
-            <img src={account.profile.avatar} alt="" className="h-6 w-6 shrink-0 rounded" />
-          ) : (
-            <Cog size={22} className="shrink-0" />
-          )}
-          <span className="hidden truncate md:block">{account?.username ?? 'Configurar'}</span>
+        <NavLink to="/settings" className={navItem} title="Configurações">
+          <Cog size={18} strokeWidth={1.75} className="shrink-0" />
+          <span className="hidden md:block">Configurações</span>
         </NavLink>
+        {account && (
+          <div className="mt-3 flex items-center gap-2.5 border-t border-line px-2 pt-3.5">
+            {account.profile.avatar ? (
+              <img src={account.profile.avatar} alt="" className="h-8 w-8 shrink-0 rounded-full" />
+            ) : (
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-raise-2 text-xs font-semibold uppercase">{account.username[0]}</span>
+            )}
+            <span className="hidden truncate text-[13px] font-medium md:block">{account.username}</span>
+          </div>
+        )}
       </aside>
-      <main className="scroll-thin min-w-0 flex-1 overflow-y-auto">
+      <main className="scroll-thin stage-halo min-w-0 flex-1 overflow-y-auto">
         <Outlet />
       </main>
     </div>
   );
 }
 
-export function PageHeader({ title, icon: Icon = ListChecks, children }: { title: string; icon?: typeof ListChecks; children?: React.ReactNode }) {
+export function PageHeader({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
-    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-      <h1 className="flex items-center gap-2.5 text-[26px] font-extrabold tracking-tight">
-        <Icon size={28} className="text-go" strokeWidth={2.4} />
-        {title}
-      </h1>
+    <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <h1 className="text-[26px] font-semibold tracking-tight">{title}</h1>
       {children}
     </div>
   );
@@ -101,10 +117,10 @@ export function PageHeader({ title, icon: Icon = ListChecks, children }: { title
 
 export function Panel({ title, children, className, action }: { title?: string; children: React.ReactNode; className?: string; action?: React.ReactNode }) {
   return (
-    <section className={clsx('rounded-lg bg-panel p-4', className)}>
+    <section className={clsx('rounded-2xl bg-panel p-5', className)}>
       {(title || action) && (
-        <div className="mb-3 flex items-center justify-between gap-2">
-          {title && <h2 className="text-[15px] font-extrabold text-ink">{title}</h2>}
+        <div className="mb-4 flex items-center justify-between gap-2">
+          {title && <h2 className="text-[15px] font-semibold text-ink">{title}</h2>}
           {action}
         </div>
       )}

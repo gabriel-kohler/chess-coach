@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Chess } from 'chess.js';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { AlertTriangle, BookOpen, Check, ChevronLeft, GraduationCap, Layers, Loader2, Map as MapIcon, Search, Trash2, X } from 'lucide-react';
+import { AlertTriangle, Check, ChevronLeft, GraduationCap, Layers, Loader2, Map as MapIcon, Search, Trash2, X } from 'lucide-react';
 import { DeckList } from '@/components/decks/DeckList';
 import { DeckScreen } from '@/components/decks/DeckScreen';
 import { useDecks, useRepCards } from '@/components/decks/useDecks';
@@ -35,9 +35,10 @@ import { formatScore } from '@/lib/review/scoring';
 import { repCardId } from '@/lib/srs/cards';
 import type { Color } from '@/lib/types';
 import { useGames } from '@/lib/hooks';
+import { ARROW } from '@/components/board/colors';
 
 const START_FEN = new Chess().fen();
-const REP_ARROW = 'rgb(150, 190, 70)';
+const REP_ARROW = ARROW.best;
 
 interface Step {
   san: string;
@@ -76,14 +77,14 @@ export default function Openings() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <div className="flex flex-wrap items-center gap-3 px-4 pt-5 md:px-8">
-        <PageHeader title="Aberturas" icon={BookOpen} />
+        <PageHeader title="Aberturas" />
         <div className="mb-5 ml-auto flex flex-wrap gap-2">
           {/* Decks and any opening have their color inside; the repertoire's modes follow this one. */}
           {colorModes && (
             <>
               {(['white', 'black'] as const).map((s) => (
                 <button key={s} type="button" onClick={() => setSide(s)} className={clsx('flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-bold', side === s ? 'bg-raise-2 text-ink' : 'bg-panel text-ink-3 hover:text-ink')}>
-                  <span className={clsx('h-3 w-3 rounded-[2px]', s === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#2b2927]')} />
+                  <span className={clsx('h-3 w-3 rounded-[2px]', s === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#0a0a0a]')} />
                   {s === 'white' ? 'Brancas' : 'Pretas'}
                 </button>
               ))}
@@ -391,14 +392,14 @@ function GapsPanel({ gaps, rejected, onOpen }: { gaps: RepertoireGap[] | null; r
                         <span className="font-bold text-ink"><San san={m.san} /></span>
                         <span className="tabular-nums text-ink-3">{Math.round(m.win)}%{i > 0 ? `, ${m.drop.toFixed(1)} abaixo do melhor` : ', o melhor'}</span>
                         {m.line.length > 0 && <span className="text-ink-4">{m.line.slice(0, 3).join(' ')}</span>}
-                        <button type="button" className="ml-auto font-bold text-go hover:text-go-hover" onClick={() => accept(g, m)}>Adicionar ao repertório</button>
+                        <button type="button" className="ml-auto font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink" onClick={() => accept(g, m)}>Adicionar ao repertório</button>
                       </li>
                     ))}
                   </ul>
                 ) : (
                   <div className="mt-2 flex items-center justify-between gap-2 text-ink-3">
                     <span>A sugestão sai quando a análise automática estiver livre.</span>
-                    <button type="button" className="font-bold text-go hover:text-go-hover disabled:opacity-60" disabled={working !== null} onClick={() => void calculate(g)}>
+                    <button type="button" className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink disabled:opacity-60" disabled={working !== null} onClick={() => void calculate(g)}>
                       {working === g.childEpd ? 'Calculando...' : 'Calcular agora'}
                     </button>
                   </div>
@@ -477,7 +478,7 @@ function Trainer({ side, rep, index }: { side: Color; rep: CompiledSide; index: 
             {rep.chapters.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           <div className="mt-3 h-2 overflow-hidden rounded-full bg-panel-2">
-            <div className="h-full bg-go" style={{ width: `${(100 * prog.learned) / Math.max(1, prog.total)}%` }} />
+            <div className="h-full bg-ink" style={{ width: `${(100 * prog.learned) / Math.max(1, prog.total)}%` }} />
           </div>
           <p className="mt-1.5 text-sm text-ink-3">{prog.learned} de {prog.total} posições aprendidas · {dueCount ?? 0} para revisar</p>
         </div>

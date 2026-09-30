@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { describe, expect, it, vi } from 'vitest';
 import { explorerUrl, limiter } from '../../../server/explorer';
-import { ratingBuckets } from './explorer';
+import { explorerAnswer, explorerMovesOrWait, ratingBuckets } from './explorer';
+import { ExplorerLimited } from './study';
 
 describe('your rating range on the Lichess explorer', () => {
   it('your bucket and the one on your side of it', () => {
@@ -10,6 +11,27 @@ describe('your rating range on the Lichess explorer', () => {
     expect(ratingBuckets(1750)).toEqual([1600, 1800]);
     expect(ratingBuckets(900)).toEqual([0, 1000]);
     expect(ratingBuckets(2600)).toEqual([2200, 2500]);
+  });
+});
+
+describe('the answer, as the app reads it', () => {
+  const answer = (body: unknown, ok = true) => vi.stubGlobal('fetch', vi.fn(async () => ({ ok, json: async () => body })));
+
+  it('castling in the usual notation: the king to g1, not onto the rook', async () => {
+    const fen = 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4';
+    answer({ moves: [{ uci: 'e1h1', san: 'O-O', white: 5, draws: 1, black: 2 }, { uci: 'd2d3', san: 'd3', white: 1, draws: 0, black: 1 }] });
+    expect(await explorerAnswer(fen, 1500, 1)).toEqual({ moves: [{ uci: 'e1g1', san: 'O-O', n: 8 }, { uci: 'd2d3', san: 'd3', n: 2 }] });
+    vi.unstubAllGlobals();
+  });
+
+  it('a failure is not an empty answer: background work waits instead of dropping what it found', async () => {
+    const fen = '8/8/8/8/8/8/8/K6k w - - 0 1';
+    answer({ unavailable: 'fetch failed' });
+    expect(await explorerAnswer(fen, 1500, 2)).toBe('failed');
+    await expect(explorerMovesOrWait(fen, 1500)).rejects.toBeInstanceOf(ExplorerLimited);
+    answer({ moves: [] });
+    expect(await explorerMovesOrWait(fen, 1500)).toEqual([]);
+    vi.unstubAllGlobals();
   });
 });
 

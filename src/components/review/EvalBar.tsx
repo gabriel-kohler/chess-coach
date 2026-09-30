@@ -8,7 +8,7 @@ export function EvalBar({ score, orientation }: { score?: Score; orientation: Co
   const whiteAhead = white >= 50;
   const flipped = orientation === 'black';
   return (
-    <div className="relative h-full w-[26px] shrink-0 overflow-hidden rounded-[3px] bg-[#403d39]" aria-label={`Avaliação ${label}`}>
+    <div className="relative h-full w-[26px] shrink-0 overflow-hidden rounded-[3px] bg-[#2a2a2a]" aria-label={`Avaliação ${label}`}>
       <div
         className="absolute left-0 right-0 bg-white transition-[height] duration-300 ease-out"
         style={{ height: `${white}%`, [flipped ? 'top' : 'bottom']: 0 }}
@@ -16,7 +16,7 @@ export function EvalBar({ score, orientation }: { score?: Score; orientation: Co
       <span
         className="absolute left-0 right-0 text-center text-[10.5px] font-extrabold leading-none"
         style={{
-          color: whiteAhead ? '#403d39' : '#fff',
+          color: whiteAhead ? '#2a2a2a' : '#fff',
           ...(whiteAhead !== flipped ? { bottom: 5 } : { top: 5 }),
         }}
       >

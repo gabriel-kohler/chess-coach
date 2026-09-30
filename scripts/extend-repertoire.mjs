@@ -207,6 +207,7 @@ for (const id of CHAPTERS) {
       const engineBest = levelGames >= 50 || (masters ?? []).reduce((s, m) => s + m.n, 0) >= 20 ? null : ((await analyse(fen, 2))[0]?.move ?? null);
       const replies = opponentReplies(level, masters, engineBest);
       let grew = false;
+      const children = [];
       for (const reply of replies) {
         const opp = play(fen, reply.uci);
         // A line never ends on the opponent's move.
@@ -248,11 +249,13 @@ for (const id of CHAPTERS) {
           stats.decided += decided(bestScore) ? 1 : 0;
           lines.push({ moves: next, ...(note ? { notes: note } : {}) });
         } else {
-          stack.push({ path: next, fen: mine.fen, first: false });
+          children.push({ path: next, fen: mine.fen, first: false });
           // Only to carry the note: the line goes on from here.
           if (note) lines.push({ moves: next, notes: note, carrier: true });
         }
       }
+      // Reversed onto the stack, so the most played reply is expanded first and leads the PGN.
+      for (const c of children.reverse()) stack.push(c);
       if (!grew) lines.push({ moves: path });
     }
     process.stderr.write(`  ${id}: ${k + 1}/${leaves.length} line ends, ${added} new positions of yours, ${requests} explorer requests, ${Math.round((Date.now() - t0) / 1000)} s\r`);

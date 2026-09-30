@@ -96,4 +96,17 @@ describe('walking a line after an exercise', () => {
     await view.rerender({ line: other, enabled: true, initialPly: 2 });
     expect([current.ply, current.fen]).toEqual([2, other[1]!.fenAfter]);
   });
+
+  it('a line that changes only past where you are (the engine deepening) keeps your place and your variation', async () => {
+    const view = await mount({ line: LINE, enabled: true, initialPly: 0 });
+    await run(() => current.go(2));
+    await run(() => void current.onMove({ from: 'f1', to: 'c4' }));
+    const deeper = lineFrom(START, ['e4', 'e7e5', 'Nc3', 'g8f6']);
+    await view.rerender({ line: deeper, enabled: true, initialPly: 0 });
+    expect(current.variation).toMatchObject({ base: 2, index: 1 });
+    await key('Escape');
+    // A change before where you are is a different line: back to the start.
+    await view.rerender({ line: lineFrom(START, ['d4', 'd5', 'c4']), enabled: true, initialPly: 0 });
+    expect([current.ply, current.variation]).toEqual([0, null]);
+  });
 });

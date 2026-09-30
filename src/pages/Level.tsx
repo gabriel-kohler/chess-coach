@@ -2,7 +2,7 @@
 // it. Focuses with their margins, the Maia calibration, the repertoire gaps.
 import clsx from 'clsx';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { TrendingUp } from 'lucide-react';
+
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { Link } from 'react-router';
@@ -34,7 +34,7 @@ export default function Level() {
   if (state === undefined) return <div className="p-8 text-ink-3">Carregando...</div>;
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
-      <PageHeader title="Revisão de nível" icon={TrendingUp} />
+      <PageHeader title="Revisão de nível" />
       {!report ? (
         <Panel>
           <p className="text-sm text-ink-2">
@@ -144,7 +144,9 @@ function BandGaps({ since }: { since: number }) {
     }).data ?? null;
   return (
     <Panel title="Lacunas do repertório na faixa nova">
-      {gaps === null ? (
+      {rep === null ? (
+        <p className="text-sm text-ink-3">Não há repertório para comparar: monte um em Aberturas.</p>
+      ) : gaps === null ? (
         <p className="text-sm text-ink-4">Procurando nas suas partidas...</p>
       ) : gaps.length === 0 ? (
         <p className="text-sm text-ink-3">Nenhum adversário da faixa nova saiu do repertório pelo menos {RENEWAL.gapsMinGames} vezes.</p>
@@ -162,7 +164,7 @@ function BandGaps({ since }: { since: number }) {
           ))}
         </ul>
       )}
-      <Link to="/openings" className="mt-3 inline-block text-sm font-bold text-go hover:text-go-hover">Responder em Aberturas</Link>
+      <Link to="/openings" className="mt-3 inline-block text-sm font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">Responder em Aberturas</Link>
     </Panel>
   );
 }

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { BarChart3 } from 'lucide-react';
+
 import { useMemo, useState } from 'react';
 import { dailyLast, LineChart } from '@/components/charts/LineChart';
 import { ScoreBars, StatTile } from '@/components/charts/ScoreBars';
@@ -24,7 +24,7 @@ import { plural } from '@/lib/format';
 import type { TimeClass } from '@/lib/types';
 import { useGamesAndAnalyses } from '@/lib/hooks';
 
-const SERIES_COLOR: Record<TimeClass, string> = { rapid: '#3987e5', blitz: '#d95926', bullet: '#199e70', daily: '#9085e9' };
+const SERIES_COLOR: Record<TimeClass, string> = { rapid: '#7dd3fc', blitz: '#facc15', bullet: '#6ee7b7', daily: '#c4b5fd' };
 const PERIODS: Array<[number | null, string]> = [[30, '30 dias'], [90, '90 dias'], [365, '1 ano'], [null, 'Tudo']];
 
 export default function Stats() {
@@ -64,7 +64,7 @@ export default function Stats() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-      <PageHeader title="Estatísticas" icon={BarChart3} />
+      <PageHeader title="Estatísticas" />
 
       {/* one filter row scopes every chart below */}
       <div className="sticky top-0 z-10 -mx-4 mb-5 flex flex-wrap items-center gap-2 bg-page/95 px-4 py-2 backdrop-blur md:-mx-8 md:px-8">

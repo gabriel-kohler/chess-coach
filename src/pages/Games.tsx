@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Cpu, Swords } from 'lucide-react';
+import { Cpu } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { PageHeader } from '@/components/Layout';
@@ -44,7 +44,7 @@ export default function Games() {
   if (account === null) {
     return (
       <div className="mx-auto max-w-xl px-4 py-10">
-        <PageHeader title="Partidas" icon={Swords} />
+        <PageHeader title="Partidas" />
         <div className="rounded-lg bg-panel p-5"><ConnectAccount /></div>
       </div>
     );
@@ -64,7 +64,7 @@ export default function Games() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-      <PageHeader title="Partidas" icon={Swords}>
+      <PageHeader title="Partidas">
         {account && <SyncButton username={account.username} />}
       </PageHeader>
 
@@ -100,7 +100,7 @@ export default function Games() {
               {queue.autoPending ? `, ${queue.autoPending} automáticas na fila` : ''}
             </span>
             <div className="h-1.5 w-40 overflow-hidden rounded bg-panel-2">
-              <div className="h-full bg-go" style={{ width: `${(100 * queue.plyDone) / Math.max(1, queue.plyTotal)}%` }} />
+              <div className="h-full bg-ink" style={{ width: `${(100 * queue.plyDone) / Math.max(1, queue.plyTotal)}%` }} />
             </div>
             <button type="button" className="text-ink-3 hover:text-ink" onClick={cancelQueue}>Parar</button>
           </>
@@ -108,7 +108,7 @@ export default function Games() {
         {!queue.running && queue.autoSuspended && queue.autoPending > 0 && (
           <>
             <span className="text-ink-3">Análise automática pausada: {plural(queue.autoPending, 'partida', 'partidas')} na fila.</span>
-            <button type="button" className="font-bold text-go hover:text-go-hover" onClick={resumeAuto}>Retomar</button>
+            <button type="button" className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink" onClick={resumeAuto}>Retomar</button>
           </>
         )}
         <button type="button" className="btn-flat" onClick={analyseRecentLosses}>Analisar as 20 derrotas mais recentes</button>
@@ -163,7 +163,7 @@ function GameRow({ game: g, analysis }: { game: StoredGame; analysis?: GameAnaly
         <Link to={`/review/${g.id}`} className="flex flex-col gap-0.5">
           {players.map((p) => (
             <span key={p.color} className="flex items-center gap-2">
-              <span className={clsx('h-3 w-3 rounded-[2px]', p.color === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#2b2927]')} />
+              <span className={clsx('h-3 w-3 rounded-[2px]', p.color === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#0a0a0a]')} />
               <span className={clsx(p.me ? 'font-bold text-ink' : 'text-ink-2')}>{p.name}</span>
               <span className="text-ink-4">({p.rating})</span>
             </span>
@@ -178,7 +178,7 @@ function GameRow({ game: g, analysis }: { game: StoredGame; analysis?: GameAnaly
             <span className={me === 'black' ? 'font-bold text-ink' : 'text-ink-3'}>{acc.black.toFixed(1)}</span>
           </span>
         ) : (
-          <Link to={`/review/${g.id}`} className="text-go hover:text-go-hover">Revisar</Link>
+          <Link to={`/review/${g.id}`} className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">Revisar</Link>
         )}
       </td>
       <td className="px-3 py-2 text-center tabular-nums text-ink-2">{Math.ceil(g.moves.length / 2)}</td>

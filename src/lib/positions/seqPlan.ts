@@ -41,6 +41,16 @@ export function staleReason(seq: SequenceCard, root: BestMoveCard | undefined): 
   return null;
 }
 
+/**
+ * Which rebuilt cards to write. A card still valid keeps its progress; one left
+ * stale by a new best move or a new build version (same id, suspended) is
+ * replaced, or the rebuild would never land.
+ */
+export function cardsToWrite(built: SequenceCard[], current: Array<SequenceCard | undefined>, root: BestMoveCard): SequenceCard[] {
+  const keep = new Set(current.filter((c) => c && !staleReason(c, root)).map((c) => c!.id));
+  return built.filter((c) => !keep.has(c.id));
+}
+
 export function planSequenceCards(seqs: SequenceCard[], roots: BestMoveCard[]): { put: SequenceCard[]; remove: string[] } {
   const byId = new Map(roots.map((r) => [r.id, r]));
   const put: SequenceCard[] = [];

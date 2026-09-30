@@ -16,10 +16,11 @@ import { lossClass, type GradingRule } from '@/lib/positions/grade';
 import { engineScore, storedScore } from '@/lib/positions/score';
 import type { MoveScore, ScoreTarget } from '@/lib/positions/types';
 import type { Classification } from '@/lib/types';
+import { ARROW, TINT } from '@/components/board/colors';
 
-const BEST_ARROW = 'rgb(150, 190, 70)';
-const WRONG_ARROW = 'rgba(250, 65, 45, 0.85)';
-const HARD_ARROW = 'rgba(247, 198, 49, 0.9)';
+const BEST_ARROW = ARROW.best;
+const WRONG_ARROW = ARROW.wrong;
+const HARD_ARROW = ARROW.hard;
 
 export interface FirstEvent {
   first: FirstAttempt;
@@ -129,8 +130,8 @@ export function useMoveAttempt(target: ScoreTarget, expectedMs: number, options:
 export function boardView(target: ScoreTarget, s: AttemptState) {
   const showingMove = (s.phase === 'checking' || s.phase === 'wrong') && s.pending;
   const tints: Record<string, string> = {};
-  if (s.phase === 'wrong' && s.pending) tints[s.pending.uci.slice(2, 4)] = 'rgba(250, 65, 45, 0.55)';
-  if (s.hint && s.phase === 'playing') tints[target.best.uci.slice(0, 2)] = 'rgba(92, 139, 176, 0.75)';
+  if (s.phase === 'wrong' && s.pending) tints[s.pending.uci.slice(2, 4)] = TINT.wrong;
+  if (s.hint && s.phase === 'playing') tints[target.best.uci.slice(0, 2)] = TINT.hint;
   const arrows: Arrow[] = [];
   let badge: { square: string; classification: Classification } | null = null;
   if (s.phase === 'verdict') {

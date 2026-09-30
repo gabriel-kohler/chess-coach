@@ -33,7 +33,7 @@ function BackTitle({ deck, onBack }: { deck: { name: string; side: 'white' | 'bl
     <>
       <button type="button" onClick={onBack} className="mb-2 flex items-center gap-1.5 text-sm text-ink-3 hover:text-ink"><ArrowLeft size={16} /> Todos os decks</button>
       <h2 className="flex items-center gap-2 text-xl font-extrabold leading-tight">
-        <span className={clsx('inline-block h-3 w-3 shrink-0 rounded-[2px]', deck.side === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#2b2927]')} />
+        <span className={clsx('inline-block h-3 w-3 shrink-0 rounded-[2px]', deck.side === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#0a0a0a]')} />
         {deck.name}
       </h2>
     </>
@@ -108,7 +108,7 @@ function DeckTrainer({ deck, study, index, onBack, onPunish }: { deck: DeckView;
           </>
         )}
         <div className="mt-3 h-2 overflow-hidden rounded-full bg-panel-2">
-          <div className="h-full bg-go" style={{ width: `${(100 * prog.learned) / Math.max(1, prog.total)}%` }} />
+          <div className="h-full bg-ink" style={{ width: `${(100 * prog.learned) / Math.max(1, prog.total)}%` }} />
         </div>
         <p className="mt-1.5 text-sm text-ink-3">{prog.learned} de {prog.total} posições aprendidas · {prog.due} para revisar</p>
       </div>

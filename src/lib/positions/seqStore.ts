@@ -11,7 +11,7 @@ import type { StoredGame } from '../types.ts';
 import { POSITIONS } from './config.ts';
 import { priorityOf } from './focus.ts';
 import { humanReplies, likeliestReply, REPLIES } from './replies.ts';
-import { seqCardsFor, staleReason } from './seqPlan.ts';
+import { cardsToWrite, seqCardsFor, staleReason } from './seqPlan.ts';
 import { buildBranches, type SeqDeps } from './sequence.ts';
 import type { PositionsSettings } from './settings.ts';
 import { FOCUS_KEY } from './store.ts';
@@ -153,8 +153,8 @@ async function run(settings: PositionsSettings, onProgress: ((p: BuildProgress) 
         // The position may have changed while the engine worked.
         const fresh = (await db.srsCards.get(root.id)) as BestMoveCard | undefined;
         if (!fresh || fresh.suspended || fresh.best.uci !== root.best.uci) return;
-        const existing = new Set((await db.srsCards.bulkGet(cards.map((c) => c.id))).filter((c) => !!c).map((c) => c!.id));
-        await db.srsCards.bulkPut(cards.filter((c) => !existing.has(c.id)));
+        const current = (await db.srsCards.bulkGet(cards.map((c) => c.id))) as Array<SequenceCard | undefined>;
+        await db.srsCards.bulkPut(cardsToWrite(cards, current, fresh));
       });
       built++;
     }

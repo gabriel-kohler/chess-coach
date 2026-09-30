@@ -9,7 +9,7 @@ import type { RepDrill } from './useRepDrill';
 export function RepFeedbackPanel({ drill, footer }: { drill: RepDrill; footer?: string }) {
   const { feedback, waiting } = drill;
   return (
-    <div className={clsx('rounded-lg p-4', feedback.kind === 'wrong' ? 'bg-[#4a2b27]' : feedback.kind === 'good' ? 'bg-[#2f3f25]' : 'bg-panel')}>
+    <div className={clsx('rounded-lg p-4', feedback.kind === 'wrong' ? 'bg-bad-soft' : feedback.kind === 'good' ? 'bg-ok-soft' : 'bg-panel')}>
       <p className="flex flex-wrap items-center gap-2 font-bold">
         {feedback.kind === 'none' ? (waiting ? 'O adversário está jogando...' : `Sua vez: jogue o lance ${drill.book}.`) : <span><RichText text={feedback.text} /></span>}
         {feedback.kind === 'good' && feedback.rating && (

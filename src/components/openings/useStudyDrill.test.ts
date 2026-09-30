@@ -128,4 +128,23 @@ describe('training any opening', () => {
     expect(recordOpeningMiss).toHaveBeenCalledTimes(1);
     expect(current.count).toMatchObject({ yours: 1, asked: 1, good: 0 });
   });
+
+  it('"Mostrar o melhor" right after a wrong move is not undone by the retry', async () => {
+    const root = createRoot(document.createElement('div'));
+    roots.push(root);
+    await act(async () => root.render(createElement(Probe, setup)));
+    await flush();
+    const m = new Chess(current.fen).moves({ verbose: true })[1]!;
+    await act(async () => void current.onMove({ from: m.from, to: m.to }));
+    await act(async () => void (await vi.advanceTimersByTimeAsync(50)));
+    expect(current.phase).toBe('wrong');
+    await act(async () => current.showBest());
+    await flush();
+    await flush();
+    // The board shows the line as played: the best move and the answer to it.
+    const board = new Chess();
+    for (const san of current.played) board.move(san);
+    expect(current.played.length).toBe(3);
+    expect(current.fen).toBe(board.fen());
+  });
 });

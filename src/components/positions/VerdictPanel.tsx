@@ -107,7 +107,7 @@ export function VerdictPanel({ card, first, rating, expectedMs, next, onNext, sa
           {card.sources.length > 1 && <> Você chegou a esta posição em {card.sources.length} partidas.</>}
         </p>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-          <Link to={`/review/${source.gameId}?ply=${source.ply}`} className="font-bold text-go hover:text-go-hover">Ver na partida</Link>
+          <Link to={`/review/${source.gameId}?ply=${source.ply}`} className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">Ver na partida</Link>
           {next && <span className="text-ink-3">Volta {dueLabel(next.due)}</span>}
         </div>
       </div>

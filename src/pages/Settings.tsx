@@ -1,4 +1,4 @@
-import { Settings as Cog } from 'lucide-react';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { PageHeader, Panel } from '@/components/Layout';
@@ -50,7 +50,7 @@ export function ConnectAccount({ onDone }: { onDone?: () => void }) {
       {progress?.phase === 'games' && (
         <div>
           <div className="h-2 overflow-hidden rounded bg-panel-2">
-            <div className="h-full bg-go transition-all" style={{ width: `${(100 * progress.done) / Math.max(1, progress.total)}%` }} />
+            <div className="h-full bg-ink transition-all" style={{ width: `${(100 * progress.done) / Math.max(1, progress.total)}%` }} />
           </div>
           <p className="mt-1 text-sm text-ink-3">Mês {progress.month}: {progress.done} de {progress.total} meses</p>
         </div>
@@ -89,7 +89,7 @@ export default function Settings() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 md:px-8">
-      <PageHeader title="Configurações" icon={Cog} />
+      <PageHeader title="Configurações" />
       <div className="flex flex-col gap-4">
         <Panel title="Conta do chess.com">
           {account ? (
@@ -238,7 +238,7 @@ export default function Settings() {
             <li>Puzzles: base aberta do Lichess (CC0), filtrada por qualidade.</li>
             <li>Nomes de aberturas: lichess-org/chess-openings (CC0).</li>
             <li>Motor: Stockfish 18 (GPLv3) em WebAssembly, rodando no seu navegador.</li>
-            <li>Peças e sons: tema Neo do chess.com, carregados do CDN deles para uso pessoal.</li>
+            <li>Peças: cburnett, de Colin M.L. Burnett (GPLv2+). Sons: conjunto sfx do Lichess, de Enigmahack (AGPLv3+).</li>
           </ul>
         </Panel>
       </div>

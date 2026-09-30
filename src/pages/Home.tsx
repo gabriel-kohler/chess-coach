@@ -80,7 +80,7 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
       <div className="mb-5 flex flex-wrap items-center gap-4">
-        {account.profile.avatar && <img src={account.profile.avatar} alt="" className="h-14 w-14 rounded-md" />}
+        {account.profile.avatar && <img src={account.profile.avatar} alt="" className="h-14 w-14 rounded-full" />}
         <div className="flex-1">
           <h1 className="text-[26px] font-extrabold leading-tight">Olá, {account.username}</h1>
           <p className="text-sm text-ink-3">{plural(games?.length ?? 0, 'partida importada', 'partidas importadas')} · {plural(analyses?.size ?? 0, 'analisada')}</p>
@@ -99,7 +99,7 @@ export default function Home() {
       </div>
 
       {newBand && level?.seen !== newBand.band && (
-        <Link to="/level" className="mb-4 flex items-center gap-3 rounded-lg bg-[#2f3f25] px-4 py-3 text-sm hover:brightness-110">
+        <Link to="/level" className="mb-4 flex items-center gap-3 rounded-lg bg-ok-soft px-4 py-3 text-sm hover:brightness-110">
           <TrendingUp className="text-go" size={22} />
           <span className="flex-1">
             <b className="text-ink">Você chegou a {newBand.band} no rapid.</b> <span className="text-ink-2">Veja o que mudou nos seus focos desde a faixa anterior.</span>
@@ -109,7 +109,7 @@ export default function Home() {
       )}
 
       {streak && streak.today.length > 0 && (
-        <div className={clsx('mb-4 flex flex-wrap items-center gap-3 rounded-lg px-4 py-3', stop ? 'bg-[#4a2b27]' : 'bg-panel')}>
+        <div className={clsx('mb-4 flex flex-wrap items-center gap-3 rounded-lg px-4 py-3', stop ? 'bg-bad-soft' : 'bg-panel')}>
           {stop ? <AlertTriangle className="text-cls-miss" size={22} /> : <ShieldCheck className="text-go" size={22} />}
           <div className="flex-1 text-sm">
             <b className="text-ink">
@@ -208,7 +208,7 @@ export default function Home() {
             </ul>
           )}
           {(analyses?.size ?? 0) < 10 && (
-            <Link to="/games" className="mt-3 flex items-center gap-1 text-sm font-bold text-go hover:text-go-hover">
+            <Link to="/games" className="mt-3 flex items-center gap-1 text-sm font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">
               Analise pelo menos 10 derrotas para liberar os diagnósticos do motor <ChevronRight size={16} />
             </Link>
           )}
@@ -218,7 +218,7 @@ export default function Home() {
   );
 }
 
-const BUTTON_BOX: React.CSSProperties = { padding: '0.9rem 1.25rem 1.05rem' };
+const BUTTON_BOX: React.CSSProperties = { padding: '1.25rem 1.5rem', borderRadius: '1rem', justifyContent: 'flex-start' };
 
 /** The two ways in: the day's training, once a day, and the warm-up before games. */
 function TrainButtons({ today, minutes, reviews }: { today: Awaited<ReturnType<typeof readSession>> | undefined; minutes: number; reviews: number | null }) {

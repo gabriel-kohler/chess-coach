@@ -69,7 +69,7 @@ export function LineControls({ explorer, title, engineFrom }: {
             <span className="font-bold text-ink-2">
               Testando <SanLine fen={variation.base === 0 ? explorer.start : line[variation.base - 1]!.fenAfter} san={tried.map((m) => m.san)} />
             </span>
-            <button type="button" className="shrink-0 font-bold text-go hover:text-go-hover" onClick={explorer.backToLine}>Voltar à linha</button>
+            <button type="button" className="shrink-0 font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink" onClick={explorer.backToLine}>Voltar à linha</button>
           </div>
           {lines.length ? (
             <ul className="space-y-1">

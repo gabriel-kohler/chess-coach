@@ -91,6 +91,7 @@ export function SequenceRound({ card, expected, header: sessionHeader, attemptId
   // Between your moves the board plays itself: the main move, then the answer.
   const [auto, setAuto] = useState<{ fen: string; lastMove: { from: string; to: string }; text: string | null } | null>(null);
   const [saved, setSaved] = useState<FsrsFields | null>(null);
+  const [saveFailed, setSaveFailed] = useState(false);
   const alive = useRef(true);
   const attemptId = useRef(fixedAttemptId ?? `${card.id}|${Date.now()}|${Math.random().toString(36).slice(2)}`);
   // Set on every mount: React's development double-mount runs the cleanup once.
@@ -169,7 +170,7 @@ export function SequenceRound({ card, expected, header: sessionHeader, attemptId
       // The session hears it even after you moved on: the grade belongs to this step.
       onSaved?.(r.next, rating, timeMs);
       if (alive.current) setSaved(r.next);
-    });
+    }, () => alive.current && setSaveFailed(true));
   };
 
   const target = steps[Math.min(step, steps.length - 1)]!;
@@ -188,7 +189,8 @@ export function SequenceRound({ card, expected, header: sessionHeader, attemptId
     return (
       <Layout board={<Board fen={explorer.fen} orientation={card.color} lastMove={explorer.lastMove} movable="both" onMove={explorer.onMove} arrows={explorer.arrows} />}>
         {header}
-        <SequenceVerdict card={card} results={results} next={saved} practice={practice} onNext={onNext}>
+        <SequenceVerdict card={card} results={results} next={saved} saveFailed={saveFailed} practice={practice} onNext={onNext}>
+          {saveFailed && <p className="text-sm text-cls-blunder">Não deu para salvar a nota desta posição.</p>}
           <LineControls explorer={explorer} title="A linha" />
         </SequenceVerdict>
       </Layout>
@@ -273,9 +275,9 @@ function StepAttempt({ target, expectedMs, onScored, onDone, children }: {
   return (
     <Layout board={<Board fen={board.fen} orientation={target.color} lastMove={board.lastMove} movable={board.movable} onMove={onMove} tints={board.tints} arrows={board.arrows} badge={board.badge} />}>
       {children}
-      <div className={clsx('rounded-lg p-4', state.phase === 'wrong' ? 'bg-[#4a2b27]' : state.phase === 'verdict' ? 'bg-[#2f3f25]' : 'bg-panel')}>
+      <div className={clsx('rounded-lg p-4', state.phase === 'wrong' ? 'bg-bad-soft' : state.phase === 'verdict' ? 'bg-ok-soft' : 'bg-panel')}>
         <span className="flex items-center gap-2 text-[17px] font-extrabold">
-          <span className={clsx('h-4 w-4 rounded-sm border border-ink-4', white ? 'bg-white' : 'bg-[#2b2927]')} />
+          <span className={clsx('h-4 w-4 rounded-sm border border-ink-4', white ? 'bg-white' : 'bg-[#0a0a0a]')} />
           {white ? 'Brancas jogam' : 'Pretas jogam'}
         </span>
         <p className="mt-3 text-[15px] font-bold text-ink">
@@ -317,10 +319,10 @@ function StepAttempt({ target, expectedMs, onScored, onDone, children }: {
   );
 }
 
-function SequenceVerdict({ card, results, next, practice, onNext, children }: { card: SequenceCard; results: StepResult[]; next: FsrsFields | null; practice: boolean; onNext: () => void; children?: React.ReactNode }) {
+function SequenceVerdict({ card, results, next, saveFailed, practice, onNext, children }: { card: SequenceCard; results: StepResult[]; next: FsrsFields | null; saveFailed: boolean; practice: boolean; onNext: () => void; children?: React.ReactNode }) {
   const rating = worst(results);
   const lastSan = card.branch.nodes.at(-1)?.best.san ?? card.best.san;
-  const ready = practice || !!next;
+  const ready = practice || !!next || saveFailed;
   return (
     <div className="flex flex-col gap-3" aria-live="polite">
       <div className="rounded-lg bg-panel p-4">

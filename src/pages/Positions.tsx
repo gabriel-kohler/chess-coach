@@ -3,7 +3,7 @@
 // the sequence against the answers people at your level really play.
 import clsx from 'clsx';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ListChecks, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { State, type Grade } from 'ts-fsrs';
@@ -84,8 +84,12 @@ export default function Positions() {
   const start = async (kind: PositionKind) => {
     setStarting(true);
     factsEngine(); // warm the engine while the queue loads
-    const [q, times] = await Promise.all([loadDailyQueue(kind, limits, Date.now(), period), loadExpectedTimes('best')]);
-    setStarting(false);
+    let q, times;
+    try {
+      [q, times] = await Promise.all([loadDailyQueue(kind, limits, Date.now(), period), loadExpectedTimes('best')]);
+    } finally {
+      setStarting(false);
+    }
     const queue: PositionCard[] = [...q.reviews, ...q.news];
     setSession(advance({ mode: kind, queue, learning: new Map(q.learning.map((c) => [c.id, c as PositionCard])), lastId: null, current: null, results: [], times, over: false }));
   };
@@ -119,7 +123,7 @@ export default function Positions() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-      <PageHeader title="Posições" icon={ListChecks}>
+      <PageHeader title="Posições">
         <div className="flex rounded-lg bg-panel p-1 text-sm font-bold" role="tablist" aria-label="Modo de treino">
           {(['best', 'seq'] as const).map((m) => (
             <button
@@ -180,7 +184,7 @@ function BestPanel({ limits, period, onPeriod, starting, onStart }: ModePanelPro
       {base && base.total === 0 ? (
         <p className="text-sm text-ink-2">
           Cada partida analisada vira posições dos lances em que você perdeu 5 pontos ou mais de chance de vitória.{' '}
-          <Link to="/games" className="font-bold text-go hover:text-go-hover">Analisar partidas</Link>
+          <Link to="/games" className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">Analisar partidas</Link>
         </p>
       ) : (
         <>

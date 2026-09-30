@@ -1,42 +1,56 @@
 @import "tailwindcss";
 
-/* chess.com dark UI palette */
+/* Dark, neutral and quiet: a near-black stage, lighter cards on it, ink in
+   greys, and color only where it says something (a state or a move's
+   classification). Numbers use tabular figures; the coach speaks in serif. */
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Merriweather Variable", Georgia, serif;
 
-  --color-page: #312e2b;
-  --color-nav: #262421;
-  --color-panel: #262522;
-  --color-panel-2: #21201d;
-  --color-raise: #3c3a37;
-  --color-raise-2: #4b4847;
-  --color-line: #3d3a37;
-  --color-ink: #ffffff;
-  --color-ink-2: #c3c2c1;
-  --color-ink-3: #989795;
-  --color-ink-4: #6f6d6a;
+  /* The app was written with heavy weights; the look wants them lighter. */
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 650;
+  --font-weight-black: 700;
 
-  --color-go: #81b64c;
-  --color-go-hover: #a3d160;
-  --color-go-shadow: #45753c;
+  --color-page: #131313;
+  --color-nav: #0f0f0f;
+  --color-panel: #171717;
+  --color-panel-2: #1c1c1c;
+  --color-raise: #232323;
+  --color-raise-2: #2e2e2e;
+  --color-line: #2a2a2a;
+  --color-ink: #fafafa;
+  --color-ink-2: #c8c8c8;
+  --color-ink-3: #a3a3a3;
+  --color-ink-4: #737373;
 
-  --color-sq-light: #ebecd0;
-  --color-sq-dark: #739552;
+  /* The primary action: light pill with dark ink. */
+  --color-cta: #fafafa;
+  --color-cta-ink: #121317;
 
-  --color-cls-brilliant: #26c2a3;
-  --color-cls-great: #749bbf;
-  --color-cls-best: #81b64c;
-  --color-cls-excellent: #81b64c;
-  --color-cls-good: #95b776;
-  --color-cls-book: #d5a47d;
-  --color-cls-inaccuracy: #f7c631;
-  --color-cls-mistake: #ffa459;
-  --color-cls-miss: #ff7769;
-  --color-cls-blunder: #fa412d;
+  /* "Right", rating up, a good result. */
+  --color-go: #6ee7b7;
+  --color-go-hover: #a7f3d0;
+  --color-ok-soft: rgb(110 231 183 / 0.12);
+  --color-bad-soft: rgb(248 113 113 / 0.14);
 
-  --color-win: #81b64c;
-  --color-loss: #fa412d;
-  --color-draw: #989795;
+  --color-sq-light: #d4d4d4;
+  --color-sq-dark: #7a7a7a;
+
+  --color-cls-brilliant: #7dd3fc;
+  --color-cls-great: #93c5fd;
+  --color-cls-best: #6ee7b7;
+  --color-cls-excellent: #a7f3d0;
+  --color-cls-good: #a3a3a3;
+  --color-cls-book: #b8a58f;
+  --color-cls-inaccuracy: #facc15;
+  --color-cls-mistake: #fb923c;
+  --color-cls-miss: #f0abfc;
+  --color-cls-blunder: #f87171;
+
+  --color-win: #6ee7b7;
+  --color-loss: #f87171;
+  --color-draw: #a3a3a3;
 }
 
 html,
@@ -49,52 +63,74 @@ body {
   background: var(--color-page);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
 }
 
-/* chess.com primary button: flat green with a darker bottom edge */
+/* The one primary action of a screen. */
 .btn-go {
-  background: var(--color-go);
-  color: #fff;
-  font-weight: 800;
-  border-radius: 0.5rem;
-  box-shadow: inset 0 -0.25rem 0 var(--color-go-shadow);
-  padding: 0.6rem 1.1rem 0.8rem;
-  transition: background 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.4rem;
+  border-radius: 999px;
+  background: var(--color-cta);
+  color: var(--color-cta-ink);
+  font-weight: 600;
+  transition: background 0.12s;
 }
 .btn-go:hover:not(:disabled) {
-  background: var(--color-go-hover);
+  background: #ffffff;
 }
 .btn-go:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .btn-flat {
-  background: var(--color-raise);
-  color: var(--color-ink-2);
-  font-weight: 700;
-  border-radius: 0.4rem;
-  box-shadow: inset 0 -0.2rem 0 rgba(0, 0, 0, 0.25);
-  padding: 0.45rem 0.9rem 0.6rem;
-  transition: background 0.1s, color 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  color: var(--color-ink);
+  font-weight: 500;
+  transition: background 0.12s;
 }
 .btn-flat:hover:not(:disabled) {
-  background: var(--color-raise-2);
-  color: var(--color-ink);
+  background: rgb(255 255 255 / 0.12);
 }
 .btn-flat:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
-/* Thin dark scrollbars like chess.com side panels */
+/* Small uppercase labels over numbers and sections. */
+.label-tel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+/* The faint light at the top of the stage. */
+.stage-halo {
+  background: radial-gradient(ellipse 70% 320px at 50% 0, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0) 100%);
+}
+
 .scroll-thin {
   scrollbar-width: thin;
-  scrollbar-color: #5a5754 transparent;
+  scrollbar-color: #3d3d3d transparent;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-go-hover);
+  outline: 2px solid var(--color-ink);
   outline-offset: 2px;
 }

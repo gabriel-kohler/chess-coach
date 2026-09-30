@@ -44,7 +44,7 @@ import type { Color, EngineLine, StoredGame } from '@/lib/types';
 import { STUDY_MOVES, useStudyDrill, type StudySetup } from './useStudyDrill';
 
 const sideLabel = (c: Color) => (c === 'white' ? 'brancas' : 'pretas');
-const Swatch = ({ c }: { c: Color }) => <span className={clsx('inline-block h-3 w-3 shrink-0 rounded-[2px]', c === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#2b2927]')} />;
+const Swatch = ({ c }: { c: Color }) => <span className={clsx('inline-block h-3 w-3 shrink-0 rounded-[2px]', c === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#0a0a0a]')} />;
 
 /** Your level (lib/openings/level.ts), read again when your rating changes. */
 function useLevel() {
@@ -457,7 +457,7 @@ function Drill({ setup, onBack }: { setup: StudySetup; onBack: () => void }) {
         </p>
       </div>
 
-      <div className={clsx('rounded-lg p-4', feedback.kind === 'wrong' ? 'bg-[#4a2b27]' : feedback.kind === 'good' ? 'bg-[#2f3f25]' : 'bg-panel')}>
+      <div className={clsx('rounded-lg p-4', feedback.kind === 'wrong' ? 'bg-bad-soft' : feedback.kind === 'good' ? 'bg-ok-soft' : 'bg-panel')}>
         {replyText && !ended && <p className="text-sm text-ink-3">{replyText}</p>}
         <p className={clsx('font-bold', replyText && !ended && 'mt-2')}>
           {phase === 'opponent'

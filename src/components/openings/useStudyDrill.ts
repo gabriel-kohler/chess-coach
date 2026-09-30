@@ -27,11 +27,12 @@ import { grade, repertoireExpectedMs } from '@/lib/repertoire/drill';
 import type { OpeningTree } from '@/lib/repertoire/games';
 import { deckNamespace } from '@/lib/srs/cards';
 import type { Color, EngineLine } from '@/lib/types';
+import { ARROW } from '@/components/board/colors';
 
 /** Your moves after the opening in one line. */
 export const STUDY_MOVES = 8;
 const REPLY_MS = 450;
-const BEST_ARROW = 'rgb(150, 190, 70)';
+const BEST_ARROW = ARROW.best;
 
 export interface StudySetup {
   line: OpeningLine;
@@ -86,6 +87,8 @@ export function useStudyDrill(setup: StudySetup) {
   const stats = useRef({ yours: 0, asked: 0, good: 0 });
   const chess = useRef(new Chess());
   const gen = useRef(0);
+  /** The "try again" reset after a wrong move; "show best" cancels it. */
+  const retryTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const best = useRef(new Map<string, Promise<EngineLine[]>>());
   /** The opponent's last move and the position before it: a missed answer's review replays it. */
   const prev = useRef<{ fenBefore: string; uci: string; lastMove: { from: string; to: string } } | null>(null);
@@ -271,7 +274,7 @@ export function useStudyDrill(setup: StudySetup) {
       setFeedback({ kind: 'wrong', text: `${mv.san} perde ${Math.round(loss)} pontos de chance de vitória. O melhor é ${bestSan ?? 'outro lance'}. Tente de novo.` });
       if (bestUci) setArrows([{ from: bestUci.slice(0, 2), to: bestUci.slice(2, 4), color: BEST_ARROW }]);
       setPhase('wrong');
-      setTimeout(() => {
+      retryTimer.current = setTimeout(() => {
         if (myGen !== gen.current) return;
         setFen(f);
         setLastMove(prev.current?.lastMove ?? null);
@@ -284,6 +287,7 @@ export function useStudyDrill(setup: StudySetup) {
   /** Plays the engine's move for you (the position counts as missed). */
   const showBest = () => {
     if (phase !== 'yours' && phase !== 'wrong') return;
+    clearTimeout(retryTimer.current);
     const f = chess.current.fen();
     const myGen = gen.current;
     setPhase('checking');

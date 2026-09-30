@@ -24,8 +24,9 @@ import { enqueueAnalysis, isAutoJob, useAnalysisQueue } from '@/lib/review/queue
 import { formatScore, winPercent } from '@/lib/review/scoring';
 import { useAccount, useSettings } from '@/lib/settings';
 import { ANALYSIS_VERSION, CLASSIFICATIONS, type Color, type EngineLine, type GameAnalysis, type MoveReview, type MoveTag, type Score } from '@/lib/types';
+import { ARROW } from '@/components/board/colors';
 
-const BEST_ARROW = 'rgb(150, 190, 70)';
+const BEST_ARROW = ARROW.best;
 const ERRORS = new Set(['inaccuracy', 'mistake', 'blunder', 'miss']);
 
 interface Variation {
@@ -273,7 +274,7 @@ export default function Review() {
     const first = threatArrow.line;
     const c = new Chess(nullMove(review.fenBefore) ?? review.fenBefore);
     const mv = tryMove(c, first.san[0]!);
-    if (mv) arrows.push({ from: mv.from, to: mv.to, color: 'rgb(248, 85, 63)' });
+    if (mv) arrows.push({ from: mv.from, to: mv.to, color: ARROW.wrong });
   }
   const badge = review ? { square: review.uci.slice(2, 4), classification: review.classification } : null;
   const barScore: Score | undefined = exploring ? (live && live.fen === fen ? lineScore(live.lines[0]) : undefined) : retry ? scores[retry.ply - 1] : scores[ply];
@@ -314,7 +315,7 @@ export default function Review() {
             <a href={game.url} target="_blank" rel="noreferrer" className="rounded p-1.5 text-ink-3 hover:bg-raise hover:text-ink" title="Abrir no chess.com"><ExternalLink size={18} /></a>
             <button
               type="button"
-              className={clsx('rounded px-2 py-1 text-xs font-bold', socratic ? 'bg-go/25 text-go-hover' : 'text-ink-3 hover:bg-raise hover:text-ink')}
+              className={clsx('rounded px-2 py-1 text-xs font-bold', socratic ? 'bg-raise-2 text-ink' : 'text-ink-3 hover:bg-raise hover:text-ink')}
               title="Nos seus erros, o coach pergunta antes de mostrar a resposta"
               onClick={() => void setKV('socratic', !socratic)}
             >
@@ -339,7 +340,7 @@ export default function Review() {
                     {analysing && <span>{queue.plyDone}/{queue.plyTotal}</span>}
                   </div>
                   <div className="h-2 overflow-hidden rounded bg-page">
-                    <div className="h-full bg-go transition-all" style={{ width: `${(100 * queue.plyDone) / Math.max(1, queue.plyTotal)}%` }} />
+                    <div className="h-full bg-ink transition-all" style={{ width: `${(100 * queue.plyDone) / Math.max(1, queue.plyTotal)}%` }} />
                   </div>
                   {inAuto && (
                     <button type="button" className="btn-go mt-3 w-full" onClick={() => enqueueAnalysis([game.id], settings, true)}>
@@ -359,7 +360,7 @@ export default function Review() {
             <div className="mx-3 mt-3 flex items-center justify-between gap-2 rounded-md bg-panel-2 px-3 py-2 text-sm">
               <span className="text-ink-3">{analysing || queued ? 'Atualizando a análise...' : queue.error ? `Falhou: ${queue.error}` : 'Análise antiga, sem os rótulos de dificuldade.'}</span>
               {!analysing && !queued && (
-                <button type="button" className="font-bold text-go hover:text-go-hover" onClick={() => enqueueAnalysis([game.id], settings, true)}>Atualizar análise</button>
+                <button type="button" className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink" onClick={() => enqueueAnalysis([game.id], settings, true)}>Atualizar análise</button>
               )}
             </div>
           )}
@@ -460,7 +461,7 @@ function Summary({
         {(['white', 'black'] as const).map((c, i) => (
           <div key={c} className={clsx('flex flex-col items-center gap-1', i === 1 && 'col-start-3')}>
             <span className={clsx('max-w-[140px] truncate text-sm font-bold', c === me ? 'text-ink' : 'text-ink-2')}>{players[c].name}</span>
-            <span className={clsx('min-w-[76px] rounded-md px-3 py-1.5 text-[24px] font-extrabold', c === 'white' ? 'bg-white text-[#262421]' : 'bg-[#3c3a37] text-white')}>
+            <span className={clsx('min-w-[76px] rounded-md px-3 py-1.5 text-[24px] font-extrabold', c === 'white' ? 'bg-ink text-page' : 'bg-[#0a0a0a] text-ink ring-1 ring-line')}>
               {analysis.accuracy[c].toFixed(1)}
             </span>
           </div>
@@ -524,7 +525,7 @@ function ExploreBox({ live, fen, variation, refutation, loadingRefutation, onBac
         <p className="text-sm font-bold text-ink-2">
           Explorando {variation.moves.slice(0, variation.index).map((m, i) => <San key={i} san={m.san} className="mr-1 text-ink" />)}
         </p>
-        <button type="button" className="text-sm font-bold text-go hover:text-go-hover" onClick={onBack}>Voltar à partida</button>
+        <button type="button" className="text-sm font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink" onClick={onBack}>Voltar à partida</button>
       </div>
 
       {first && (

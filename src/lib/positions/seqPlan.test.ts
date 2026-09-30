@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { makeAnalysis, makeGame } from '../../test/positionFixtures';
 import { reviewCard } from '../srs/fsrs';
 import { deriveSources, planBestCards } from './derive';
-import { planSequenceCards, seqCardsFor } from './seqPlan';
+import { cardsToWrite, planSequenceCards, seqCardsFor } from './seqPlan';
 import type { SeqBranch } from './sequence';
 import type { BestMoveCard } from './types';
 
@@ -30,6 +30,19 @@ describe('sequence cards', () => {
     const plan = planSequenceCards([fresh!, done], []);
     expect(plan.remove).toEqual([fresh!.id]);
     expect(plan.put.map((c) => [c.id, c.suspended])).toEqual([[done.id, 1]]);
+  });
+
+  it('a rebuild replaces a stale reviewed card with the same id, and keeps a valid one', () => {
+    const old = root();
+    const [s] = seqCardsFor(old, [branch('a7a6')], 300, NOW);
+    const reviewed = { ...s!, ...reviewCard(s!, Rating.Good, NOW).next };
+    // The position's best move changed: the reviewed sequence is stale and suspended.
+    const moved = { ...old, best: { ...old.best, uci: 'd2d4', san: 'd4' } };
+    const rebuilt = seqCardsFor(moved, [branch('a7a6')], 300, NOW);
+    expect(rebuilt[0]!.id).toBe(reviewed.id);
+    expect(cardsToWrite(rebuilt, [{ ...reviewed, suspended: 1 }], moved)).toEqual(rebuilt);
+    // Still valid for the position: its progress stays.
+    expect(cardsToWrite(seqCardsFor(old, [branch('a7a6')], 300, NOW), [reviewed], old)).toEqual([]);
   });
 
   it('retires sequences when a new analysis changes the best move', () => {

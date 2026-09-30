@@ -53,7 +53,10 @@ export default function Training({ mode }: { mode: TrainingMode }) {
       },
       (e: Error) => alive && setError(e.message),
     );
-    void loadTimes().then((t) => alive && setTimes(t));
+    loadTimes().then(
+      (t) => alive && setTimes(t),
+      (e: Error) => alive && setError(e.message),
+    );
     Promise.all([loadOpeningsData(), loadStudyDecks().catch(() => [])]).then(
       ([d, study]) => alive && setOpenings(d ? { rep: d.rep, index: d.data.index, study } : null),
       () => alive && setOpenings(null),
@@ -97,7 +100,7 @@ export default function Training({ mode }: { mode: TrainingMode }) {
     return (
       <div className="mx-auto max-w-xl px-4 py-10">
         <p className="text-cls-blunder">Não consegui montar a sessão: {error}</p>
-        <Link to="/" className="mt-4 inline-block font-bold text-go hover:text-go-hover">Voltar para a Início</Link>
+        <Link to="/" className="mt-4 inline-block font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">Voltar para a Início</Link>
       </div>
     );
   }

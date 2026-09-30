@@ -2,6 +2,7 @@ import { Chess, type Square } from 'chess.js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Classification, Color } from '@/lib/types';
 import { pieceUrl, preloadPieces, type PieceCode } from './assets';
+import { ARROW, TINT } from './colors';
 import { ClassificationIcon } from './ClassificationIcon';
 import { ALL_SQUARES, arrowPolygon, isLightSquare, squareToXY, xyToSquare, type Arrow } from './geometry';
 
@@ -27,10 +28,10 @@ export interface BoardProps {
   animationMs?: number;
 }
 
-const HIGHLIGHT = 'rgba(255, 255, 51, 0.5)';
-const MARK = 'rgba(235, 97, 80, 0.8)';
-const USER_ARROW = 'rgb(255, 170, 0)';
-const HINT = 'rgba(0, 0, 0, 0.14)';
+const HIGHLIGHT = TINT.lastMove;
+const MARK = TINT.mark;
+const USER_ARROW = ARROW.user;
+const HINT = TINT.moveHint;
 
 interface PieceEl {
   id: number;
@@ -123,7 +124,6 @@ export function Board({
   const [userArrows, setUserArrows] = useState<Arrow[]>([]);
   const [marks, setMarks] = useState<string[]>([]);
   const rightStart = useRef<{ square: string; color: string } | null>(null);
-  const [fallbackPieces, setFallbackPieces] = useState(false);
 
   useEffect(() => preloadPieces(), []);
 
@@ -196,7 +196,7 @@ export function Board({
     if (e.button === 2) {
       rightStart.current = {
         square,
-        color: e.shiftKey ? 'rgb(159, 207, 63)' : e.ctrlKey || e.metaKey ? 'rgb(248, 85, 63)' : e.altKey ? 'rgb(72, 193, 249)' : USER_ARROW,
+        color: e.shiftKey ? ARROW.userShift : e.ctrlKey || e.metaKey ? ARROW.userCtrl : e.altKey ? ARROW.userAlt : USER_ARROW,
       };
       return;
     }
@@ -300,7 +300,7 @@ export function Board({
               {checkSquare === sq && (
                 <div
                   className="absolute inset-0"
-                  style={{ background: 'radial-gradient(ellipse at center, rgba(255,0,0,1) 0%, rgba(231,0,0,1) 25%, rgba(169,0,0,0) 89%, rgba(158,0,0,0) 100%)' }}
+                  style={{ background: 'radial-gradient(ellipse at center, rgba(248,113,113,1) 0%, rgba(239,68,68,0.9) 30%, rgba(239,68,68,0) 88%)' }}
                 />
               )}
               {drag?.moved && hover === sq && (
@@ -348,8 +348,7 @@ export function Board({
         return (
           <img
             key={p.id}
-            src={pieceUrl(p.code, fallbackPieces)}
-            onError={() => setFallbackPieces(true)}
+            src={pieceUrl(p.code)}
             alt=""
             draggable={false}
             className="pointer-events-none absolute left-0 top-0"
@@ -368,7 +367,7 @@ export function Board({
       {/* dragged piece */}
       {drag?.moved && (
         <img
-          src={pieceUrl(drag.code, fallbackPieces)}
+          src={pieceUrl(drag.code)}
           alt=""
           draggable={false}
           className="pointer-events-none absolute"
@@ -414,16 +413,16 @@ export function Board({
         return (
           <div className="absolute inset-0" style={{ zIndex: 30, background: 'rgba(0,0,0,0.35)' }} onPointerDown={(e) => { e.stopPropagation(); choosePromotion(null); }}>
             <div
-              className="absolute flex flex-col overflow-hidden rounded bg-white shadow-2xl"
+              className="absolute flex flex-col overflow-hidden rounded-lg bg-raise shadow-2xl ring-1 ring-line"
               style={{ left: `${x * 12.5}%`, top: down ? `${y * 12.5}%` : undefined, bottom: down ? undefined : `${(7 - y) * 12.5}%`, width: '12.5%', flexDirection: down ? 'column' : 'column-reverse' }}
               onPointerDown={(e) => e.stopPropagation()}
             >
               {options.map((t) => (
-                <button key={t} type="button" className="aspect-square w-full hover:bg-[#e8e8e8]" onClick={() => choosePromotion(t)}>
-                  <img src={pieceUrl(`${promotion.color}${t}` as PieceCode, fallbackPieces)} alt={t} className="h-full w-full" draggable={false} />
+                <button key={t} type="button" className="aspect-square w-full hover:bg-raise-2" onClick={() => choosePromotion(t)}>
+                  <img src={pieceUrl(`${promotion.color}${t}` as PieceCode)} alt={t} className="h-full w-full" draggable={false} />
                 </button>
               ))}
-              <button type="button" className="py-[0.6cqw] text-[2.4cqw] font-bold text-[#777] hover:bg-[#e8e8e8]" onClick={() => choosePromotion(null)}>
+              <button type="button" className="py-[0.6cqw] text-[2.4cqw] font-bold text-ink-3 hover:bg-raise-2" onClick={() => choosePromotion(null)}>
                 ✕
               </button>
             </div>

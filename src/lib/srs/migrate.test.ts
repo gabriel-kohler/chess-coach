@@ -84,6 +84,12 @@ describe('the v5 migration', () => {
     expect(mine['g1:9']).toMatchObject({ state: State.Review, stability: 3, due: NOW + 2 * DAY });
   });
 
+  it('a mastered puzzle stays retired, even with its old date long past', () => {
+    const { cards } = migrateLegacy([], [puzzle('m1', 'lichess', { reps: 4, lapses: 0, interval: 35, due: NOW - 90 * DAY, mastered: true })]);
+    expect(cards[0]).toMatchObject({ suspended: 1 });
+    expect(isMastered(cards[0]!)).toBe(true);
+  });
+
   it('own-game progress goes only to a Posições card never reviewed', () => {
     const fields = fromLadder({ due: NOW + 2 * DAY, interval: 3, reps: 1, lapses: 0, lastAt: NOW - DAY }, 'best');
     const older = { ...fields, last_review: NOW - 9 * DAY, stability: 1 };

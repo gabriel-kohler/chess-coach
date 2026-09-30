@@ -4,7 +4,7 @@
 // punishment is right, and its line to the end comes when you ask for it.
 // Nothing here moves your tactics rating. The board keeps the deck's frame.
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PuzzleExercise, type PuzzleOutcome } from '@/components/tactics/PuzzleExercise';
 import type { DeckView } from '@/lib/decks/views';
 import { plural } from '@/lib/format';
@@ -19,6 +19,9 @@ import { Frame } from './Frame';
 export function PunishSession({ deck, index, onBack }: { deck: DeckView; index: GamesIndex | null; onBack: () => void }) {
   const [items, setItems] = useState<SessionItem[] | null>(null);
   const [at, setAt] = useState(0);
+  // The grade of a puzzle you already left must not land on the next one.
+  const atRef = useRef(at);
+  atRef.current = at;
   const [outcome, setOutcome] = useState<PuzzleOutcome | null>(null);
   const [score, setScore] = useState({ done: 0, solved: 0 });
 
@@ -67,7 +70,8 @@ export function PunishSession({ deck, index, onBack }: { deck: DeckView; index: 
       outcome={outcome}
       onResult={(solved, timeMs) => {
         setScore((s) => ({ done: s.done + 1, solved: s.solved + (solved ? 1 : 0) }));
-        void recordAttempt(item, { solved, timeMs }).then((out) => setOutcome({ delta: 0, rating: out.after, review: out.review }));
+        const mine = at;
+        void recordAttempt(item, { solved, timeMs }).then((out) => atRef.current === mine && setOutcome({ delta: 0, rating: out.after, review: out.review }));
       }}
       onNext={() => {
         setOutcome(null);

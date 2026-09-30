@@ -13,7 +13,7 @@ import type { GamesIndex } from '@/lib/repertoire/games';
 import type { Color, RepCard } from '@/lib/types';
 
 const sideLabel = (c: Color) => (c === 'white' ? 'brancas' : 'pretas');
-const Swatch = ({ c }: { c: Color }) => <span className={clsx('inline-block h-3 w-3 shrink-0 rounded-[2px]', c === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#2b2927]')} />;
+const Swatch = ({ c }: { c: Color }) => <span className={clsx('inline-block h-3 w-3 shrink-0 rounded-[2px]', c === 'white' ? 'bg-white' : 'border border-ink-4 bg-[#0a0a0a]')} />;
 /** A few games say little: a score is shown from this many. */
 const MIN_GAMES = 5;
 
@@ -99,11 +99,11 @@ function DeckRow({ row, building, onOpen }: { row: Row; building: StudyDeck | un
           {deck.name}
           {deck.kind === 'study' && <span className="ml-2 rounded bg-panel-2 px-1.5 py-0.5 align-middle text-[11px] font-bold uppercase tracking-wide text-ink-3">qualquer abertura</span>}
         </span>
-        {due > 0 && <span className="shrink-0 rounded bg-[#4a3a1f] px-2 py-0.5 text-xs font-bold tabular-nums text-[#f0c36a]">{due} para revisar</span>}
+        {due > 0 && <span className="shrink-0 rounded bg-cls-inaccuracy/15 px-2 py-0.5 text-xs font-semibold tabular-nums text-cls-inaccuracy">{due} para revisar</span>}
       </span>
       <span className="flex items-center gap-3">
         <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-panel-2" aria-hidden>
-          <span className="block h-full bg-go" style={{ width: `${(100 * learned) / Math.max(1, total)}%` }} />
+          <span className="block h-full bg-ink" style={{ width: `${(100 * learned) / Math.max(1, total)}%` }} />
         </span>
         <span className="shrink-0 text-xs tabular-nums text-ink-3">{learned} de {total}</span>
       </span>

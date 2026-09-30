@@ -102,10 +102,10 @@ export function PuzzleExercise({ item, header, frame = PageFrame, practice = fal
     <>
       {header}
 
-      <div className={clsx('rounded-lg p-4', feedback.kind === 'wrong' || feedback.kind === 'failed' ? 'bg-[#4a2b27]' : feedback.kind === 'solved' || feedback.kind === 'good' ? 'bg-[#2f3f25]' : 'bg-panel')}>
+      <div className={clsx('rounded-lg p-4', feedback.kind === 'wrong' || feedback.kind === 'failed' ? 'bg-bad-soft' : feedback.kind === 'solved' || feedback.kind === 'good' ? 'bg-ok-soft' : 'bg-panel')}>
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-2 text-[17px] font-extrabold">
-            <span className={clsx('h-4 w-4 rounded-sm border border-ink-4', turnWhite ? 'bg-white' : 'bg-[#2b2927]')} />
+            <span className={clsx('h-4 w-4 rounded-sm border border-ink-4', turnWhite ? 'bg-white' : 'bg-[#0a0a0a]')} />
             {turnWhite ? 'Brancas jogam' : 'Pretas jogam'}
           </span>
           <span className="font-mono text-sm tabular-nums text-ink-3">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span>

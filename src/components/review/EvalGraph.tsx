@@ -42,7 +42,7 @@ export function EvalGraph({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="none"
-        className="block h-[88px] w-full cursor-pointer rounded bg-[#3b3936]"
+        className="block h-[88px] w-full cursor-pointer rounded bg-panel-2"
         onPointerMove={(e) => setHover(pick(e))}
         onPointerLeave={() => setHover(null)}
         onClick={(e) => onSelect(pick(e))}
@@ -50,9 +50,9 @@ export function EvalGraph({
         aria-label="Gráfico de avaliação da partida"
       >
         <path d={area} fill="#fff" />
-        <line x1={0} x2={W} y1={H / 2} y2={H / 2} stroke="#7d7b78" strokeWidth={1} vectorEffect="non-scaling-stroke" opacity={0.6} />
-        <line x1={x(ply)} x2={x(ply)} y1={0} y2={H} stroke="#81b64c" strokeWidth={2} vectorEffect="non-scaling-stroke" />
-        {hv !== null && <line x1={x(hv)} x2={x(hv)} y1={0} y2={H} stroke="#989795" strokeWidth={1} vectorEffect="non-scaling-stroke" />}
+        <line x1={0} x2={W} y1={H / 2} y2={H / 2} stroke="#737373" strokeWidth={1} vectorEffect="non-scaling-stroke" opacity={0.6} />
+        <line x1={x(ply)} x2={x(ply)} y1={0} y2={H} stroke="#7dd3fc" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+        {hv !== null && <line x1={x(hv)} x2={x(hv)} y1={0} y2={H} stroke="#a3a3a3" strokeWidth={1} vectorEffect="non-scaling-stroke" />}
       </svg>
       {/* dots drawn in HTML so they stay round with preserveAspectRatio="none" */}
       {moves.map((m) =>
@@ -64,7 +64,7 @@ export function EvalGraph({
               left: `${(m.ply / n) * 100}%`,
               top: `${(1 - winPercent(scores[m.ply]) / 100) * 100}%`,
               background: CLASS_COLOR[m.classification],
-              boxShadow: '0 0 0 2px #3b3936',
+              boxShadow: '0 0 0 2px var(--color-panel-2)',
             }}
           />
         ) : null,

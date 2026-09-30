@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Chess } from 'chess.js';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, Check, Crown, Lightbulb, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Check, Lightbulb, RotateCcw } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { playSound, soundForSan } from '@/components/board/assets';
 import { Board, type BoardMove } from '@/components/board/Board';
@@ -17,6 +17,7 @@ import { tryUci } from '@/lib/chess/replay';
 import { plural } from '@/lib/format';
 import { useTrainingActive } from '@/lib/renewal/activity';
 import type { EngineLine } from '@/lib/types';
+import { ARROW } from '@/components/board/colors';
 
 const GOAL_TEXT: Record<EndgameDrill['goal'], (n: number) => string> = {
   mate: (n) => `Dê mate em até ${n} lances.`,
@@ -47,7 +48,7 @@ export default function Endgames() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-      <PageHeader title="Finais" icon={Crown} />
+      <PageHeader title="Finais" />
       <p className="mb-5 max-w-3xl text-ink-2">
         Mais da metade das suas derrotas em rapid acontece depois do lance 30. Estes são os finais que aparecem de verdade nas partidas. Você joga contra o Stockfish na força máxima: ou converte, ou segura.
       </p>
@@ -241,7 +242,7 @@ export function DrillView({ drill, records, onExit, header, practice = false, co
     const lines = await sharedEngine().analyse(fen, { depth: 18, movetime: 1500 });
     const best = lines[0]?.pv[0];
     if (mine !== attempt.current || asked !== fenRef.current) return;
-    if (best) setHint({ from: best.slice(0, 2), to: best.slice(2, 4), color: 'rgb(150, 190, 70)' });
+    if (best) setHint({ from: best.slice(0, 2), to: best.slice(2, 4), color: ARROW.best });
   };
 
   fenRef.current = fen;
@@ -270,7 +271,7 @@ export function DrillView({ drill, records, onExit, header, practice = false, co
           <p className="mt-3 text-sm leading-relaxed text-ink-3"><RichText text={drill.idea} /></p>
           {r && <p className="mt-3 text-xs text-ink-4">{r.successes} de {r.attempts} tentativas{r.best ? ` · melhor: ${plural(r.best, 'lance')}` : ''}</p>}
         </div>
-        <div className={clsx('rounded-lg p-4', status === 'success' ? 'bg-[#2f3f25]' : status === 'failed' ? 'bg-[#4a2b27]' : 'bg-panel')}>
+        <div className={clsx('rounded-lg p-4', status === 'success' ? 'bg-ok-soft' : status === 'failed' ? 'bg-bad-soft' : 'bg-panel')}>
           <div className="flex items-center justify-between text-sm">
             <span className="font-bold text-ink-2">{status === 'thinking' ? 'O motor está pensando...' : status === 'playing' ? 'Sua vez' : status === 'success' ? 'Conseguiu!' : 'Não foi dessa vez'}</span>
             <span className="tabular-nums text-ink-3">{used}/{drill.moves} lances</span>

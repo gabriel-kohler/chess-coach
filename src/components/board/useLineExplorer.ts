@@ -9,6 +9,7 @@ import type { EngineLine } from '@/lib/types';
 import { playSound, soundForSan } from './assets';
 import type { BoardMove } from './Board';
 import type { Arrow } from './geometry';
+import { ARROW } from './colors';
 
 export interface LinePly {
   san: string;
@@ -71,7 +72,7 @@ export interface LineExplorer {
   backToLine: () => void;
 }
 
-const ENGINE_ARROW = 'rgba(92, 139, 176, 0.85)';
+const ENGINE_ARROW = ARROW.engine;
 
 export function useLineExplorer({ start, line, enabled, initialPly = 0, startLastMove = null, engineAlways = false }: {
   start: string;
@@ -90,12 +91,18 @@ export function useLineExplorer({ start, line, enabled, initialPly = 0, startLas
   const [live, setLive] = useState<LiveLines | null>(null);
 
   // A new line, or the exercise just decided: back to where the caller wants it.
-  const key = `${start}|${line.map((p) => p.uci).join(' ')}|${enabled}`;
-  const [seen, setSeen] = useState(key);
-  if (seen !== key) {
-    setSeen(key);
-    setPly(Math.min(initialPly, line.length));
-    setVariation(null);
+  // A line that only changes past where you are (an engine line deepening) keeps
+  // your place and the variation you are trying.
+  const ucis = line.map((p) => p.uci);
+  const [seen, setSeen] = useState({ start, enabled, ucis });
+  if (seen.start !== start || seen.enabled !== enabled || seen.ucis.join(' ') !== ucis.join(' ')) {
+    const walked = variation ? variation.base : ply;
+    const sameSoFar = seen.start === start && seen.enabled === enabled && walked <= ucis.length && ucis.slice(0, walked).join(' ') === seen.ucis.slice(0, walked).join(' ');
+    setSeen({ start, enabled, ucis });
+    if (!sameSoFar) {
+      setPly(Math.min(initialPly, line.length));
+      setVariation(null);
+    }
   }
 
   const fenAt = (k: number) => (k <= 0 ? start : line[k - 1]?.fenAfter ?? start);

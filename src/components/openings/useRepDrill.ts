@@ -19,9 +19,10 @@ import { aheadIn, cardsFor, dueBelow, grade, pickReply, repertoireExpectedMs } f
 import type { GamesIndex } from '@/lib/repertoire/games';
 import type { RepNamespace } from '@/lib/srs/cards';
 import type { Color, RepCard } from '@/lib/types';
+import { ARROW } from '@/components/board/colors';
 
 export const START_FEN = new Chess().fen();
-const REP_ARROW = 'rgb(150, 190, 70)';
+const REP_ARROW = ARROW.best;
 
 export interface RepFeedback {
   kind: 'good' | 'wrong' | 'end' | 'none';
@@ -212,6 +213,8 @@ export function useRepDrill(options: RepDrillOptions) {
 
   useEffect(() => {
     newLine();
+    // Leaving (or a new line) cancels the replies still on their way: no sound, no onEnd.
+    return () => void lineGen.current++;
   }, [lineKey]);
 
   const onMove = (m: BoardMove): boolean => {

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Brain, Check, ChevronRight, Puzzle as PuzzleIcon, RotateCcw, Target, X } from 'lucide-react';
+import { Brain, Check, ChevronRight, RotateCcw, Target, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { LineChart } from '@/components/charts/LineChart';
@@ -157,7 +157,7 @@ function Overview({ state, loading, error, onStart, onStartCalc, sessionSize, mi
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-      <PageHeader title="Tática" icon={PuzzleIcon} />
+      <PageHeader title="Tática" />
       <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
         <Panel>
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -178,7 +178,7 @@ function Overview({ state, loading, error, onStart, onStartCalc, sessionSize, mi
           <div className="mt-4">
             <LineChart
               height={170}
-              series={[{ key: 'r', label: 'Rating tático', color: '#3987e5', points: state.history.map((h) => ({ x: new Date(h.day).getTime(), y: h.rating })) }]}
+              series={[{ key: 'r', label: 'Rating tático', color: '#7dd3fc', points: state.history.map((h) => ({ x: new Date(h.day).getTime(), y: h.rating })) }]}
             />
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
@@ -207,7 +207,7 @@ function Overview({ state, loading, error, onStart, onStartCalc, sessionSize, mi
             <span>{level.next}</span>
           </div>
           <div className="h-2.5 overflow-hidden rounded-full bg-panel-2">
-            <div className="h-full rounded-full bg-go" style={{ width: `${level.pct * 100}%` }} />
+            <div className="h-full rounded-full bg-ink" style={{ width: `${level.pct * 100}%` }} />
           </div>
           <p className="mt-3 text-sm text-ink-2">
             Para subir de nível o rating precisa passar de {level.next} com a margem de erro abaixo de 90, e os temas centrais desse nível precisam acompanhar:
@@ -277,7 +277,7 @@ function CalcPanel({ state, attempts, loading, size, onStart }: { state: Tactics
       </div>
       {calc.history.length > 1 && (
         <div className="mt-3">
-          <LineChart height={120} series={[{ key: 'c', label: 'Rating de cálculo', color: '#b07cd8', points: calc.history.map((h) => ({ x: new Date(h.day).getTime(), y: h.rating })) }]} />
+          <LineChart height={120} series={[{ key: 'c', label: 'Rating de cálculo', color: '#c4b5fd', points: calc.history.map((h) => ({ x: new Date(h.day).getTime(), y: h.rating })) }]} />
         </div>
       )}
     </Panel>
@@ -334,7 +334,7 @@ function HowItWorks() {
     <div className="space-y-2.5 text-sm leading-relaxed text-ink-2">
       <p><b className="text-ink">Nunca abaixo do seu nível.</b> Puzzles novos vêm {Math.round(TRAINER.bands[0]!.weight * 100)}% no seu nível, {Math.round(TRAINER.bands[1]!.weight * 100)}% acima (+75 a +200) e {Math.round(TRAINER.bands[2]!.weight * 100)}% bem acima (+200 a +350). A exceção é o Aquecer, antes de jogar: puzzles curtos, uns {-TRAINER.warmup.offset} pontos abaixo, que não mexem no rating.</p>
       <p><b className="text-ink">O que você erra volta.</b> Cada puzzle errado entra na revisão espaçada (FSRS, o mesmo das Posições): volta no dia seguinte, e cada acerto de primeira aumenta o intervalo na medida da sua memória. Acerto rápido pesa mais que acerto lento.</p>
-      <p><b className="text-ink">Seus erros viram treino.</b> Toda partida analisada gera as posições em que você errou, em <Link to="/positions" className="font-bold text-go hover:text-go-hover">Posições</Link>, e os temas desses erros puxam os puzzles daqui.</p>
+      <p><b className="text-ink">Seus erros viram treino.</b> Toda partida analisada gera as posições em que você errou, em <Link to="/positions" className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">Posições</Link>, e os temas desses erros puxam os puzzles daqui.</p>
       <p><b className="text-ink">O tema é escolhido por peso</b>: importância para o seu rating (garfo e peça pendurada pesam mais até ~1600; desvio, lance intermediário e defesa depois), sua fraqueza no tema, tempo sem treinar e frequência nos erros das suas partidas.</p>
       <p><b className="text-ink">A dificuldade se ajusta.</b> Se o acerto nos novos passar de {Math.round(TRAINER.successWindow[1] * 100)}%, tudo sobe {TRAINER.stretchStep} pontos; abaixo de {Math.round(TRAINER.successWindow[0] * 100)}%, desce.</p>
       <p><b className="text-ink">A sessão termina bem.</b> Começa e acaba com puzzles do seu nível, e os temas vêm intercalados (a mistura fixa melhor que blocos do mesmo tema).</p>

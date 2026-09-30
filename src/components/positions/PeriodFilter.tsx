@@ -31,7 +31,7 @@ export function PeriodNote({ counts, period, className }: { counts: TodayCounts 
   if (!counts.inPeriod) {
     return (
       <p className={clsx('text-sm text-ink-3', className)}>
-        Nenhuma posição de partidas dos últimos {period} dias. <Link to="/games" className="font-bold text-go hover:text-go-hover">Analise as partidas recentes</Link> para gerar as posições.
+        Nenhuma posição de partidas dos últimos {period} dias. <Link to="/games" className="font-medium text-ink underline decoration-ink-4 underline-offset-4 hover:decoration-ink">Analise as partidas recentes</Link> para gerar as posições.
       </p>
     );
   }

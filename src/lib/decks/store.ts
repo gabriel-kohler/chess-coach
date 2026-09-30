@@ -58,7 +58,7 @@ export async function createStudyDeck(line: OpeningLine, side: Color, size: numb
     createdAt: now,
   };
   await db.decks.put(deck);
-  deckWaiting = true;
+  deckQueued();
   void buildDecks();
   return deck;
 }
@@ -72,7 +72,7 @@ export async function deepenStudyDeck(id: string): Promise<void> {
     limits: { minP: deck.limits.minP / 2, maxDepth: deck.limits.maxDepth + 2 },
     status: 'building',
   });
-  deckWaiting = true;
+  deckQueued();
   void buildDecks();
 }
 
@@ -143,7 +143,24 @@ let again = false;
 /** A deck was saved or deepened: the long scan for mistakes gives way at its next position. */
 let deckWaiting = false;
 
+// The scan may run in another tab (it holds the Web Lock): a deck saved here tells it too.
+let channel: BroadcastChannel | null | undefined;
+function deckChannel(): BroadcastChannel | null {
+  if (channel !== undefined) return channel;
+  channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('chess-coach:decks');
+  channel?.addEventListener('message', () => (deckWaiting = true));
+  // Node (tests) would otherwise stay alive for it.
+  (channel as { unref?: () => void } | null)?.unref?.();
+  return channel;
+}
+
+function deckQueued() {
+  deckWaiting = true;
+  deckChannel()?.postMessage('deck');
+}
+
 async function buildAll(): Promise<void> {
+  deckChannel();
   // Its own Stockfish, started only when a search needs it: the one checking your moves stays free.
   const held: { engine: Engine | null } = { engine: null };
   const engineFor = () => (held.engine ??= new Engine(32));

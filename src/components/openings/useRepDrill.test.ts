@@ -93,6 +93,21 @@ describe('a repertoire line in a session', () => {
     expect(grade).not.toHaveBeenCalled();
   });
 
+  it('leaving the line (skipping the step) cancels the reply on its way: no sound, no end reported', async () => {
+    const { playSound } = await import('@/components/board/assets');
+    const ends: string[][] = [];
+    await mount({ graded: false, script: ['e4', 'c5', 'Nf3', 'd6'], onEnd: (r) => ends.push(r.line) });
+    await play('e2', 'e4');
+    await tick(500);
+    await play('g1', 'f3');
+    vi.mocked(playSound).mockClear();
+    // Gone before the 420 ms reply lands.
+    for (const r of roots.splice(0)) await act(async () => r.unmount());
+    await tick(1000);
+    expect(playSound).not.toHaveBeenCalled();
+    expect(ends).toEqual([]);
+  });
+
   it('a deck: the start comes from your cards at each line, and grades go to its own cards', async () => {
     const starts: number[] = [];
     await mount({ ns: 'd:vant-1', prefix: [], startFor: (cards) => (starts.push(cards.size), ['e4', 'c5']) });

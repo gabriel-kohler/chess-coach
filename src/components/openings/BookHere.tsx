@@ -7,8 +7,9 @@ import type { Arrow } from '@/components/board/geometry';
 import { RichText, San } from '@/components/San';
 import { epdOf, type CompiledSide } from '@/lib/repertoire/compile';
 import type { Color } from '@/lib/types';
+import { ARROW } from '@/components/board/colors';
 
-const BOOK_ARROW = 'rgb(150, 190, 70)';
+const BOOK_ARROW = ARROW.best;
 const ourTurn = (fen: string, side: Color) => fen.split(' ')[1] === (side === 'white' ? 'w' : 'b');
 
 /** The repertoire's answer as an arrow, when it is your move here. */

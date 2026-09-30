@@ -4,6 +4,8 @@ import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { watchDatabase } from './lib/data/live';
 import { queryClient } from './lib/data/queryClient';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/merriweather';
 import './index.css';
 
 watchDatabase();

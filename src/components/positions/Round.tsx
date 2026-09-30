@@ -41,6 +41,7 @@ export function Round({ card, expectedMs, header, attemptId, practice = false, d
   onExit?: () => void;
 }) {
   const [savedReview, setSavedReview] = useState<SavedReview | null>(null);
+  const [saveFailed, setSaveFailed] = useState(false);
   const attempt = useRef(attemptId ?? `${card.id}|${Date.now()}|${Math.random().toString(36).slice(2)}`);
   const { state, onMove, giveUp, hint, board } = useMoveAttempt(card, expectedMs, {
     rule: ruleFor('best'),
@@ -58,7 +59,7 @@ export function Round({ card, expectedMs, header, attemptId, practice = false, d
       }).then((r) => {
         setSavedReview({ next: r.next, logId: r.logId });
         onSaved?.({ next: r.next, logId: r.logId }, rating, first.timeMs);
-      });
+      }, () => setSaveFailed(true));
     },
   });
   // Retries and the hint are recorded once the attempt is over.
@@ -99,14 +100,15 @@ export function Round({ card, expectedMs, header, attemptId, practice = false, d
         )}
 
         {state.phase === 'verdict' && state.first && state.rating ? (
-          <VerdictPanel card={card} first={state.first} rating={state.rating} expectedMs={expectedMs} next={savedReview?.next ?? null} saving={!practice && !savedReview} practice={practice} onNext={onNext}>
+          <VerdictPanel card={card} first={state.first} rating={state.rating} expectedMs={expectedMs} next={savedReview?.next ?? null} saving={!practice && !savedReview && !saveFailed} practice={practice} onNext={onNext}>
+            {saveFailed && <p className="text-sm text-cls-blunder">Não deu para salvar a nota desta posição.</p>}
             <LineControls explorer={explorer} title="Linha do motor" />
           </VerdictPanel>
         ) : (
           <>
-            <div className={clsx('rounded-lg p-4', state.phase === 'wrong' ? 'bg-[#4a2b27]' : 'bg-panel')}>
+            <div className={clsx('rounded-lg p-4', state.phase === 'wrong' ? 'bg-bad-soft' : 'bg-panel')}>
               <span className="flex items-center gap-2 text-[17px] font-extrabold">
-                <span className={clsx('h-4 w-4 rounded-sm border border-ink-4', white ? 'bg-white' : 'bg-[#2b2927]')} />
+                <span className={clsx('h-4 w-4 rounded-sm border border-ink-4', white ? 'bg-white' : 'bg-[#0a0a0a]')} />
                 {white ? 'Brancas jogam' : 'Pretas jogam'}
               </span>
               <p className="mt-1 text-sm text-ink-3">Da sua partida contra {source.oppName} ({when}).</p>

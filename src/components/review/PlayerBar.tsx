@@ -72,7 +72,7 @@ export function PlayerBar({
         <div
           className={clsx(
             'min-w-[96px] rounded-[4px] px-3 py-1.5 text-right font-mono text-[20px] font-bold tabular-nums',
-            color === 'white' ? 'bg-[#dcdcdc] text-[#262421]' : 'bg-[#262421] text-[#999]',
+            color === 'white' ? 'bg-ink text-page' : 'bg-[#0a0a0a] text-ink-3 ring-1 ring-line',
             active && (color === 'white' ? 'bg-white' : 'text-white'),
           )}
         >
