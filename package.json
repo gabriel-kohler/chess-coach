@@ -2,6 +2,15 @@
   "name": "chess-coach",
   "private": true,
   "version": "0.1.0",
+  "description": "Personal chess trainer that runs in the browser: imports chess.com games, reviews them with Stockfish and trains tactics, openings and endgames.",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabriel-kohler/chess-coach.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

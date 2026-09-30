@@ -1,0 +1,18 @@
+name: Feature request
+description: An idea for training, review or statistics.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you are trying to improve in your chess, and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: How the app could help. Sources (papers, other trainers, data) are welcome.
+    validations:
+      required: true

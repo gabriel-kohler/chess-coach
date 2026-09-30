@@ -1,0 +1,38 @@
+name: Bug report
+description: Something works differently from what it should.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Review on a game with...
+        2. Click...
+    validations:
+      required: true
+  - type: input
+    id: game
+    attributes:
+      label: Game link
+      description: A chess.com game URL, when the bug is about one game (review, classification, accuracy).
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Chrome 140 on macOS 26
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output
+      description: Errors from the browser's developer console, if any.
+      render: text
