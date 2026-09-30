@@ -3,7 +3,7 @@ import { Chess } from 'chess.js';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight, ExternalLink, FlipVertical2, Lightbulb, Sparkles, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { playSound, soundForSan } from '@/components/board/assets';
 import { Board, type BoardMove } from '@/components/board/Board';
 import { CLASS_LABEL, ClassificationIcon } from '@/components/board/ClassificationIcon';
@@ -20,7 +20,7 @@ import { db, setKV } from '@/lib/db';
 import { nullMove, refute, type Refutation, type Threat } from '@/lib/explain/facts';
 import { sharedEngine } from '@/lib/engine/stockfish';
 import { plural } from '@/lib/format';
-import { enqueueAnalysis, useAnalysisQueue } from '@/lib/review/queue';
+import { enqueueAnalysis, isAutoJob, useAnalysisQueue } from '@/lib/review/queue';
 import { formatScore, winPercent } from '@/lib/review/scoring';
 import { useAccount, useSettings } from '@/lib/settings';
 import { ANALYSIS_VERSION, CLASSIFICATIONS, type Color, type EngineLine, type GameAnalysis, type MoveReview, type MoveTag, type Score } from '@/lib/types';
@@ -72,6 +72,13 @@ export default function Review() {
   useEffect(() => {
     if (userColor) setOrientation(userColor);
   }, [id, userColor]);
+
+  // "?ply=N" (from the position trainer) opens the game on that move.
+  const [params] = useSearchParams();
+  const startPly = Number(params.get('ply'));
+  useEffect(() => {
+    if (startPly > 0 && plies.length) setPly(Math.min(startPly, plies.length));
+  }, [id, startPly, plies.length]);
 
   const mainFen = ply === 0 ? initial : plies[ply - 1]?.fenAfter ?? initial;
   const variationFen = variation ? (variation.index === 0 ? (variation.base === 0 ? initial : plies[variation.base - 1]!.fenAfter) : variation.moves[variation.index - 1]!.fenAfter) : null;
@@ -273,12 +280,14 @@ export default function Review() {
 
   const analysing = queue.current === game.id;
   const queued = queue.pending.includes(game.id);
+  // Waiting in (or running in) the automatic analysis: one worker, behind your requests.
+  const inAuto = (analysing || queued) && isAutoJob(game.id);
   const listMoves = plies.map((p, i) => ({ ply: i + 1, san: p.san, classification: analysis?.moves[i]?.classification, timeSpent: analysis?.moves[i]?.timeSpent }));
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 p-3 lg:flex-row lg:p-5">
       {/* board column */}
-      <div className="flex min-w-0 flex-1 justify-center">
+      <div className="flex min-w-0 justify-center lg:flex-1">
         <div className="flex w-full gap-2" style={{ maxWidth: 'calc(100vh - 100px)' }}>
           <div className="flex py-[46px]"><EvalBar score={barScore} orientation={orientation} /></div>
           <div className="min-w-0 flex-1">
@@ -326,12 +335,17 @@ export default function Review() {
               {analysing || queued ? (
                 <div>
                   <div className="mb-1.5 flex justify-between text-sm text-ink-3">
-                    <span>{analysing ? 'Analisando com Stockfish 18...' : 'Na fila...'}</span>
+                    <span>{analysing ? (inAuto ? 'Na análise automática, em segundo plano...' : 'Analisando com Stockfish 18...') : inAuto ? 'Na fila da análise automática.' : 'Na fila...'}</span>
                     {analysing && <span>{queue.plyDone}/{queue.plyTotal}</span>}
                   </div>
                   <div className="h-2 overflow-hidden rounded bg-page">
                     <div className="h-full bg-go transition-all" style={{ width: `${(100 * queue.plyDone) / Math.max(1, queue.plyTotal)}%` }} />
                   </div>
+                  {inAuto && (
+                    <button type="button" className="btn-go mt-3 w-full" onClick={() => enqueueAnalysis([game.id], settings, true)}>
+                      Analisar agora
+                    </button>
+                  )}
                 </div>
               ) : (
                 <button type="button" className="btn-go w-full text-[17px]" onClick={() => enqueueAnalysis([game.id], settings, true)}>

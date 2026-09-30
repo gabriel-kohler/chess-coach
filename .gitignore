@@ -6,3 +6,5 @@ public/puzzles
 *.log
 .DS_Store
 .env.local
+public/maia
+public/ort

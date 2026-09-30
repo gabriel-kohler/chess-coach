@@ -1,15 +1,23 @@
 import clsx from 'clsx';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { AlertTriangle, BookOpen, CheckCircle2, ChevronRight, Crown, Puzzle, ShieldCheck, Swords } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
+import { AlertTriangle, BookOpen, CheckCircle2, ChevronRight, Cpu, Crown, Dumbbell, Flame, ListChecks, Puzzle, ShieldCheck, Swords, TrendingUp } from 'lucide-react';
+import { useMemo } from 'react';
 import { Link } from 'react-router';
 import { Panel } from '@/components/Layout';
 import { TIME_CLASS_LABEL, TimeClassIcon } from '@/components/TimeClassIcon';
-import { syncAccount } from '@/lib/chesscom/sync';
 import { db } from '@/lib/db';
 import { plural } from '@/lib/format';
+import { usePositionsSettings } from '@/lib/positions/settings';
+import { positionsTodayCounts } from '@/lib/positions/store';
+import { loadLevelState } from '@/lib/renewal/levelStore';
+import { useAnalysisQueue } from '@/lib/review/queue';
 import { buildInsights } from '@/lib/stats/insights';
-import { useAccount } from '@/lib/settings';
+import { useAccount, useSettings } from '@/lib/settings';
+import { localDay } from '@/lib/srs/queue';
+import { activeMs } from '@/lib/training/session';
+import { useTrainingSettings } from '@/lib/training/settings';
+import { readSession } from '@/lib/training/store';
+import { countsAsDailyTactics } from '@/lib/tactics/trainer';
 import type { StoredGame } from '@/lib/types';
 import { useGamesAndAnalyses } from '@/lib/hooks';
 import { ConnectAccount } from './Settings';
@@ -30,15 +38,25 @@ function todayStreak(games: StoredGame[]) {
 export default function Home() {
   const account = useAccount();
   const { games, analyses } = useGamesAndAnalyses();
-  const due = useLiveQuery(() => db.puzzleCards.where('due').belowOrEqual(Date.now()).filter((c) => !c.mastered).count(), []);
-  const repDue = useLiveQuery(() => db.repCards.where('due').belowOrEqual(Date.now()).count(), []);
-  const repToday = useLiveQuery(() => db.repCards.filter((c) => c.lastAt >= new Date().setHours(0, 0, 0, 0)).count(), []);
-  const puzzlesToday = useLiveQuery(() => db.attempts.where('at').above(new Date().setHours(0, 0, 0, 0)).count(), []);
-
-  // Keep games fresh when the dashboard opens.
-  useEffect(() => {
-    if (account && Date.now() - account.syncedAt > 10 * 60 * 1000) void syncAccount(account.username).catch(() => undefined);
-  }, [account]);
+  // Every mode is on the same FSRS calendar: one table of cards, one log of reviews.
+  const dueOf = (kind: 'puzzle' | 'rep') => db.srsCards.where('kind').equals(kind).filter((c) => !c.suspended && c.due <= Date.now()).count();
+  const due = useLiveQuery(() => dueOf('puzzle'), []);
+  const repDue = useLiveQuery(() => dueOf('rep'), []);
+  const repToday = useLiveQuery(() => {
+    const day = localDay(Date.now());
+    return db.reviewLogs.where('[kind+at]').between(['rep', day.start], ['rep', day.end], true, false).count();
+  }, []);
+  const puzzlesToday = useLiveQuery(() => db.attempts.where('at').above(new Date().setHours(0, 0, 0, 0)).filter(countsAsDailyTactics).count(), []);
+  const today = useLiveQuery(() => readSession('daily'), []);
+  const trainingSettings = useTrainingSettings();
+  const positionLimits = usePositionsSettings();
+  const period = useSettings().minePeriod;
+  const positions = useLiveQuery(() => positionsTodayCounts('best', positionLimits, Date.now(), period), [positionLimits.newPerDay, positionLimits.maxReviewsPerDay, period]);
+  const sequences = useLiveQuery(() => positionsTodayCounts('seq', positionLimits, Date.now(), period), [positionLimits.seqNewPerDay, positionLimits.seqMaxReviewsPerDay, period]);
+  // Syncing, the Posições cards and the automatic analysis run in the renewal pipeline (Layout).
+  const queue = useAnalysisQueue();
+  const level = useLiveQuery(loadLevelState, []);
+  const newBand = level?.reports.at(-1);
 
   const insights = useMemo(() => (games && analyses ? buildInsights(games, analyses, account ?? null) : []), [games, analyses, account]);
   const streak = useMemo(() => (games ? todayStreak(games) : null), [games]);
@@ -80,6 +98,16 @@ export default function Home() {
         </div>
       </div>
 
+      {newBand && level?.seen !== newBand.band && (
+        <Link to="/level" className="mb-4 flex items-center gap-3 rounded-lg bg-[#2f3f25] px-4 py-3 text-sm hover:brightness-110">
+          <TrendingUp className="text-go" size={22} />
+          <span className="flex-1">
+            <b className="text-ink">Você chegou a {newBand.band} no rapid.</b> <span className="text-ink-2">Veja o que mudou nos seus focos desde a faixa anterior.</span>
+          </span>
+          <ChevronRight size={18} className="text-ink-3" />
+        </Link>
+      )}
+
       {streak && streak.today.length > 0 && (
         <div className={clsx('mb-4 flex flex-wrap items-center gap-3 rounded-lg px-4 py-3', stop ? 'bg-[#4a2b27]' : 'bg-panel')}>
           {stop ? <AlertTriangle className="text-cls-miss" size={22} /> : <ShieldCheck className="text-go" size={22} />}
@@ -96,8 +124,24 @@ export default function Home() {
         </div>
       )}
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_1.25fr]">
+      <TrainButtons
+        today={today}
+        minutes={trainingSettings.dailyMinutes}
+        reviews={[due, positions?.reviews, sequences?.reviews, repDue].every((n) => n !== undefined) ? (due ?? 0) + (positions?.reviews ?? 0) + (sequences?.reviews ?? 0) + (repDue ?? 0) : null}
+      />
+
+      {/* Columns of minmax(0, 1fr): a line that does not wrap (the plan's details) never widens its column past the screen. */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Panel title="Plano de hoje">
+          <TodayReviews parts={[['tática', due], ['posições', positions?.reviews], ['sequências', sequences?.reviews], ['repertório', repDue]]} />
+          {(queue.currentAuto || queue.autoPending > 0) && (
+            <p className="mb-3 flex items-center gap-2 text-xs text-ink-4">
+              <Cpu size={14} />
+              {queue.autoSuspended && !queue.currentAuto
+                ? `Análise automática pausada: ${plural(queue.autoPending, 'partida', 'partidas')} na fila.`
+                : `Análise automática em segundo plano: ${plural(queue.autoPending + (queue.currentAuto ? 1 : 0), 'partida', 'partidas')} para analisar, derrotas primeiro.`}
+            </p>
+          )}
           <ol className="space-y-2">
             <PlanItem
               icon={Puzzle}
@@ -106,6 +150,20 @@ export default function Home() {
               title="Tática: sessão diária"
               detail={`${plural(due ?? 0, 'revisão pendente', 'revisões pendentes')}. ${plural(puzzlesToday ?? 0, 'puzzle hoje', 'puzzles hoje')}.`}
             />
+            {positions && positions.total > 0 && (
+              <PlanItem
+                icon={ListChecks}
+                to="/positions"
+                done={positions.reviews + positions.news === 0 && positions.doneToday > 0}
+                title="Posições das suas partidas"
+                detail={
+                  (positions.reviews + positions.news > 0
+                    ? `${plural(positions.reviews, 'revisão', 'revisões')} e ${plural(positions.news, 'nova', 'novas')}.`
+                    : `Tudo feito por hoje. ${plural(positions.doneToday, 'tentativa', 'tentativas')}.`) +
+                  (sequences && sequences.reviews + sequences.news > 0 ? ` Sequências: ${sequences.reviews + sequences.news}.` : '')
+                }
+              />
+            )}
             {lastLoss && (
               <PlanItem
                 icon={Swords}
@@ -157,6 +215,56 @@ export default function Home() {
         </Panel>
       </div>
     </div>
+  );
+}
+
+const BUTTON_BOX: React.CSSProperties = { padding: '0.9rem 1.25rem 1.05rem' };
+
+/** The two ways in: the day's training, once a day, and the warm-up before games. */
+function TrainButtons({ today, minutes, reviews }: { today: Awaited<ReturnType<typeof readSession>> | undefined; minutes: number; reviews: number | null }) {
+  let detail: string;
+  if (today?.finishedAt) detail = `Feito hoje (${plural(Math.max(1, Math.round(activeMs(today) / 60_000)), 'minuto')}). Rever ou treinar mais 10 minutos.`;
+  else if (today) detail = `Continuar: ${today.steps.filter((s) => s.status !== 'pending').length} de ${plural(today.steps.length, 'exercício', 'exercícios')}.`;
+  else detail = `Cerca de ${minutes} min: ${reviews ? `${plural(reviews, 'revisão', 'revisões')}, ` : ''}seus erros, tática e aberturas.`;
+  // Half and half, the same columns as the panels below, so the edges line up: Treinar over the
+  // day's plan, Aquecer over what costs you games. Both buttons get one inner box (the button classes set their own).
+  return (
+    <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <Link to="/train" style={BUTTON_BOX} className="btn-go flex items-center gap-4 text-left">
+        <Dumbbell size={28} className="shrink-0" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-xl font-extrabold">{today?.finishedAt ? 'Treino do dia feito' : 'Treinar'}</span>
+          <span className="block text-sm font-bold opacity-90">{detail}</span>
+        </span>
+        <ChevronRight size={22} className="shrink-0" />
+      </Link>
+      <Link to="/warmup" style={BUTTON_BOX} className="btn-flat flex items-center gap-4 text-left">
+        <Flame size={28} className="shrink-0 text-cls-inaccuracy" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-xl font-extrabold text-ink">Aquecer</span>
+          <span className="block text-sm text-ink-3">5 minutos antes de jogar: puzzles rápidos, seu erro mais caro e uma linha de cada cor.</span>
+        </span>
+        <ChevronRight size={22} className="shrink-0 text-ink-4" />
+      </Link>
+    </div>
+  );
+}
+
+/** The day's reviews across every mode, from the one FSRS calendar. */
+function TodayReviews({ parts }: { parts: Array<[string, number | undefined]> }) {
+  if (parts.some(([, n]) => n === undefined)) return null;
+  const total = parts.reduce((s, [, n]) => s + (n ?? 0), 0);
+  const nonzero = parts.filter(([, n]) => n);
+  return (
+    <p className="mb-3 text-sm text-ink-3">
+      {total ? (
+        <>
+          <b className="text-ink">{plural(total, 'revisão hoje', 'revisões hoje')}</b>: {nonzero.map(([label, n]) => `${n} de ${label}`).join(', ')}.
+        </>
+      ) : (
+        'Nenhuma revisão pendente hoje.'
+      )}
+    </p>
   );
 }
 

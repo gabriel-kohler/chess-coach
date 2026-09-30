@@ -1,4 +1,8 @@
 import { db, getKV, setKV } from '../db.ts';
+import { CALIBRATION_KEY } from '../maia/calibrate.ts';
+import { ACCOUNT_KEYS } from '../renewal/config.ts';
+import { LEGACY_MINE_KEY } from '../srs/migrate.ts';
+import { TRAINING_SESSION_KEYS } from '../training/keys.ts';
 import type { ArchiveMeta } from '../types.ts';
 import { getArchive, getArchives, getProfile, getStats, type CCProfile, type CCStats } from './api.ts';
 import { toStoredGame } from './import.ts';
@@ -19,6 +23,42 @@ export interface Account {
 }
 
 export const getAccount = () => getKV<Account | null>('account', null);
+
+export interface SyncedEvent {
+  username: string;
+  added: number;
+  /** The sync replaced another account's data. */
+  switched: boolean;
+}
+
+// What happens after a sync (the renewal pipeline) listens here, so every
+// caller of syncAccount (Home, the sync buttons, the connect form) triggers it.
+const syncedListeners = new Set<(e: SyncedEvent) => void>();
+const switchingListeners = new Set<() => void>();
+
+export function onSynced(listener: (e: SyncedEvent) => void): () => void {
+  syncedListeners.add(listener);
+  return () => syncedListeners.delete(listener);
+}
+
+/** Called before another account's data is cleared: background work must stop writing. */
+export function onSwitching(listener: () => void): () => void {
+  switchingListeners.add(listener);
+  return () => switchingListeners.delete(listener);
+}
+
+function emit<T>(listeners: Set<(e: T) => void>, e: T) {
+  for (const l of listeners) {
+    try {
+      l(e);
+    } catch (err) {
+      console.warn('sync listener:', err); // never fails the sync itself
+    }
+  }
+}
+
+/** kv keys built from the account's games: another account starts without them. */
+const ACCOUNT_KV = ['gameMotifs', 'positions:focus', 'positions:seqSkipped', LEGACY_MINE_KEY, CALIBRATION_KEY, ...Object.values(ACCOUNT_KEYS), ...TRAINING_SESSION_KEYS];
 
 /** A month is final once we fetched it after the month ended. */
 function isComplete(month: string, fetchedAt: number): boolean {
@@ -45,12 +85,16 @@ async function runSync(username: string, onProgress?: (p: SyncProgress) => void)
   const archives = await getArchives(username);
 
   const current = await getAccount();
-  if (current && current.username.toLowerCase() !== profile.username.toLowerCase()) {
-    // A different account: its games, reviews and own-game puzzles go.
-    await db.transaction('rw', [db.games, db.archives, db.analyses, db.puzzleCards, db.kv], async () => {
+  const switched = !!current && current.username.toLowerCase() !== profile.username.toLowerCase();
+  if (switched) {
+    emit(switchingListeners, undefined);
+    // A different account: its games, reviews and own-game positions go.
+    // Tactics (Lichess puzzles) and the repertoire are yours, not the account's: they stay.
+    await db.transaction('rw', [db.games, db.archives, db.analyses, db.srsCards, db.reviewLogs, db.kv], async () => {
       await Promise.all([db.games.clear(), db.archives.clear(), db.analyses.clear()]);
-      await db.puzzleCards.filter((c) => c.puzzle.source === 'mine').delete();
-      await db.kv.delete('gameMotifs');
+      await db.srsCards.where('kind').anyOf(['best', 'seq']).delete();
+      await db.reviewLogs.filter((l) => l.kind === 'best' || l.kind === 'seq').delete();
+      await Promise.all(ACCOUNT_KV.map((k) => db.kv.delete(k)));
       await db.kv.put({ key: 'account', value: { username: profile.username, profile, stats, syncedAt: 0 } satisfies Account });
     });
   }
@@ -75,5 +119,6 @@ async function runSync(username: string, onProgress?: (p: SyncProgress) => void)
 
   await setKV<Account>('account', { username: profile.username, profile, stats, syncedAt: Date.now() });
   onProgress?.({ phase: 'done', done, total: pending.length, added });
+  emit(syncedListeners, { username: profile.username, added, switched });
   return added;
 }

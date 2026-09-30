@@ -2,17 +2,20 @@ import clsx from 'clsx';
 import { Chess } from 'chess.js';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ArrowLeft, Check, Crown, Lightbulb, RotateCcw } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { playSound, soundForSan } from '@/components/board/assets';
 import { Board, type BoardMove } from '@/components/board/Board';
+import { LineControls } from '@/components/board/LineControls';
+import { lineFrom, useLineExplorer } from '@/components/board/useLineExplorer';
 import type { Arrow } from '@/components/board/geometry';
 import { PageHeader } from '@/components/Layout';
 import { RichText } from '@/components/San';
-import { db, setKV } from '@/lib/db';
+import { db, getKV, setKV } from '@/lib/db';
 import { ENDGAMES, type EndgameDrill, type EndgameRecord } from '@/lib/endgames';
 import { sharedEngine } from '@/lib/engine/stockfish';
 import { tryUci } from '@/lib/chess/replay';
 import { plural } from '@/lib/format';
+import { useTrainingActive } from '@/lib/renewal/activity';
 import type { EngineLine } from '@/lib/types';
 
 const GOAL_TEXT: Record<EndgameDrill['goal'], (n: number) => string> = {
@@ -72,7 +75,21 @@ export default function Endgames() {
   );
 }
 
-function DrillView({ drill, records, onExit }: { drill: EndgameDrill; records: Record<string, EndgameRecord>; onExit: () => void }) {
+export function DrillView({ drill, records, onExit, header, practice = false, countOnce = false, onFinish, onNext }: {
+  drill: EndgameDrill;
+  records: Record<string, EndgameRecord>;
+  onExit?: () => void;
+  /** Replaces the back button and title (a training session has its own header). */
+  header?: React.ReactNode;
+  /** Free practice: nothing is recorded. */
+  practice?: boolean;
+  /** Only the first attempt counts (a training step); "Recomeçar" is practice after it. */
+  countOnce?: boolean;
+  onFinish?: (ok: boolean, movesUsed: number) => void;
+  /** Shows "Próxima" once the attempt is over. */
+  onNext?: () => void;
+}) {
+  useTrainingActive();
   const [fen, setFen] = useState(drill.fen);
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
   const [status, setStatus] = useState<Status>('playing');
@@ -80,32 +97,48 @@ function DrillView({ drill, records, onExit }: { drill: EndgameDrill; records: R
   const [message, setMessage] = useState('');
   const [hint, setHint] = useState<Arrow | null>(null);
   const [run, setRun] = useState(0);
+  const runRef = useRef(0);
+  runRef.current = run;
   const fenRef = useRef(drill.fen);
   const history = useRef<string[]>([]);
+  // The moves of this attempt (SAN): navigable once it is over.
+  const [played, setPlayed] = useState<string[]>([]);
   const saved = useRef(false);
+  // With countOnce: the run that counted; later runs are free practice.
+  const countedRun = useRef<number | null>(null);
   // Every engine answer belongs to one attempt; "Recomeçar" starts a new one.
   const attempt = useRef(0);
+  const flags = useRef({ practice, countOnce, onFinish });
+  flags.current = { practice, countOnce, onFinish };
 
   const save = useCallback(async (success: boolean, movesUsed: number) => {
     if (saved.current) return;
     saved.current = true;
-    const prev = records[drill.id] ?? { attempts: 0, successes: 0, lastAt: 0 };
-    await setKV('endgames', {
-      ...records,
-      [drill.id]: {
-        attempts: prev.attempts + 1,
-        successes: prev.successes + (success ? 1 : 0),
-        best: success ? Math.min(prev.best ?? Infinity, movesUsed) : prev.best,
-        lastAt: Date.now(),
-      },
+    // Read and written together: the records on screen may be older than the stored ones.
+    await db.transaction('rw', db.kv, async () => {
+      const all = await getKV<Record<string, EndgameRecord>>('endgames', {});
+      const prev = all[drill.id] ?? { attempts: 0, successes: 0, lastAt: 0 };
+      await setKV('endgames', {
+        ...all,
+        [drill.id]: {
+          attempts: prev.attempts + 1,
+          successes: prev.successes + (success ? 1 : 0),
+          best: success ? Math.min(prev.best ?? Infinity, movesUsed) : prev.best,
+          lastAt: Date.now(),
+        },
+      });
     });
-  }, [drill.id, records]);
+  }, [drill.id]);
 
   const finish = useCallback((ok: boolean, text: string, movesUsed: number) => {
     setStatus(ok ? 'success' : 'failed');
     setMessage(text);
     playSound(ok ? 'notify' : 'illegal');
+    const f = flags.current;
+    if (f.practice || (f.countOnce && countedRun.current !== null)) return;
+    countedRun.current = runRef.current;
     void save(ok, movesUsed);
+    f.onFinish?.(ok, movesUsed);
   }, [save]);
 
   const engineMove = useCallback(async (position: string, movesUsed: number) => {
@@ -124,6 +157,7 @@ function DrillView({ drill, records, onExit }: { drill: EndgameDrill; records: R
     history.current.push(chess.fen().split(' ').slice(0, 4).join(' '));
     setFen(chess.fen());
     setLastMove({ from: mv.from, to: mv.to });
+    setPlayed((p) => [...p, mv.san]);
     if (chess.isCheckmate()) return finish(false, 'Levou mate.', movesUsed);
     if (drill.goal === 'draw' && (chess.isStalemate() || chess.isInsufficientMaterial())) return finish(true, 'Empate garantido!', movesUsed);
     setStatus('playing');
@@ -139,6 +173,7 @@ function DrillView({ drill, records, onExit }: { drill: EndgameDrill; records: R
     setHint(null);
     saved.current = false;
     history.current = [];
+    setPlayed([]);
     if (drill.engineFirst) void engineMove(drill.fen, 0);
     else setStatus('playing');
   }, [drill, run]);
@@ -158,6 +193,7 @@ function DrillView({ drill, records, onExit }: { drill: EndgameDrill; records: R
     setHint(null);
     setFen(chess.fen());
     setLastMove({ from: mv.from, to: mv.to });
+    setPlayed((p) => [...p, mv.san]);
     const epd = chess.fen().split(' ').slice(0, 4).join(' ');
     history.current.push(epd);
     const repeated = history.current.filter((h) => h === epd).length >= 3;
@@ -210,16 +246,25 @@ function DrillView({ drill, records, onExit }: { drill: EndgameDrill; records: R
 
   fenRef.current = fen;
   const r = records[drill.id];
+  // Once it is over: walk the game back and forth, or try other moves with the engine.
+  const over = status === 'success' || status === 'failed';
+  const game = useMemo(() => lineFrom(drill.fen, played), [drill.fen, played]);
+  const explorer = useLineExplorer({ start: drill.fen, line: game, enabled: over, initialPly: game.length });
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 p-3 lg:flex-row lg:p-5">
-      <div className="flex min-w-0 flex-1 justify-center">
+      <div className="flex min-w-0 justify-center lg:flex-1">
         <div className="w-full" style={{ maxWidth: 'calc(100vh - 40px)' }}>
-          <Board fen={fen} orientation={drill.side} lastMove={lastMove} movable={status === 'playing' ? drill.side : null} onMove={onMove} arrows={hint ? [hint] : []} />
+          {over ? (
+            <Board fen={explorer.fen} orientation={drill.side} lastMove={explorer.lastMove} movable="both" onMove={explorer.onMove} arrows={explorer.arrows} />
+          ) : (
+            <Board fen={fen} orientation={drill.side} lastMove={lastMove} movable={status === 'playing' ? drill.side : null} onMove={onMove} arrows={hint ? [hint] : []} />
+          )}
         </div>
       </div>
       <aside className="flex w-full shrink-0 flex-col gap-3 lg:w-[380px]">
+        {header}
         <div className="rounded-lg bg-panel p-4">
-          <button type="button" onClick={onExit} className="mb-3 flex items-center gap-1.5 text-sm text-ink-3 hover:text-ink"><ArrowLeft size={16} /> Finais</button>
+          {!header && <button type="button" onClick={onExit} className="mb-3 flex items-center gap-1.5 text-sm text-ink-3 hover:text-ink"><ArrowLeft size={16} /> Finais</button>}
           <h1 className="text-xl font-extrabold">{drill.name}</h1>
           <p className="mt-1 font-bold text-ink-2">Você joga de {drill.side === 'white' ? 'brancas' : 'pretas'}. {GOAL_TEXT[drill.goal](drill.moves)}</p>
           <p className="mt-3 text-sm leading-relaxed text-ink-3"><RichText text={drill.idea} /></p>
@@ -231,11 +276,18 @@ function DrillView({ drill, records, onExit }: { drill: EndgameDrill; records: R
             <span className="tabular-nums text-ink-3">{used}/{drill.moves} lances</span>
           </div>
           {message && <p className={clsx('mt-2 font-bold', status === 'success' ? 'text-go-hover' : 'text-cls-miss')}>{message}</p>}
+          {(practice || (countOnce && countedRun.current !== null && run > countedRun.current)) && <p className="mt-2 text-xs text-ink-4">Treino livre: não conta para os seus acertos.</p>}
         </div>
+        <LineControls explorer={explorer} title="A partida" />
         <div className="flex gap-2">
           <button type="button" className="btn-flat flex flex-1 items-center justify-center gap-2" onClick={askHint} disabled={status !== 'playing'}><Lightbulb size={16} /> Dica</button>
-          <button type="button" className={clsx('flex flex-1 items-center justify-center gap-2', status === 'failed' || status === 'success' ? 'btn-go' : 'btn-flat')} onClick={() => setRun((x) => x + 1)}><RotateCcw size={16} /> Recomeçar</button>
+          <button type="button" className={clsx('flex flex-1 items-center justify-center gap-2', over && !onNext ? 'btn-go' : 'btn-flat')} onClick={() => setRun((x) => x + 1)}><RotateCcw size={16} /> Recomeçar</button>
         </div>
+        {over && onNext && (
+          <button type="button" className="btn-go flex items-center justify-center gap-2 text-[17px]" onClick={onNext} autoFocus>
+            Próxima
+          </button>
+        )}
       </aside>
     </div>
   );

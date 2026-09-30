@@ -7,7 +7,7 @@ import { SyncButton } from '@/components/SyncButton';
 import { ResultBadge, TIME_CLASS_LABEL, TimeClassIcon } from '@/components/TimeClassIcon';
 import { plural } from '@/lib/format';
 import { useGamesAndAnalyses } from '@/lib/hooks';
-import { cancelQueue, enqueueAnalysis, useAnalysisQueue } from '@/lib/review/queue';
+import { cancelQueue, enqueueAnalysis, resumeAuto, useAnalysisQueue } from '@/lib/review/queue';
 import { useAccount, useSettings } from '@/lib/settings';
 import type { GameAnalysis, StoredGame, TimeClass } from '@/lib/types';
 import { ConnectAccount } from './Settings';
@@ -50,6 +50,7 @@ export default function Games() {
     );
   }
 
+  const manualPending = queue.pending.length - queue.autoPending;
   const analyseRecentLosses = () => {
     const ids = (games ?? [])
       .filter((g) => (g.timeClass === 'rapid' || g.timeClass === 'blitz') && g.outcome === 'loss' && !analyses?.has(g.id))
@@ -90,24 +91,28 @@ export default function Games() {
 
       <div className="mb-4 flex flex-wrap items-center gap-3 rounded-lg bg-panel px-4 py-3 text-sm">
         <Cpu size={18} className="text-ink-3" />
-        {queue.running ? (
+        <span className="text-ink-3">{plural(analyses?.size ?? 0, 'partida analisada', 'partidas analisadas')}.</span>
+        {queue.running && (
           <>
             <span className="text-ink-2">
-              Analisando {queue.plyTotal ? `${queue.plyDone}/${queue.plyTotal} posições` : '...'}
-              {queue.pending.length ? `, ${queue.pending.length} na fila` : ''}
+              {queue.currentAuto ? 'Análise automática' : 'Analisando'}: {queue.plyTotal ? `${queue.plyDone}/${queue.plyTotal} posições` : '...'}
+              {manualPending ? `, ${plural(manualPending, 'pedida sua', 'pedidas suas')} na fila` : ''}
+              {queue.autoPending ? `, ${queue.autoPending} automáticas na fila` : ''}
             </span>
             <div className="h-1.5 w-40 overflow-hidden rounded bg-panel-2">
               <div className="h-full bg-go" style={{ width: `${(100 * queue.plyDone) / Math.max(1, queue.plyTotal)}%` }} />
             </div>
             <button type="button" className="text-ink-3 hover:text-ink" onClick={cancelQueue}>Parar</button>
           </>
-        ) : (
+        )}
+        {!queue.running && queue.autoSuspended && queue.autoPending > 0 && (
           <>
-            <span className="text-ink-3">{plural(analyses?.size ?? 0, 'partida analisada', 'partidas analisadas')}.</span>
-            <button type="button" className="btn-flat" onClick={analyseRecentLosses}>Analisar as 20 derrotas mais recentes</button>
-            <button type="button" className="btn-flat" onClick={analyseVisible}>Analisar as visíveis</button>
+            <span className="text-ink-3">Análise automática pausada: {plural(queue.autoPending, 'partida', 'partidas')} na fila.</span>
+            <button type="button" className="font-bold text-go hover:text-go-hover" onClick={resumeAuto}>Retomar</button>
           </>
         )}
+        <button type="button" className="btn-flat" onClick={analyseRecentLosses}>Analisar as 20 derrotas mais recentes</button>
+        <button type="button" className="btn-flat" onClick={analyseVisible}>Analisar as visíveis</button>
         {queue.error && <span className="text-cls-blunder">{queue.error}</span>}
       </div>
 

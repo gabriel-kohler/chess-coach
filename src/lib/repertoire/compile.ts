@@ -33,6 +33,12 @@ export interface RepertoireChapter {
   intro?: string;
   /** SAN moves from the start to the chapter's first diverging position. */
   entry: string[];
+  /**
+   * The positions written in this chapter's own tree (EPD), both sides, trunk
+   * included: what an opening deck is made of. Chapters share positions, so
+   * this cannot be read back from the merged side. Missing in old files.
+   */
+  own?: string[];
 }
 
 export interface CompiledSide {
@@ -125,6 +131,7 @@ export function compileChapter(game: PgnGame): CompileResult {
     description: game.headers.Description,
     intro: game.comment,
     entry,
+    own: Object.keys(positions),
   };
   errors.push(...findConflicts(positions, chapter.side, id));
   return { chapter, positions, errors };

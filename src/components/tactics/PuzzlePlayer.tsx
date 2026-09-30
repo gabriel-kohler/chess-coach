@@ -2,10 +2,21 @@ import { Chess } from 'chess.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { playSound, soundForSan } from '@/components/board/assets';
 import { Board, type BoardMove } from '@/components/board/Board';
+import type { LineExplorer } from '@/components/board/useLineExplorer';
 import { tryUci } from '@/lib/chess/replay';
 import { sharedEngine } from '@/lib/engine/stockfish';
+import { lossClass } from '@/lib/positions/grade';
+import { useTrainingActive } from '@/lib/renewal/activity';
 import { winPercent } from '@/lib/review/scoring';
-import type { Color, Puzzle } from '@/lib/types';
+import type { Classification, Color, Puzzle } from '@/lib/types';
+
+type Badge = { square: string; classification: Classification } | null;
+
+/** A mistake to punish shows what it is on the opponent's piece; a Lichess puzzle's setup move, nothing (as on chess.com). */
+export function setupClass(puzzle: Puzzle): Classification | null {
+  if (puzzle.source !== 'punish') return null;
+  return puzzle.loss !== undefined ? lossClass(puzzle.loss, false) : 'mistake';
+}
 
 export type PuzzleStatus = 'setup' | 'playing' | 'checking' | 'solved' | 'failed' | 'shown';
 
@@ -23,10 +34,26 @@ interface Props {
   /** Bumped by the parent to request a hint or the full solution. */
   hintToken: number;
   solutionToken: number;
+  /** Once the puzzle is over: the board follows the solution's explorer (back, forward, try moves). */
+  review?: LineExplorer;
 }
 
+/**
+ * Walking the line once it is over: the setup move as while solving, then the
+ * solver's moves as the best ones (the solution, then Stockfish's line). A
+ * move you try has none: the engine's lines speak for it.
+ */
+function walkBadge(puzzle: Puzzle, review: LineExplorer): Badge {
+  const i = review.ply - 1;
+  const ply = review.line[i];
+  if (review.variation || !ply) return null;
+  const cls = i === 0 ? setupClass(puzzle) : i % 2 === 1 ? 'best' : null;
+  return cls ? { square: ply.to, classification: cls } : null;
+}
 
-export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintToken, solutionToken }: Props) {
+export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintToken, solutionToken, review }: Props) {
+  // Background analysis waits while you solve: the move checks need the CPU.
+  useTrainingActive();
   const [fen, setFen] = useState(puzzle.fen);
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
   // How many moves of the stored line are on the board. The board itself can
@@ -35,6 +62,8 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
   const [status, setStatus] = useState<PuzzleStatus>('setup');
   const [hintSquare, setHintSquare] = useState<string | null>(null);
   const [wrongSquare, setWrongSquare] = useState<string | null>(null);
+  // What the last move was, on its piece, as chess.com shows it.
+  const [badge, setBadge] = useState<Badge>(null);
   const failed = useRef(false);
   const reported = useRef(false);
   const started = useRef(Date.now());
@@ -63,6 +92,7 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
     setStatus('setup');
     setHintSquare(null);
     setWrongSquare(null);
+    setBadge(null);
     onFeedback({ kind: 'none', text: '' });
     const chess = new Chess(puzzle.fen);
     const setupColor = chess.turn() === 'w' ? 'white' : 'black';
@@ -79,6 +109,8 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
       playSound(soundForSan(mv.san, !!mv.captured));
       setFen(chess.fen());
       setLastMove({ from: mv.from, to: mv.to });
+      const cls = setupClass(puzzle);
+      setBadge(cls ? { square: mv.to, classification: cls } : null);
       applied.current = 1;
       setStatus('playing');
       started.current = Date.now();
@@ -106,6 +138,7 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
       playSound(soundForSan(mv.san, !!mv.captured));
       setFen(chess.fen());
       setLastMove({ from: mv.from, to: mv.to });
+      setBadge(null);
       applied.current = nextStep + 1;
       setStatus('playing');
     }, 380);
@@ -135,6 +168,7 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
     if (uci === expected || chess.isCheckmate()) {
       setFen(chess.fen());
       setLastMove({ from: mv.from, to: mv.to });
+      setBadge({ square: mv.to, classification: 'best' });
       onFeedback({ kind: 'good', text: `${mv.san} é o lance!` });
       applied.current = step + 1;
       // Not the user's turn until the reply lands: no hint, no solution race.
@@ -146,6 +180,7 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
     // Not the stored move: ask the engine whether it wins just as well.
     setFen(chess.fen());
     setLastMove({ from: mv.from, to: mv.to });
+    setBadge(null);
     setStatus('checking');
     const before = fen;
     const isLast = step === puzzle.moves.length - 1;
@@ -162,8 +197,13 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
       };
       const mineWin = win(mine);
       const bestWin = win(theirs);
-      const alsoWins = puzzle.source === 'mine' ? bestWin - mineWin <= 5 : mineWin >= 85 && bestWin - mineWin <= 6;
-      if (alsoWins && (isLast || puzzle.source === 'mine')) {
+      // Your own positions (a game, an opening) are not winning combinations: any move within 5 points is good.
+      const ownPosition = puzzle.source !== 'lichess';
+      const alsoWins = ownPosition ? bestWin - mineWin <= 5 : mineWin >= 85 && bestWin - mineWin <= 6;
+      // A move that does not work misses the chance (chess.com's Miss), unless it is outright a mistake.
+      const loss = Math.max(0, bestWin - mineWin);
+      setBadge({ square: mv.to, classification: alsoWins || loss > 10 ? lossClass(loss, false) : 'miss' });
+      if (alsoWins && (isLast || ownPosition)) {
         onFeedback({ kind: 'good', text: `${mv.san} também funciona.` });
         setStatus('playing');
         finishSolved();
@@ -182,6 +222,7 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
         if (myGen !== gen.current) return;
         setFen(before);
         setLastMove(null);
+        setBadge(null);
         setStatus('playing');
       }, 700);
     });
@@ -212,6 +253,7 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
     for (let k = 0; k < applied.current; k++) if (!tryUci(chess, puzzle.moves[k]!)) break;
     setFen(chess.fen());
     setWrongSquare(null);
+    setBadge(null);
     let i = applied.current;
     const tick = () => {
       if (myGen !== gen.current) return;
@@ -225,6 +267,8 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
       playSound(soundForSan(mv.san, !!mv.captured));
       setFen(chess.fen());
       setLastMove({ from: mv.from, to: mv.to });
+      // The solver's moves are the best; the opponent's replies say nothing.
+      setBadge(i % 2 === 1 ? { square: mv.to, classification: 'best' } : null);
       i++;
       setTimeout(tick, 650);
     };
@@ -235,11 +279,15 @@ export function PuzzlePlayer({ puzzle, onResult, onFinished, onFeedback, hintTok
   if (hintSquare) tints[hintSquare] = 'rgba(92, 139, 176, 0.75)';
   if (wrongSquare) tints[wrongSquare] = 'rgba(250, 65, 45, 0.55)';
 
+  if (review?.enabled) {
+    return <Board fen={review.fen} orientation={orientation} lastMove={review.lastMove} movable="both" onMove={review.onMove} arrows={review.arrows} badge={walkBadge(puzzle, review)} />;
+  }
   return (
     <Board
       fen={fen}
       orientation={orientation}
       lastMove={lastMove}
+      badge={badge}
       movable={status === 'playing' ? orientation : null}
       onMove={onMove}
       tints={tints}

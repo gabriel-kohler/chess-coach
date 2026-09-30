@@ -7,6 +7,8 @@ export interface Settings {
   workers: number;
   sound: boolean;
   sessionSize: number;
+  /** Game period for the "only my mistakes" session, in days (0 = every game). */
+  minePeriod: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -14,6 +16,7 @@ export const DEFAULT_SETTINGS: Settings = {
   workers: Math.max(1, Math.min(3, (typeof navigator !== 'undefined' ? navigator.hardwareConcurrency : 4) - 2)),
   sound: true,
   sessionSize: 20,
+  minePeriod: 0,
 };
 
 export function useSettings(): Settings {

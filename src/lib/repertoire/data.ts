@@ -68,6 +68,22 @@ export function ourPositionsBelow(side: CompiledSide, from: string): string[] {
   return out;
 }
 
+/** Every position reachable from `from` (itself included): where a drill's replies stay. */
+export function reachableFrom(side: CompiledSide, from: string): Set<string> {
+  const set = new Set<string>([from]);
+  const queue = [from];
+  while (queue.length) {
+    const e = queue.shift()!;
+    for (const m of side.positions[e]?.moves ?? []) {
+      if (!set.has(m.to)) {
+        set.add(m.to);
+        queue.push(m.to);
+      }
+    }
+  }
+  return set;
+}
+
 /** Position of a chapter's entry (end of its shared trunk). */
 export function chapterRoot(entry: string[]): string {
   const c = new Chess();

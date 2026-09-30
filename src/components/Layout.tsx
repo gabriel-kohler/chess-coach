@@ -3,6 +3,8 @@ import { BarChart3, BookOpen, Crown, Home, ListChecks, Puzzle, Settings as Cog, 
 import { useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router';
 import { setSoundEnabled } from './board/assets';
+import { db } from '@/lib/db';
+import { punishScanDue } from '@/lib/punish/keys';
 import { useAccount, useSettings } from '@/lib/settings';
 
 const NAV = [
@@ -11,6 +13,7 @@ const NAV = [
   { to: '/stats', label: 'Estatísticas', icon: BarChart3 },
   { to: '/openings', label: 'Aberturas', icon: BookOpen },
   { to: '/tactics', label: 'Tática', icon: Puzzle },
+  { to: '/positions', label: 'Posições', icon: ListChecks },
   { to: '/endgames', label: 'Finais', icon: Crown },
 ];
 
@@ -21,6 +24,21 @@ export function Layout() {
   // Analyses from an older scoring get recomputed from their engine lines.
   useEffect(() => {
     void import('@/lib/review/analyze').then((m) => m.rescoreOutdated());
+  }, []);
+  // Your fitted FSRS weights and grading rule for every mode; refit every 100 attempts of a kind.
+  useEffect(() => {
+    void import('@/lib/srs/optimizer').then((m) => m.loadModels().then(() => m.maybeOptimize())).catch(() => undefined);
+  }, []);
+  // After every sync (and a stale one every 10 minutes): cards, level, automatic analysis, gaps.
+  useEffect(() => {
+    void import('@/lib/renewal/pipeline').then((m) => m.startRenewal()).catch(() => undefined);
+  }, []);
+  // A deck from any opening still building when the app closed goes on from where it stopped, and the
+  // mistakes to punish in your decks are looked for (the background job's code loads only then).
+  useEffect(() => {
+    void Promise.all([db.decks.filter((d) => d.status === 'building').count(), punishScanDue()])
+      .then(([building, scan]) => (building || scan ? import('@/lib/decks/store').then((m) => m.buildDecks()) : undefined))
+      .catch(() => undefined);
   }, []);
 
   return (

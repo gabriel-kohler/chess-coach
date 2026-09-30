@@ -161,6 +161,60 @@ export function parsePgn(text: string): PgnGame[] {
   return games;
 }
 
+const brace = (text: string) => `{${text.replace(/[{}]/g, '').replace(/\s+/g, ' ').trim()}}`;
+
+/**
+ * Writes a game back as PGN: headers, the comment before the first move, and
+ * the moves with their variations (an alternative right after the move it
+ * replaces), move numbers where a reader needs them. parsePgn reads it back
+ * to the same tree.
+ */
+export function writePgn(game: PgnGame, width = 100): string {
+  const out: string[] = [];
+  const move = (node: PgnNode, ply: number, numbered: boolean) => {
+    if (node.preComment) out.push(brace(node.preComment));
+    const n = Math.floor(ply / 2) + 1;
+    if (ply % 2 === 0) out.push(`${n}.`);
+    else if (numbered || node.preComment) out.push(`${n}...`);
+    out.push(node.san + node.nags.map((g) => ` $${g}`).join(''));
+    if (node.comment) out.push(brace(node.comment));
+  };
+  const line = (nodes: PgnNode[], ply: number, numbered: boolean) => {
+    let here = nodes;
+    let p = ply;
+    let num = numbered;
+    while (here.length) {
+      const [main, ...alternatives] = here as [PgnNode, ...PgnNode[]];
+      move(main, p, num);
+      num = !!main.comment;
+      for (const alt of alternatives) {
+        out.push('(');
+        move(alt, p, true);
+        line(alt.children, p + 1, !!alt.comment);
+        out.push(')');
+        num = true;
+      }
+      here = main.children;
+      p++;
+    }
+  };
+  if (game.comment) out.push(brace(game.comment));
+  line(game.moves, 0, true);
+  // Wrap at `width`, never inside a token.
+  const rows: string[] = [];
+  let row = '';
+  for (const token of out) {
+    const glue = row === '' || row.endsWith('(') || token === ')' ? '' : ' ';
+    if (row && row.length + glue.length + token.length > width) {
+      rows.push(row);
+      row = token;
+    } else row += glue + token;
+  }
+  if (row) rows.push(row);
+  const headers = Object.entries(game.headers).map(([k, v]) => `[${k} "${v.replace(/"/g, "'")}"]`);
+  return `${headers.join('\n')}\n\n${rows.join('\n')}\n`;
+}
+
 /** Main line SAN moves of a game (first child at every step). */
 export function mainLine(game: PgnGame): string[] {
   const out: string[] = [];

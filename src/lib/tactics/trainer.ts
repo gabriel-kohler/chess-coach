@@ -1,29 +1,46 @@
 // The tactics trainer: decides WHICH puzzles you see, in WHAT order, and how
-// the results move your rating and your review queue.
+// the results move your rating and your review queue. Tactics is the Lichess
+// base: patterns by theme and the climb in level. Positions from your own
+// games live in Posições.
 //
-// A session mixes three sources:
-//   1. Reviews: puzzles you failed, back on a spaced schedule (1, 3, 7, 16, 35
-//      days) until you solve them first try four times in a row.
-//   2. Your own mistakes: positions from your analysed games where you missed
-//      a win or blundered, turned into puzzles.
-//   3. New puzzles, never below your level: 55% at your level, 35% above,
+// A session mixes two sources:
+//   1. Reviews: puzzles you failed, back when FSRS predicts your recall has
+//      dropped to 90%. A miss comes back the next day, and the interval grows
+//      with each right answer, at the pace of your memory.
+//   2. New puzzles, never below your level: 55% at your level, 35% above,
 //      10% well above. The theme is drawn by weight = curriculum importance
 //      for your rating x how weak you are in that theme x how long since you
-//      saw it x how often the motif shows up in your own mistakes.
+//      saw it x how often the motif decides the positions you got wrong in
+//      your games.
 // New puzzles move the Glicko-2 rating (global and per theme); reviews do not,
-// so repeating a puzzle never inflates the rating.
+// so repeating a puzzle never inflates the rating. Nor do the warm-up puzzles
+// before games: shorter and a little below your level on purpose.
+//
+// Cálculo is a session of its own: ChessTempo's kind of problem out of the
+// Lichess base. Puzzles from games with a titled player, three moves or more
+// of yours, drawn by rating alone: no theme, nothing said about what to look
+// for, and the puzzle's rating only once it is over. It moves its own Glicko
+// rating, not the tactics one: the puzzles differ in kind, and a rating is a
+// measure against one population. A miss joins the same review queue and
+// comes back here or in the daily session, whichever opens first.
+import type { Grade } from 'ts-fsrs';
 import { db, getKV, setKV } from '../db.ts';
 import { getAccount } from '../chesscom/sync.ts';
-import type { GameAnalysis, Glicko, Puzzle, PuzzleCard, StoredGame, TacticsState, ThemeStat } from '../types.ts';
+import type { CalcState, Glicko, Puzzle, PuzzleAttempt, PuzzleSrsCard, TacticsState, ThemeStat } from '../types.ts';
 import { motifThemes as lineMotifs } from '../explain/motifs.ts';
+import { gradeAttempt } from '../positions/grade.ts';
+import { loadExpectedTimes, recordReview } from '../positions/store.ts';
+import { attemptIdFor, newPuzzleCard, puzzleCardId, yourMoves } from '../srs/cards.ts';
+import { ruleFor } from '../srs/fsrs.ts';
+import type { Bucket, FsrsFields } from '../srs/types.ts';
 import { pickPuzzle } from './bank.ts';
+import { GAME_MOTIFS_KEY } from './gameMotifs.ts';
 import { decay, update } from './glicko2.ts';
 import { coreThemes, importance, MOTIFS } from './themes.ts';
 
 export const TRAINER = {
   sessionSize: 20,
   reviewShare: 0.3,
-  mineShare: 0.15,
   /** Offsets from your rating for new puzzles. Nothing is served below your level. */
   bands: [
     { key: 'level', label: 'no seu nível', weight: 0.55, from: -25, to: 75 },
@@ -35,13 +52,36 @@ export const TRAINER = {
   stretchStep: 25,
   stretchBounds: [-100, 150] as [number, number],
   placementCount: 12,
-  srsDays: [1, 3, 7, 16, 35],
-  masteredAfter: 4,
+  /** Mastered: FSRS gives the puzzle more than a month of memory. */
+  masteredStability: 30,
   /** How much a weak theme pulls the puzzle rating toward the theme's own level. */
   themePull: 0.5,
+  /** Before games: quick patterns you should see at once, for speed and confidence. */
+  warmup: { offset: -150, spread: 50, maxMoves: 2 },
 };
 
-export type SessionMode = 'new' | 'review' | 'mine' | 'placement';
+export const CALC = {
+  /** Half the daily session at most: each puzzle is a calculation. */
+  sessionSize: 10,
+  minMoves: 3,
+  /** Lichess tags of games with a titled player. */
+  sources: ['master', 'masterVsMaster', 'superGM'],
+  /** A new Cálculo rating starts at the tactics rating, at least this unsure: it settles in a dozen puzzles. */
+  initialRd: 200,
+};
+
+/** A Cálculo puzzle: from a titled player's game, three moves or more to find. */
+/** Whether an attempt is part of the day's tactics session (the Home plan and Tática agree on it). */
+export function countsAsDailyTactics(a: Pick<PuzzleAttempt, 'mode'>): boolean {
+  return a.mode !== 'mine' && a.mode !== 'warmup' && a.mode !== 'punish' && a.mode !== 'calc';
+}
+
+export function isCalcPuzzle(p: Puzzle): boolean {
+  return yourMoves(p) >= CALC.minMoves && p.themes.some((t) => CALC.sources.includes(t));
+}
+
+/** punish: a new exercise of Aberturas > Punir; unrated, and its card is made even when solved. calc: Tática > Cálculo, rated on its own rating. */
+export type SessionMode = 'new' | 'review' | 'placement' | 'warmup' | 'punish' | 'calc';
 
 export interface SessionItem {
   puzzle: Puzzle;
@@ -68,21 +108,32 @@ export async function loadTactics(): Promise<TacticsState> {
   const stored = await getKV<TacticsState | null>('tactics', null);
   if (stored) {
     const days = (Date.now() - stored.updatedAt) / DAY;
-    return { ...stored, rating: days > 1 ? decay(stored.rating, days) : stored.rating };
+    const aged = (g: Glicko) => (days > 1 ? decay(g, days) : g);
+    const calc = calcOf(stored);
+    return { ...stored, rating: aged(stored.rating), calc: { ...calc, rating: aged(calc.rating) } };
   }
-  const rating = await initialRating();
+  const rating: Glicko = { rating: await initialRating(), rd: 300, vol: 0.06 };
   return {
-    rating: { rating, rd: 300, vol: 0.06 },
+    rating,
     themes: {},
     placementDone: false,
     recent: [],
     stretch: 0,
     history: [],
+    calc: newCalc(rating),
     updatedAt: Date.now(),
   };
 }
 
 const saveTactics = (s: TacticsState) => setKV('tactics', { ...s, updatedAt: Date.now() });
+
+/** Cálculo starts where the tactics rating is: the same scale, a different kind of puzzle. */
+function newCalc(rating: Glicko): CalcState {
+  return { rating: { rating: rating.rating, rd: Math.max(CALC.initialRd, rating.rd), vol: 0.06 }, recent: [], stretch: 0, history: [] };
+}
+
+/** The Cálculo side of the state; a fresh one for a state saved before it. */
+export const calcOf = (state: TacticsState): CalcState => state.calc ?? newCalc(state.rating);
 
 /** A theme's rating, shrunk toward the global rating while there is little data. */
 export function themeRating(state: TacticsState, theme: string): number {
@@ -128,7 +179,8 @@ function pickBand() {
   return TRAINER.bands[0]!;
 }
 
-async function attemptedIds(): Promise<Set<string>> {
+/** Every puzzle you ever attempted: new puzzles are never repeats. */
+export async function attemptedIds(): Promise<Set<string>> {
   const ids = await db.attempts.orderBy('puzzleId').uniqueKeys();
   return new Set(ids.map(String));
 }
@@ -153,56 +205,110 @@ export async function buildSession(state: TacticsState, size = TRAINER.sessionSi
     return items;
   }
 
-  const now = Date.now();
-  const due = await db.puzzleCards.where('due').belowOrEqual(now).filter((c) => !c.mastered).toArray();
-  const isObvious = (c: PuzzleCard) => (c.puzzle.tags ?? []).some((t) => t === 'obvious-miss' || t === 'obvious-blunder');
-  const mineFresh = due
-    .filter((c) => c.puzzle.source === 'mine' && c.reps === 0 && c.lapses === 0)
-    .sort((a, b) => Number(isObvious(b)) - Number(isObvious(a)) || b.createdAt - a.createdAt);
-  const reviews = due.filter((c) => !mineFresh.includes(c)).sort((a, b) => a.due - b.due);
-
+  const reviews = await duePuzzles();
   const items: SessionItem[] = [];
   for (const c of reviews.slice(0, Math.round(size * TRAINER.reviewShare))) {
-    items.push({ puzzle: c.puzzle, mode: c.puzzle.source === 'mine' ? 'mine' : 'review', reason: reviewReason(c) });
+    items.push({ puzzle: c.puzzle, mode: 'review', reason: reviewReason(c) });
   }
-  for (const c of mineFresh.slice(0, Math.round(size * TRAINER.mineShare))) {
-    items.push({ puzzle: c.puzzle, mode: 'mine', reason: c.puzzle.note ?? 'Erro de uma partida sua' });
-  }
+  items.push(...(await newPuzzles(state, size - items.length, exclude, { perThemeOf: size })));
+  return orderSession(items);
+}
 
-  const gameMotifs = await getKV<Record<string, number>>('gameMotifs', {});
+/**
+ * New puzzles, the theme drawn by weight. `new`: in the rating bands above.
+ * `warmup`: short ones a little below your level, for before a game. Picked
+ * puzzles join `exclude`, so calls in a row never repeat one.
+ */
+export async function newPuzzles(
+  state: TacticsState,
+  count: number,
+  exclude: Set<string>,
+  opts: { mode?: 'new' | 'warmup'; perThemeOf?: number } = {},
+): Promise<SessionItem[]> {
+  const mode = opts.mode ?? 'new';
+  const R = state.rating.rating;
+  const gameMotifs = await getKV<Record<string, number>>(GAME_MOTIFS_KEY, {});
   const weights = themeWeights(state, gameMotifs);
   const perTheme = new Map<string, number>();
-  const maxPerTheme = Math.max(2, Math.ceil(size / 5));
-  while (items.length < size) {
+  const maxPerTheme = Math.max(2, Math.ceil((opts.perThemeOf ?? count) / 5));
+  const items: SessionItem[] = [];
+  while (items.length < count) {
     const avoid = new Set([...perTheme.entries()].filter(([, n]) => n >= maxPerTheme).map(([t]) => t));
+    if (Object.entries(weights).every(([t, w]) => w === 0 || avoid.has(t))) break;
     const theme = weightedPick(weights, avoid);
-    const band = pickBand();
-    const base = R + TRAINER.themePull * (Math.min(R, themeRating(state, theme)) - R);
-    const offset = band.from + Math.random() * (band.to - band.from) + state.stretch;
-    const target = Math.round(Math.max(base + offset, R - 100));
-    const puzzle = await pickPuzzle({ target, theme, exclude });
+    let target: number;
+    let band: (typeof TRAINER.bands)[number] | null = null;
+    if (mode === 'warmup') {
+      const w = TRAINER.warmup;
+      target = Math.round(R + w.offset + (Math.random() * 2 - 1) * w.spread);
+    } else {
+      band = pickBand();
+      const base = R + TRAINER.themePull * (Math.min(R, themeRating(state, theme)) - R);
+      const offset = band.from + Math.random() * (band.to - band.from) + state.stretch;
+      target = Math.round(Math.max(base + offset, R - 100));
+    }
+    const puzzle = await pickPuzzle({ target, theme, exclude, ...(mode === 'warmup' ? { maxMoves: TRAINER.warmup.maxMoves } : {}) });
     if (!puzzle) {
       weights[theme] = 0;
-      if (Object.values(weights).every((w) => w === 0)) break;
       continue;
     }
     exclude.add(puzzle.id);
     perTheme.set(theme, (perTheme.get(theme) ?? 0) + 1);
-    items.push({ puzzle, mode: 'new', theme, band: band.key, reason: band.label });
+    items.push(band ? { puzzle, mode: 'new', theme, band: band.key, reason: band.label } : { puzzle, mode: 'warmup', theme, reason: 'aquecimento' });
+  }
+  return items;
+}
+
+/**
+ * A Cálculo session: the long puzzles you failed that are due, then new ones
+ * by rating alone, in the same bands as the daily session but against the
+ * Cálculo rating. When the bank runs out of titled players' puzzles near the
+ * target, long puzzles from any game fill in.
+ */
+export async function buildCalcSession(state: TacticsState, size = CALC.sessionSize): Promise<SessionItem[]> {
+  const exclude = await attemptedIds();
+  const calc = calcOf(state);
+  const R = calc.rating.rating;
+  const items: SessionItem[] = [];
+  const reviews = (await duePuzzles()).filter((c) => isCalcPuzzle(c.puzzle));
+  for (const c of reviews.slice(0, Math.round(size * TRAINER.reviewShare))) items.push({ puzzle: c.puzzle, mode: 'review', reason: reviewReason(c) });
+  const filters: Array<(p: Puzzle) => boolean> = [isCalcPuzzle, (p) => yourMoves(p) >= CALC.minMoves];
+  while (items.length < size) {
+    const band = pickBand();
+    const target = Math.round(R + band.from + Math.random() * (band.to - band.from) + calc.stretch);
+    let puzzle: Puzzle | null = null;
+    for (const where of filters) {
+      puzzle = await pickPuzzle({ target, exclude, where });
+      if (puzzle) break;
+    }
+    if (!puzzle) break;
+    exclude.add(puzzle.id);
+    items.push({ puzzle, mode: 'calc', band: band.key, reason: band.label });
   }
   return orderSession(items);
 }
 
-function reviewReason(c: PuzzleCard): string {
-  const d = new Date(c.lastAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-  return c.puzzle.source === 'mine' ? `Revisão de erro seu (${d})` : `Revisão: você errou em ${d}`;
+/** Failed puzzles due now, the most overdue first. */
+export async function duePuzzles(now = Date.now()): Promise<PuzzleSrsCard[]> {
+  const cards = (await db.srsCards.where('kind').equals('puzzle').filter((c) => !c.suspended && c.due <= now).toArray()) as PuzzleSrsCard[];
+  return cards.sort((a, b) => a.due - b.due);
+}
+
+export const isMastered = (c: FsrsFields) => c.stability >= TRAINER.masteredStability;
+
+export function reviewReason(c: PuzzleSrsCard): string {
+  const d = new Date(c.last_review ?? c.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+  if (c.puzzle.source === 'opening') return `${c.puzzle.note ?? 'Abertura'}: você errou este lance em ${d}.`;
+  // The note says the deck, the mistake and how often people at your level make it.
+  if (c.puzzle.source === 'punish') return `${c.puzzle.note ?? 'Punir'} Você viu em ${d}.`;
+  return `Você viu este puzzle em ${d}.`;
 }
 
 /**
  * Interleaves themes, opens with something familiar and ends on an item you
  * are likely to solve, so a session never finishes on a failure streak.
  */
-function orderSession(items: SessionItem[]): SessionItem[] {
+export function orderSession(items: SessionItem[]): SessionItem[] {
   const easy = items.filter((i) => i.mode === 'review' || i.band === 'level');
   const rest = items.filter((i) => !easy.includes(i));
   const shuffled = [...rest].sort(() => Math.random() - 0.5);
@@ -228,17 +334,33 @@ export interface AttemptOutcome {
   before: number;
   after: number;
   state: TacticsState;
+  /** The review grade and when the puzzle comes back, when it is (or joins) your review queue. */
+  review: { rating: Grade; due: number } | null;
 }
 
 function motifThemes(p: Puzzle): string[] {
   return p.themes.filter((t) => MOTIFS.includes(t));
 }
 
-export async function recordAttempt(item: SessionItem, result: AttemptResult): Promise<AttemptOutcome> {
+/**
+ * Records a first result. With `attemptId` (a training session's step) the
+ * review side is idempotent: saving the same step twice schedules it once.
+ */
+export async function recordAttempt(item: SessionItem, result: AttemptResult, opts: { attemptId?: string } = {}): Promise<AttemptOutcome> {
   const state = await loadTactics();
-  const before = state.rating.rating;
+  const calc = calcOf(state);
+  state.calc = calc;
+  const track = () => (item.mode === 'calc' ? calc.rating : state.rating);
+  const before = track().rating;
   const rated = item.mode === 'new' || item.mode === 'placement';
   const score = result.solved ? 1 : 0;
+
+  if (item.mode === 'calc') {
+    calc.rating = update(calc.rating, item.puzzle.rating, score);
+    calc.recent = [...calc.recent, result.solved].slice(-30);
+    calc.stretch = nextStretch(calc.recent, calc.stretch);
+    noteRating(calc.history, calc.rating.rating);
+  }
 
   if (rated) {
     state.rating = update(state.rating, item.puzzle.rating, score);
@@ -249,18 +371,16 @@ export async function recordAttempt(item: SessionItem, result: AttemptResult): P
     }
     if (item.mode === 'new') {
       state.recent = [...state.recent, result.solved].slice(-30);
-      adjustStretch(state);
+      state.stretch = nextStretch(state.recent, state.stretch);
     }
     if (item.mode === 'placement') {
       const placements = await db.attempts.where('mode').equals('placement').count();
       if (placements + 1 >= TRAINER.placementCount) state.placementDone = true;
     }
-    const day = today();
-    const last = state.history[state.history.length - 1];
-    if (last?.day === day) last.rating = state.rating.rating;
-    else state.history.push({ day, rating: state.rating.rating });
+    noteRating(state.history, state.rating.rating);
   }
 
+  const after = track().rating;
   await db.attempts.add({
     puzzleId: item.puzzle.id,
     source: item.puzzle.source,
@@ -269,50 +389,56 @@ export async function recordAttempt(item: SessionItem, result: AttemptResult): P
     timeMs: result.timeMs,
     puzzleRating: item.puzzle.rating,
     ratingBefore: before,
-    ratingAfter: state.rating.rating,
+    ratingAfter: after,
     themes: item.puzzle.themes,
     mode: item.mode,
   });
-  await scheduleCard(item.puzzle, result.solved, item.mode);
+  const review = await scheduleCard(item.puzzle, result, Date.now(), opts.attemptId);
   await saveTactics(state);
-  return { before, after: state.rating.rating, state };
+  return { before, after, state, review };
 }
 
-/** Keeps the success rate on new puzzles inside the target window. */
-function adjustStretch(state: TacticsState) {
-  if (state.recent.length < 10) return;
-  const rate = state.recent.filter(Boolean).length / state.recent.length;
+/** The difficulty shift that keeps the success rate on new puzzles inside the target window. */
+function nextStretch(recent: boolean[], stretch: number): number {
+  if (recent.length < 10) return stretch;
+  const rate = recent.filter(Boolean).length / recent.length;
   const [lo, hi] = TRAINER.successWindow;
   const [min, max] = TRAINER.stretchBounds;
-  if (rate < lo) state.stretch = Math.max(min, state.stretch - TRAINER.stretchStep);
-  else if (rate > hi) state.stretch = Math.min(max, state.stretch + TRAINER.stretchStep);
+  if (rate < lo) return Math.max(min, stretch - TRAINER.stretchStep);
+  if (rate > hi) return Math.min(max, stretch + TRAINER.stretchStep);
+  return stretch;
 }
 
-async function scheduleCard(puzzle: Puzzle, solved: boolean, mode: SessionMode) {
-  const now = Date.now();
-  const card = await db.puzzleCards.get(puzzle.id);
-  if (!card) {
-    if (solved && mode !== 'mine') return; // solved new puzzles need no review
-    await db.puzzleCards.put({
-      id: puzzle.id,
-      puzzle,
-      due: now + DAY,
-      interval: 1,
-      reps: solved ? 1 : 0,
-      lapses: solved ? 0 : 1,
-      createdAt: now,
-      lastAt: now,
-      mastered: false,
-    });
-    return;
-  }
-  if (solved) {
-    const reps = card.reps + 1;
-    const interval = TRAINER.srsDays[Math.min(reps, TRAINER.srsDays.length - 1)]!;
-    await db.puzzleCards.put({ ...card, reps, interval, due: now + interval * DAY, lastAt: now, mastered: reps >= TRAINER.masteredAfter });
-  } else {
-    await db.puzzleCards.put({ ...card, reps: 0, lapses: card.lapses + 1, interval: 1, due: now + DAY, lastAt: now, mastered: false });
-  }
+/** One point per day with activity: today's is updated. */
+function noteRating(history: Array<{ day: string; rating: number }>, rating: number) {
+  const day = today();
+  const last = history[history.length - 1];
+  if (last?.day === day) last.rating = rating;
+  else history.push({ day, rating });
+}
+
+/** Expected time by how many moves you have to find. */
+export function puzzleBucket(p: Puzzle): Bucket {
+  const n = yourMoves(p);
+  return n <= 1 ? 'easy' : n === 2 ? 'medium' : 'hard';
+}
+
+/**
+ * A failed puzzle joins the FSRS queue; one already there is graded like a
+ * position: a miss (or hint, or solution) is Again, a first-try solve is
+ * Hard, Good or Easy by your time. A solved new puzzle needs no review.
+ */
+async function scheduleCard(puzzle: Puzzle, result: AttemptResult, now = Date.now(), attemptId?: string): Promise<AttemptOutcome['review']> {
+  const cardId = puzzleCardId(puzzle.id);
+  // A Lichess puzzle solved at once has shown what it tests. Punishing an opening mistake is repertoire: it comes back.
+  if (result.solved && puzzle.source !== 'punish' && !(await db.srsCards.get(cardId))) return null;
+  const bucket = puzzleBucket(puzzle);
+  const expectedMs = (await loadExpectedTimes('puzzle'))[bucket];
+  const s = result.solved;
+  const signals = { uci: null, loss: s ? 0 : null, lossSource: null, exact: s, correct: s, timeMs: result.timeMs, hiddenMs: 0, expectedMs, bucket, gaveUp: false };
+  const rating = gradeAttempt(signals, expectedMs, ruleFor('puzzle'));
+  const { next } = await recordReview({ attemptId: attemptId ?? attemptIdFor(cardId), cardId, at: now, grade: rating, signals, create: newPuzzleCard(puzzle, now) });
+  return { rating, due: next.due };
 }
 
 // ------------------------------------------------------------------ progress
@@ -343,69 +469,9 @@ export function levelProgress(state: TacticsState): LevelProgress {
   };
 }
 
-// ------------------------------------------------------- own-game mistakes
-
-/**
- * Turns your mistakes in an analysed game into puzzles, in the Lichess format:
- * the opponent's previous move is the setup, your best reply is the solution.
- */
-export async function addMistakePuzzles(game: StoredGame, analysis: GameAnalysis): Promise<number> {
-  let added = 0;
-  for (let i = 1; i < analysis.moves.length; i++) {
-    const m = analysis.moves[i]!;
-    const prev = analysis.moves[i - 1]!;
-    if (m.color !== game.userColor) continue;
-    if (!['mistake', 'blunder', 'miss'].includes(m.classification) || !m.bestUci) continue;
-    const bestLine = analysis.evals[i]?.lines[0];
-    const moverSign = m.color === 'white' ? 1 : -1;
-    const mateForMover = bestLine?.mate !== undefined && moverSign * bestLine.mate > 0;
-    const bestCp = mateForMover ? 10000 : moverSign * (bestLine?.cp ?? 0);
-    const obviousMiss = !!m.tags?.includes('obvious-miss');
-    const obviousBlunder = !!m.tags?.includes('obvious-blunder');
-    // Something concrete to find, or a cheap blunder to learn to avoid.
-    if (bestCp < 150 && !obviousBlunder) continue;
-    const id = `g:${game.id}:${m.ply}`;
-    if (await db.puzzleCards.get(id)) continue;
-    const opp = game.oppName;
-    const when = new Date(game.endTime).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-    const note = obviousMiss
-      ? `Lance óbvio que você perdeu, contra ${opp} (${when}): você jogou ${m.san}`
-      : obviousBlunder && bestCp < 150
-        ? `Contra ${opp} (${when}) você jogou ${m.san} e entregou material. Ache um lance seguro`
-        : `Sua partida contra ${opp} (${when}): você jogou ${m.san}`;
-    const puzzle: Puzzle = {
-      id,
-      source: 'mine',
-      fen: prev.fenBefore,
-      moves: [prev.uci, m.bestUci],
-      rating: Math.round(game.userRating + 250),
-      themes: detectMotifs(m.fenBefore, bestLine?.pv ?? [m.bestUci], bestLine),
-      gameId: game.id,
-      ply: m.ply,
-      note,
-      tags: m.tags,
-    };
-    await db.puzzleCards.put({ id, puzzle, due: Date.now(), interval: 0, reps: 0, lapses: 0, createdAt: Date.now(), lastAt: Date.now(), mastered: false });
-    added++;
-  }
-  return added;
-}
-
 // ------------------------------------------------------------ motif detector
 
 /** Theme keys of the first move of a line (see explain/motifs.ts). */
 export function detectMotifs(fen: string, pv: string[], score?: { mate?: number }): string[] {
   return pv[0] ? lineMotifs(fen, pv[0], score?.mate) : [];
-}
-
-/** Recomputes how often each motif appears in your analysed mistakes. */
-export async function refreshGameMotifs(): Promise<Record<string, number>> {
-  const cards = await db.puzzleCards.toArray();
-  const counts: Record<string, number> = {};
-  for (const c of cards) {
-    if (c.puzzle.source !== 'mine') continue;
-    for (const t of c.puzzle.themes) counts[t] = (counts[t] ?? 0) + 1;
-  }
-  await setKV('gameMotifs', counts);
-  return counts;
 }

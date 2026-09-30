@@ -180,6 +180,20 @@ export class Engine {
     return result;
   }
 
+  /**
+   * Clears the hash between unrelated positions (UCI ucinewgame), so a search
+   * does not depend on what ran before it: the same position, the same lines.
+   */
+  newGame(): Promise<void> {
+    const job = this.queue.then(async () => {
+      await this.started;
+      this.send('ucinewgame');
+      await this.isReady();
+    });
+    this.queue = job.catch(() => undefined);
+    return job;
+  }
+
   /** Stops the running search; its promise resolves with what it found. */
   stop() {
     this.send('stop');
@@ -230,11 +244,16 @@ export class EnginePool {
     this.engines = Array.from({ length: Math.max(1, size) }, () => new Engine(32));
   }
 
+  /**
+   * `wait` is awaited before each position (background work pausing while you
+   * train); it changes when a position runs, never its result.
+   */
   async analyseMany(
     fens: string[],
     limits: SearchLimits,
     onProgress?: (done: number, total: number) => void,
     signal?: AbortSignal,
+    wait?: (signal?: AbortSignal) => Promise<void>,
   ): Promise<EngineLine[][]> {
     const results: EngineLine[][] = new Array(fens.length);
     // Walk backwards: later positions are simpler, and each worker's hash then
@@ -244,7 +263,9 @@ export class EnginePool {
     let done = 0;
     await Promise.all(this.engines.map(async (engine) => {
       while (next < order.length) {
+        if (wait) await wait(signal);
         if (signal?.aborted) throw new DOMException('aborted', 'AbortError');
+        if (next >= order.length) break;
         const i = order[next++]!;
         results[i] = await engine.analyse(fens[i]!, limits);
         onProgress?.(++done, fens.length);

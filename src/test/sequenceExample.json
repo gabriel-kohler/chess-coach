@@ -1,0 +1,294 @@
+{
+ "root": {
+  "fen": "3rk3/1b2b2p/pqn3pB/2p1p3/6P1/PP2P2P/5PB1/RQ2K1R1 b Q - 1 24",
+  "ply": 47,
+  "color": "black",
+  "best": {
+   "uci": "b6a5",
+   "san": "Qa5+",
+   "pv": [
+    "b6a5",
+    "e1f1",
+    "a5b5",
+    "f1e1",
+    "b5a5"
+   ],
+   "score": {
+    "cp": 0
+   },
+   "depth": 16
+  }
+ },
+ "lines": {
+  "3rk3/1b2b2p/pqn3pB/2p1p3/6P1/PP2P2P/5PB1/RQ2K1R1 b Q - 1 24": [
+   {
+    "depth": 16,
+    "pv": [
+     "b6a5",
+     "e1f1",
+     "a5b5",
+     "f1e1",
+     "b5a5"
+    ],
+    "cp": 0
+   },
+   {
+    "depth": 16,
+    "pv": [
+     "e5e4",
+     "b1e4",
+     "b6b3",
+     "a1c1",
+     "d8d3",
+     "g2f3",
+     "c6a5",
+     "e4f4",
+     "b3a3"
+    ],
+    "cp": 116
+   }
+  ],
+  "3rk3/1b2b2p/p1n3pB/q1p1p3/6P1/PP2P2P/5PB1/RQ3KR1 b - - 3 25": [
+   {
+    "depth": 16,
+    "pv": [
+     "a5b5",
+     "f1e1",
+     "b5a5",
+     "e1f1"
+    ],
+    "cp": 0
+   },
+   {
+    "depth": 16,
+    "pv": [
+     "d8d2",
+     "g1h1",
+     "e7h4",
+     "a1a2",
+     "g6g5",
+     "a2d2",
+     "a5d2",
+     "b1e1",
+     "d2d6",
+     "h6g7",
+     "e8f7",
+     "g7h8"
+    ],
+    "cp": 112
+   }
+  ],
+  "3rk3/1b2b2p/p1n3pB/q1p1p3/1P4P1/P3P2P/5PB1/RQ2K1R1 b Q - 0 25": [
+   {
+    "depth": 16,
+    "pv": [
+     "c5b4",
+     "g2f3",
+     "c6d4",
+     "e3d4",
+     "b7f3",
+     "g1g3",
+     "b4a3",
+     "e1f1",
+     "f3c6",
+     "g3e3",
+     "e5d4",
+     "e3e7"
+    ],
+    "cp": -82
+   },
+   {
+    "depth": 16,
+    "pv": [
+     "a5a4",
+     "b4c5",
+     "d8d7",
+     "g2e4",
+     "e7f8",
+     "h6g5",
+     "c6a5",
+     "b1b4"
+    ],
+    "cp": 214
+   }
+  ],
+  "3rk3/1b2b2p/p1n3pB/q1p1p3/6P1/PP2P2P/4KPB1/RQ4R1 b - - 3 25": [
+   {
+    "depth": 16,
+    "pv": [
+     "d8d2",
+     "e2e1",
+     "d2b2",
+     "b3b4",
+     "b2b1",
+     "a1b1",
+     "c5b4",
+     "g2e4",
+     "b4a3",
+     "e1f1",
+     "c6b4",
+     "e4b7"
+    ],
+    "cp": -508
+   },
+   {
+    "depth": 16,
+    "pv": [
+     "e7f8",
+     "g1d1",
+     "a5b5",
+     "e2e1",
+     "c6d4",
+     "d1d4",
+     "e5d4",
+     "g2b7",
+     "b5b7",
+     "h6g5",
+     "d4e3",
+     "g5e3"
+    ],
+    "cp": -56
+   }
+  ],
+  "4k3/1b2b2p/p1n3pB/q1p1p3/6P1/PP2PK1P/3r1PB1/RQ4R1 b - - 5 26": [
+   {
+    "depth": 16,
+    "pv": [
+     "e7h4",
+     "g4g5",
+     "h4f2",
+     "f3g4",
+     "b7c8",
+     "g4f3",
+     "c6d4",
+     "f3e4",
+     "c8f5",
+     "e4e5",
+     "a5c7",
+     "e5d5"
+    ],
+    "cp": -746
+   },
+   {
+    "depth": 16,
+    "pv": [
+     "e7f8",
+     "h6f8",
+     "a5c7",
+     "f3g3",
+     "e5e4",
+     "g3h4",
+     "g6g5",
+     "h4g5",
+     "c6d4",
+     "g5h4",
+     "e8f8",
+     "e3d4"
+    ],
+    "cp": -115
+   }
+  ],
+  "4k3/1b5p/p1n3pB/q1p1p3/6Pb/PP2PK1P/3r1PB1/RQ3R2 b - - 7 27": [
+   {
+    "depth": 16,
+    "pv": [
+     "c6d4"
+    ],
+    "mate": -1
+   },
+   {
+    "depth": 16,
+    "pv": [
+     "d2f2",
+     "f3e4",
+     "c6b4",
+     "e4e5",
+     "a5c7",
+     "e5e6",
+     "c7e7"
+    ],
+    "mate": -4
+   }
+  ]
+ },
+ "policy": {
+  "3rk3/1b2b2p/p1n3pB/q1p1p3/6P1/PP2P2P/5PB1/RQ2K1R1 w Q - 2 25": [
+   {
+    "uci": "e1f1",
+    "san": "Kf1",
+    "p": 0.46,
+    "source": "maia"
+   },
+   {
+    "uci": "b3b4",
+    "san": "b4",
+    "p": 0.352,
+    "source": "maia"
+   },
+   {
+    "uci": "e1e2",
+    "san": "Ke2",
+    "p": 0.188,
+    "source": "maia"
+   }
+  ],
+  "4k3/1b2b2p/p1n3pB/q1p1p3/6P1/PP2P2P/3rKPB1/RQ4R1 w - - 4 26": [
+   {
+    "uci": "e2f3",
+    "san": "Kf3",
+    "p": 0.486,
+    "source": "maia"
+   },
+   {
+    "uci": "e2f1",
+    "san": "Kf1",
+    "p": 0.388,
+    "source": "maia"
+   },
+   {
+    "uci": "e2e1",
+    "san": "Ke1",
+    "p": 0.126,
+    "source": "maia"
+   }
+  ],
+  "4k3/1b5p/p1n3pB/q1p1p3/6Pb/PP2PK1P/3r1PB1/RQ4R1 w - - 6 27": [
+   {
+    "uci": "g1f1",
+    "san": "Rf1",
+    "p": 0.524,
+    "source": "maia"
+   },
+   {
+    "uci": "e3e4",
+    "san": "e4",
+    "p": 0.139,
+    "source": "maia"
+   },
+   {
+    "uci": "b1f1",
+    "san": "Qf1",
+    "p": 0.075,
+    "source": "maia"
+   },
+   {
+    "uci": "b3b4",
+    "san": "b4",
+    "p": 0.059,
+    "source": "maia"
+   },
+   {
+    "uci": "b1e1",
+    "san": "Qe1",
+    "p": 0.047,
+    "source": "maia"
+   },
+   {
+    "uci": "a1a2",
+    "san": "Ra2",
+    "p": 0.027,
+    "source": "maia"
+   }
+  ]
+ }
+}

@@ -1,0 +1,267 @@
+[Id "white-e4-e5-italian-bc5-mg"]
+[Side "white"]
+[Name "Italiana: 3...Bc5: meio-jogo"]
+[Description "As linhas de 'Italiana: 3...Bc5' até o lance 16: os seus lances são os mais jogados por mestres, conferidos pelo Stockfish; os do adversário, os mais jogados no seu nível."]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3 Nf6 (4... d6 5. c3 Bb6 6. O-O Bg4 7. h3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Bh5 8. a4
+Nf6 9. Re1 a5 10. Nbd2 O-O 11. Nf1 d5 12. exd5 Nxd5 13. Ng3 Bxf3 (13... Bg6 14. Nxe5 Nxe5 15. Rxe5
+c6 16. Re1) 14. Qxf3 Nde7 15. Ne4 Qd7 16. Kh2) (4... h6 5. c3 Nf6 (5... d6 6. b4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... Bb6 7. a4
+a6 8. a5 Ba7 9. Qb3 Qe7 10. O-O Nf6 11. Be3 O-O 12. h3 Be6 13. Bxe6 Qxe6 (13... fxe6 14. Nbd2 d5 15.
+Bxa7 Rxa7 16. Rae1) 14. c4 Nh5 15. Bxa7 Nxa7 16. Nc3) 6. O-O
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... d6 (6...
+O-O 7. d4 exd4 8. cxd4 Bb6 9. d5 Ne7 (9... Na5 10. Bd3 d6 11. b4) 10. e5 Nh7 11. d6 cxd6 12. exd6
+Nc6 13. Nc3 Qf6 14. Nd5 Qxd6 15. Bf4 Qc5 16. Rc1) 7. Re1 Bg4 8. b4 Bb6 9. Nbd2 O-O 10. h3 Bh5 11.
+Nf1 a6 12. a4 Ne7 13. Ng3 Bg6 14. a5 Ba7 15. Bb3 c6 16. Nh4) (4... Nge7 5. Ng5 d5 (5... Rf8 6. Nxh7
+Rh8 7. Ng5 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7...
+d5 8. exd5 Na5 9. Nc3 f6 10. Nge4 Bb4 11. a3 Bxc3+ 12. Nxc3 c6 13. d6 Qxd6 14. Ne4 Qc7 15. Ba2 c5
+16. b4) 6. exd5 Nxd5 (6... Na5 7. Qh5 Ng6 8. Bd2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... Nxc4 9.
+dxc4 h6 10. Ne4 Bd4 11. c3 Bb6 12. a4 c6 13. d6 Qd7 14. a5 Bd8 15. O-O Qe6 16. Rd1) 7. Qf3 Be6 8.
+Nxe6 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... fxe6
+9. O-O Nd4 10. Qh5+ g6 11. Qxe5 Nxc2 12. Bg5) (4... Nd4 5. Nxe5 Qf6 (5... Ne6 6. Nf3 Nf6 7. d4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Bb6 8. e5
+Ne4 9. Qe2 d5 10. exd6 Nxd6 11. Bxe6 fxe6 12. Bg5 Qd7 13. Ne5 Qb5 14. c4 Ba5+ 15. Nc3 Bxc3+ 16. bxc3
+) 6. Bxf7+ Kf8 (6... Kd8 7. Bxg8 Rxg8 8. Bg5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}) 7. Bxg8 Rxg8 8.
+Ng4 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... Qg6 9.
+Ne3 d5 10. Nc3 c6 11. exd5 Kf7 12. O-O Bb6 13. Ne4 Rd8 14. d6 Kg8 15. c3) (4... f5 5. Nc3 Nf6 (5...
+fxe4 6. dxe4 Nf6 7. Ng5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... d5 8. Bxd5
+Qe7 9. Bf7+ Kf8 10. Bb3 Nd4 11. Nd5 Nxd5 12. exd5 e4 13. Qh5 h6 14. Ne6+ Bxe6 15. dxe6 Nxb3 16. axb3
+) 6. O-O d6 7. Bg5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... h6 8. Bxf6
+Qxf6 9. Nd5 Qd8 10. d4 Na5 11. Qe2 Nxc4 12. Qxc4 fxe4 13. dxc5 exf3 14. cxd6 cxd6 15. Nc7+) 5. c3 d6
+(5... O-O 6. O-O Bb6 7. a4 a5 8. Bb3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... d6 9. Nbd2
+Be6 10. Re1 h6 11. Nc4 Ba7 12. Be3 Bxe3 13. Nxe3 Re8 14. Bxe6 Rxe6 15. Qb3 Ne7 16. Rad1) (5... d5 6.
+exd5 Nxd5 7. O-O Nb6 (7... O-O 8. Re1 Be6 (8... Bg4 9. h3 Bh5 (9... Bxf3 10. Qxf3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... Nf6 11. a4
+Re8 12. Nd2 Qd7 13. b4 Bd6 14. Bb3 a5 15. b5 e4 16. Nxe4) 10. Nbd2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... Nf4 11.
+Ne4 Bb6 12. b4 Nd5 13. b5 Na5 14. Bxd5 Qxd5 15. c4 Qd8 16. Ba3) 9. Nbd2 f6 10. d4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... Bb6 (10...
+Bd6 11. Qb3 Na5 12. Bxd5 Nxb3 13. Bxe6+ Kh8 14. Bxb3 exd4 15. Nxd4 c5 16. N4f3) 11. Bb3 Kh8 12. c4
+Nf4 13. d5 Bh3 14. dxc6 Nxg2 15. c5 Bxc5 16. cxb7) 8. Bb5 Bd7 9. Bxc6
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... Bxc6 10.
+Nxe5 O-O 11. Nxc6 bxc6 12. d4 Bd6 13. Qf3 f5 14. Bf4 Bxf4 15. Qxf4 Rb8 16. b3) (5... Ng4 6. O-O Nxf2
+(6... d6 7. h3 h5 (7... Nf6 8. d4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... exd4 9.
+cxd4 Bb6 10. Nc3 O-O 11. Bg5 h6 12. Bh4 g5 13. Nxg5 hxg5 14. Bxg5 Bxd4 15. Ne2 Bc5 16. Nf4) 8. d4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... exd4 9.
+cxd4 Bb6 10. Nc3 Bd7 11. a4 a5 12. Ra3 Nf6 13. Ng5 Be6 14. Bxe6) (6... Be7 7. d4 exd4 8. cxd4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... d6 (8...
+O-O 9. Nc3 d6 10. h3 Nf6 11. Re1 a6 12. a3) 9. Re1 O-O 10. h3 Nf6 11. Nc3 a6 12. a3 b5 13. Ba2 b4
+14. Nd5 bxa3 15. bxa3 Be6 16. Nxe7+) 7. Rxf2 Bxf2+ 8. Kxf2 O-O 9. Kg1
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... d6 10. a4
+Bg4 11. h3 Bh5 12. Nbd2 Kh8 13. Nf1 f6 14. Ng3 Bf7 15. Bxf7 Rxf7 16. Qb3) 6. O-O O-O (6... a6 7. Re1
+O-O 8. a4 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8...
+Bg4 9. Nbd2 Na5 10. Ba2 b5 11. b4) (6... Bg4 7. h3 Bh5 (7... Bxf3 8. Qxf3 O-O 9. a4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... a6 10. Na3
+Qe7 11. Nc2 h6 12. Qg3 Nh5 13. Qf3 Qh4 14. b4 Ba7 15. b5 Na5 16. Bd5) (7... Be6 8. Bxe6 fxe6 9. Nbd2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... O-O 10. b4
+Bb6 11. Nc4 a6 12. Nxb6 cxb6 13. a4 b5 14. Be3 Qd7 15. Qb3 h6 16. Rfc1) 8. Nbd2 O-O 9. Re1
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... a6 10. Nf1
+b5 11. Bb3 a5 12. a4 b4 13. Ng3 Bg6 14. d4 Ba7 15. Bg5 Rb8 16. Bd5) (6... Ne7 7. d4 exd4 8. cxd4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... Bb6 9. Nc3
+Ng6 10. Qc2 Be6 11. Bxe6 fxe6 12. Qb3 Qd7 13. Ng5 O-O-O 14. Na4 Ba5 15. Nxe6 Rde8 16. d5) 7. h3 h6 (
+7... Bb6 8. a4 a5 9. Bb3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... Be6 10. Re1
+Nd7 11. Bg5 Qe8 12. Nbd2 h6 13. Bh4 f6 14. Bg3 Bxb3 15. Qxb3+ Qf7 16. Nc4) (7... a5 8. Re1 Be6 9.
+Bb5 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... Ne7 10.
+d4 Bb6 (10... exd4 11. cxd4 Bb4 12. Re2 c6 13. Bd3 a4 14. a3 Ba5 15. Qxa4 Ng6 16. Qc2) 11. Nbd2 exd4
+12. cxd4 c6 13. Ba4 Ng6 14. Bc2 Nh5 15. Nf1 a4 16. Bxa4) (7... Be6 8. Bxe6 fxe6 9. b4 Bb6 10. a4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... a5 (10...
+a6 11. Qb3 d5 (11... Qe7 12. a5 Ba7 13. Be3 Bxe3 14. fxe3 Nb8 15. Nbd2 Nbd7 16. c4) 12. Nbd2 Nh5 13.
+Ba3 Rf7 14. Kh2 Nf4 15. b5 Na5 16. Qc2) 11. b5 Ne7 12. Nbd2 Ng6 13. Ra2 h6 14. Re1 Nd7 15. Nc4 Bc5
+16. d4) 8. Re1 a6 (8... Bb6 9. Nbd2 Be6 10. a4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... a6 11. b4
+Bxc4 12. Nxc4 Ba7 13. Ne3 Ne7 14. a5 Bxe3 15. Bxe3 Ng6 16. c4) 9. a4 Ba7 (9... Be6 10. Nbd2 Bxc4 11.
+Nxc4 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 11... b5
+12. Ne3 b4 13. d4 Bb6 14. Nf5 bxc3 15. bxc3 Kh8 16. Nh2) 10. Nbd2 Be6 (10... Nh5 11. Nf1 Qf6 12. Ne3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 12... Nf4 13.
+Ng4 Bxg4 14. hxg4 Qg6 15. Nh4 Qf6 16. Nf5) 11. Bb3 Re8 (11... Bxb3 12. Qxb3 Rb8 13. Qc2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 13... Qd7 14. b4
+Nh5 15. Nh4 f5 16. Nxf5) 12. Bc2 Ne7 13. d4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 13... exd4 14.
+cxd4 d5 15. e5 Nd7 16. b4
+
+[Id "white-e4-e5-two-knights-mg"]
+[Side "white"]
+[Name "Italiana: 3...Nf6 (Dois Cavalos): meio-jogo"]
+[Description "As linhas de 'Italiana: 3...Nf6 (Dois Cavalos)' até o lance 16: os seus lances são os mais jogados por mestres, conferidos pelo Stockfish; os do adversário, os mais jogados no seu nível."]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. d3 Be7 (4... h6 5. O-O Bc5 (5... d6 6. c3 Bg4 (6... Be7 7. Re1) 7.
+h3 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Bh5 8.
+Nbd2 Be7 9. Re1 O-O 10. Nf1) (5... g5 6. d4 exd4 7. e5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... d5 8. Bb5
+Ne4 9. Nxd4 Bd7 10. Bxc6 Bxc6 11. Nd2 Bg7 12. Re1 Qd7 13. N2b3 b6 14. e6 fxe6 15. f3 Bb7 16. fxe4)
+6. c3 O-O (6... d6 7. Re1) 7. d4) (4... d5 5. exd5 Nxd5 (5... Nd4 6. Nxd4 exd4 7. O-O
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Nxd5 8. Qh5
+Be6 9. Re1) 6. O-O Bg4 7. h3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Bh5 8. Re1
+f6 9. Nxe5) (4... d6 5. c3 Be7 (5... Bg4 6. Qb3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... Qd7 7.
+Bxf7+ Qxf7 8. Qxb7 Rb8 (8... Rd8 9. Qxc6+ Nd7 10. Be3 Be7 11. Nbd2 O-O 12. h3 Be6 13. O-O Qh5 14. d4
+Rb8 15. Qxc7 h6 16. Kh2) 9. Qxc6+ Nd7 10. Be3 Qg6 11. Nbd2 Be7 12. h3 Be6 13. d4 exd4 14. Nxd4 Rxb2
+15. Qxc7 O-O 16. Nxe6) 6. Bb3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... O-O 7. Nbd2
+Bg4 8. h3 Bh5 9. g4 Bg6 10. Nf1 d5 11. g5 Nh5 12. Bxd5 Kh8 13. Rg1 f5 14. Nh4 Bc5 15. Be3 Bxe3 16.
+Nxg6+) (4... Na5 5. Nxe5 Nxc4 (5... d5 6. exd5 Nxc4 7. dxc4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Bd6 8. Nd3
+O-O 9. O-O Ng4 10. h3 Ne5 11. c5 Nxd3 12. cxd6 Nxc1 13. dxc7 Ne2+ 14. Qxe2 Qxd5 15. Nc3 Qc5 16. Qb5)
+6. Nxc4 d5 7. exd5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Qxd5 8. O-O
+Bc5 9. Nc3 Qc6 10. Na5 Qa6 11. Nb3 Bd6 12. Bg5 Be6 13. Qf3 O-O-O 14. Ne4 Bd5 15. Bxf6 gxf6 16. c4)
+5. O-O O-O (5... d6 6. c3 h6 7. Re1 O-O 8. Nbd2) 6. Re1 d6 (6... h6 7. c3 d6 8. Nbd2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... Bg4 9. h3
+Bh5 10. Nf1 a6 11. Ng3 Bg6 12. a4 Na5 13. Ba2 c5 14. Bd2 b5 15. d4 c4 16. dxe5) (6... d5 7. exd5
+Nxd5 (7... Na5 8. Nxe5 Nxd5 9. Bxd5) 8. Nxe5 Nxe5 (8... Na5 9. Bxd5 Qxd5 10. Bd2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... f6 11. c4
+Qd8 12. Nf3 Nc6 13. d4 Bg4 14. Bc3 Qd7 15. Nbd2 Bh5 16. Nf1) 9. Rxe5 Nb6 10. Bb3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... Bf6 (10...
+Bd6 11. Bg5 Qd7 12. Re1 Qf5 13. Bh4 Bd7 14. Bg3 Rae8 15. Nc3 Rxe1+ 16. Qxe1) 11. Re1 Bf5 12. Nc3
+Bxc3 13. bxc3 Qf6 14. Bd2 Bd7 15. a4 Rae8 16. Re3) 7. c3 Na5 (7... Re8 8. Nbd2 Bf8 9. h3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... Be6 10.
+Bxe6 Rxe6 11. d4 exd4 12. cxd4 Re7 13. a3 Qd7 14. Qc2 Ree8 15. b4 Rac8 16. Nb3) (7... Bg4 8. h3 Bh5
+9. a4 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... a6
+10. Nbd2 Na5 11. Ba2 c5 12. Nf1 Nc6 (12... b5 13. Ne3 Bg6 14. Nh4 Kh8 15. Nhf5 b4 16. cxb4) 13. Ng3
+Bg6 14. Nh4 b5 15. Nxg6 hxg6 16. h4) 8. Bb5 a6 (8... Bd7 9. Bxd7 Qxd7 10. Nbd2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 10... Nc6 11. d4
+exd4 12. cxd4 Rfe8 13. d5 Ne5 14. Nxe5 dxe5 15. Nc4 Bb4 16. Bd2) 9. Ba4 c5 (9... b5 10. Bc2 c5 11.
+Nbd2 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 11... Nc6
+12. Nf1) 10. Nbd2 b5 11. Bc2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 11... Nc6 12.
+Nf1 Bg4 13. Ng3 h6 14. h3 Be6 15. d4 cxd4 16. cxd4
+
+[Id "white-e4-e5-italian-sidelines-mg"]
+[Side "white"]
+[Name "Italiana: desvios no 3º lance: meio-jogo"]
+[Description "As linhas de 'Italiana: desvios no 3º lance' até o lance 16: os seus lances são os mais jogados por mestres, conferidos pelo Stockfish; os do adversário, os mais jogados no seu nível."]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 h6 (3... d6 4. d4 exd4 (4... Nf6 5. Nc3 exd4 6. Nxd4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... Be7 (6...
+Nxd4 7. Qxd4 Be7 8. Bf4 O-O 9. O-O-O c5 10. Qd2 a6 11. Bxd6 Bxd6 12. Qxd6 Qxd6 13. Rxd6 b5 14. Bd5
+Rb8 (14... Nxd5 15. Nxd5 Be6 16. Nc7) 15. b3 Nd7 16. Rc6) 7. O-O) (4... Bg4 5. h3 Bh5 (5... Bd7 6.
+c3 exd4 7. cxd4 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}
+7... Nf6 8. Nc3 Be7 9. e5 Ng8 10. O-O dxe5 11. dxe5 Be6 12. Bxe6 Qxd1 13. Bxf7+ Kxf7 14. Rxd1 Rd8
+15. Bf4 Nh6 16. Nd5) 6. d5 Nd4 7. g4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Bg6 (7...
+Nxf3+ 8. Qxf3 Bg6 9. Bb5+ c6 (9... Ke7 10. Bd3 h5 11. Be3 a6 12. Rg1 Ke8 13. Nc3 c5 14. a4 h4 15.
+Be2 Qd7 16. a5) 10. dxc6 Qa5+ 11. Nc3 O-O-O 12. b4) 8. Nxd4 exd4 9. Bb5+ c6 (9... Ke7 10. Qxd4 Nf6
+11. e5) 10. dxc6) 5. Nxd4 Nf6 (5... g6 6. Nxc6 bxc6 7. O-O Bg7 8. Nc3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... Ne7 (8...
+Nf6 9. e5 dxe5 10. Qxd8+ Kxd8 11. Bxf7 Ke7 12. Bb3 Be6 13. Re1 Nd5 14. Bg5+ Kf7 15. Ne4 a5 16. Nc5)
+9. Be3 O-O 10. Bd4 d5 11. Bxg7 Kxg7 12. Qd4+ Kg8 13. Bb3 a5 14. Rad1 Be6 15. h3 Qd6 16. Rfe1) 6. Nc3
+Be7 (6... Ne5 7. Bb3 Be7 8. f4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... Ng6 9. f5
+Ne5 10. Bf4 O-O 11. Qe2 c5 12. Nf3 Nxf3+ 13. gxf3 Nh5 14. Bg3 Rb8 15. O-O-O b5 16. Nxb5) 7. O-O O-O
+(7... Nxd4 8. Qxd4 O-O 9. a4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... c5 10. Qd3
+a6 11. Bf4 Be6 12. Rfd1) 8. Bf4 Nxd4 9. Qxd4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... Be6 (9...
+c5 10. Qd3 a6 11. a4 Be6 12. Rfd1 Bxc4 13. Qxc4 Qb6 14. b3 Rfe8 15. Rd3 Qc6 16. a5) 10. Rad1 Bxc4
+11. Qxc4 Qc8 12. a4 Re8 13. h3 Bf8 14. Rfe1 a6 15. Bg3 Nh5 16. Bh2) (3... Nd4 4. Nxd4 exd4 (4... Qg5
+5. Nf3 Qxg2 6. Rg1
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}) 5. O-O Nf6 (
+5... c6 6. Re1 Be7 7. Qg4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... d5 (7... g6
+8. Qf4 Bf6 9. e5 Qe7 10. Re2 Bg7 11. b3 Nh6 12. Ba3 c5 13. c3 Nf5 14. b4 b6 15. bxc5 bxc5 16. g4) 8.
+Qxg7 Bf6 9. exd5+ Be6 10. Qg4 cxd5 11. Qh5 Kf8 12. Bb3 a5 13. a4 d3 14. Qf3 Nh6 15. Nc3 Nf5 16. Qxd3
+) (5... d5 6. exd5 Nf6 7. Qe2+
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Be7 8. Re1
+O-O 9. Qxe7) (5... Bc5 6. Bxf7+ Kxf7 7. Qh5+
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}) 6. Re1 d6 7. c3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... dxc3 8. Qb3
+Qe7 9. Nxc3 Be6 10. Qxb7) (3... Be7 4. d4 exd4 (4... d6 5. d5 Nb8 (5... Na5 6. Bd3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... b6 7. b4
+Nb7 8. Bb5+ Bd7 9. Ba6 Rb8 10. c4 Nf6 11. Nc3 c5 12. dxc6 Bxc6 13. Qd3 Qd7 14. O-O O-O 15. Rd1 Nd8
+16. b5) 6. Bd3 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}
+6... Nf6 7. c4 O-O 8. Nc3 c6 (8... Bg4 9. h3 Bh5 10. g4 Bg6 11. h4 h5 12. g5 Nfd7 13. Be2 Na6 14.
+Nd2 Ndc5 15. Bxh5 Nd3+ 16. Kf1) 9. h3 cxd5 10. cxd5 Nbd7 11. Be3 b6 12. a3 Nh5 13. O-O Nf4 14. Bb5
+Kh8 15. Bxd7 Bxd7 16. Bxf4) 5. Nxd4 Nf6 (5... d6 6. Nc3 Nf6 (6... Nxd4 7. Qxd4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Nf6 (7...
+Bf6 8. Qd3 Ne7 9. Be3 O-O 10. O-O-O a6 11. h4 Be6 12. Bxe6 fxe6 13. Ne2 Qd7 14. g4 g6 15. g5 Bg7 16.
+Qb3) 8. Bf4) 7. O-O) 6. Nc3 Nxd4 (6... O-O 7. O-O
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Nxd4 8.
+Qxd4 d6 9. a4) 7. Qxd4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... O-O 8. Bf4
+d6 9. O-O-O) (3... f5 4. d3 Nf6 (4... Be7 5. O-O Nf6 6. Nc3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... d6 7. Ng5
+Rf8 (7... d5 8. Nxd5 Nxd5 9. Bxd5 Bxg5 10. Qh5+ g6 11. Bxc6+ bxc6 12. Qxg5 Qd6 13. exf5 Bxf5 14. Bd2
+h5 15. Rae1 Kd7 16. Qe3) 8. Nxh7 Nxh7 9. Qh5+ Kd7 10. Qxh7 Nd4 11. f4 b5 12. Bxb5+ Nxb5 13. Nxb5 Kc6
+14. Nc3 Kb7 15. Nd5 Be6 16. Qxg7) (4... fxe4 5. dxe4 Nf6 6. Ng5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... d5 7. exd5
+Na5 8. Bb5+ c6 9. dxc6 bxc6 (9... Qxd1+ 10. Kxd1 bxc6 11. Bd3 h6 12. Bg6+ Ke7 13. Nf7 Ng4 14. f3
+Nf2+ 15. Ke1 Be6 16. Nxh8) 10. Qxd8+ Kxd8 11. Bd3 Ke7 12. Nd2) 5. O-O Bc5 6. Nc3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... d6 7. Bg5)
+(3... g6 4. d4 exd4 (4... Bg7 5. dxe5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... Nxe5 6.
+Nxe5 Bxe5 7. Bxf7+ Kxf7 8. Qd5+ Kf6 9. Bg5+) 5. Nxd4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... Bg7 6. Nxc6
+bxc6 7. O-O Ne7 8. Nc3 O-O 9. Be3 Bb7 10. Bd4 Nc8 11. f4 Nb6 12. Bxg7 Kxg7 13. Bd3 c5 14. Qd2 d5 15.
+exd5 Nxd5 16. Ne4) (3... a6 4. d4 exd4 5. O-O
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... b5 6. Bd5
+Bb7 7. Re1 g6 8. c3 Bg7 9. Ng5 Nh6 10. cxd4 O-O 11. Nc3 Kh8 12. h3 f6 13. Nf3 Na5 14. Bxb7 Nxb7 15.
+e5 Nf7 16. Ne4) (3... Qf6 4. Nc3 Bc5 5. Nd5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... Qd6 (5...
+Qd8 6. O-O Nf6 7. d4 exd4 8. Bg5 h6 (8... Be7 9. Nxe7 Nxe7 10. e5 Ne4 11. Re1) 9. Bh4 d6 10. b4 Bb6
+11. a4 a6 12. Re1 Ne5 13. Bxf6 gxf6 14. Nxe5 fxe5 15. Qh5 Rf8 16. Qxh6) 6. c3 Nf6 7. d4 exd4 8. Bf4)
+(3... Qe7 4. Nc3 Nf6 5. O-O
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... d6 6. h3
+Be6 7. Nd5 Bxd5 8. exd5 Na5 9. Bb5+ c6 10. dxc6 bxc6 11. Ba4 Qc7 12. d4 Be7 13. b4 e4 14. Nh4 Nc4
+15. d5 O-O 16. Bxc6) (3... Bb4 4. c3 Ba5 5. O-O
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... Nf6 (5...
+d6 6. d4 Bg4 (6... exd4 7. Qb3 Qe7 8. cxd4 Nf6 (8... Bb6 9. Bb5 Bd7 10. Nc3 Na5 11. Qa4 Bxb5 12.
+Qxb5+ Qd7 13. Qd3 Ne7 14. d5 c5 15. Ne2 O-O 16. Bd2) 9. e5 dxe5 10. d5 Nb4 11. a3 e4 12. axb4 exf3
+13. bxa5 fxg2 14. Rd1 Bg4 15. f3 O-O-O 16. a6) 7. Nbd2 exd4 8. Qb3 Qd7 9. cxd4 Bxd2 10. Nxd2 Nxd4
+11. Qxb7 Rc8 12. Qxa7 Nc2 13. Rb1 Ne7 14. f3 Be6 15. Bxe6 fxe6 16. Nc4) 6. d4 exd4 7. b4 Bb6 8. e5
+Ne4 (8... Ng4 9. Bg5 f6 10. exf6 gxf6 11. Bf4 d5 12. Bb3 d3 13. h3 Nce5 14. hxg4 Bxg4 15. Re1 O-O
+16. Nbd2) 9. Re1 Nxc3 10. Nxc3) (3... Nge7 4. d4 exd4 5. O-O
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... g6 6. Ng5
+d5 7. exd5 Nxd5 8. Qf3) (3... Na5 4. Nxe5 Nxc4 (4... Qg5 5. Bxf7+ Ke7 (5... Kd8 6. d4
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... Qxg2 7. Qf3
+Qxf3 8. Nxf3 b6 9. Nc3 Nf6 10. Rg1 Bb7 11. Bg5 Be7 12. O-O-O h6 13. Bxf6 Bxf6 14. e5 Bxf3 15. exf6
+gxf6 16. Rd3) 6. Nf3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}) 5. Nxc4 d5 6.
+exd5 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 6... Qxd5
+7. Ne3 Qc6 8. O-O Nf6 9. c4 Bb4 10. d4 O-O 11. Bd2 a5 12. Re1 Re8 13. Nc3 Bd7 14. b3 Bf8 15. Qc2 Ne4
+16. Ned5) (3... d5 4. exd5 Nd4 (4... Na5 5. Bb5+
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... Bd7 (5...
+c6 6. dxc6 bxc6 7. Ba4 e4 8. Qe2 Nf6 9. d3 Be7 10. dxe4 O-O 11. O-O Bg4 12. Nbd2 Re8 13. c3 Qc7 14.
+Re1 Bd6 15. h3 Bh5 16. Qa6) 6. Qe2 a6 7. Bxd7+ Qxd7 8. c4 f6 9. d4 O-O-O 10. dxe5 Qg4 11. Bd2) 5.
+Nxd4 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 5... exd4
+6. Qe2+ Be7 7. O-O Nf6 8. Re1) 4. d4 exd4 (4... d6 5. dxe5 Qe7 (5... Bg4 6. h3 Bxf3 (6... Bh5 7. Bb5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... a6 8. Bxc6+
+bxc6 9. O-O dxe5 10. Qxd8+ Rxd8 11. Nxe5 Ne7 12. Re1 f6 13. Nd3 Bf7 14. Be3 Ng6 15. f3 Bd6 16. b3)
+7. Qxf3 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7...
+Nxe5 8. Qb3 Nxc4 9. Qxc4 Nf6 10. Nc3 Be7 11. Qb5+ c6 12. Qxb7 O-O 13. O-O Qe8 14. Re1 Qd7 15. Qxd7
+Nxd7 16. Bf4) (5... dxe5 6. Qxd8+ Kxd8 (6... Nxd8 7. Nxe5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Be6 8. Bb5+
+c6 9. Be2 Nf6 (9... Bd6 10. Nd3 Bc7 11. Bf4 Bxf4 12. Nxf4 Bd7 13. Nd2 Ne6 14. Nxe6 Bxe6 15. Bc4 Nf6
+16. Bxe6) 10. f3 Bd6 11. Nc4 Bc7 12. Be3 Nd7 13. Nc3 b5 14. Nd2 Nb7 15. f4 Bb6 16. Bxb6) 7. Bxf7
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Nf6 8. O-O
+Nxe4 9. Bd5 Nf6 10. Bxc6 bxc6 11. Nxe5 Be6 12. Nxc6+ Kd7 (12... Kc8 13. Re1 Bf5 14. Ne7+ Bxe7 15.
+Rxe7 Rd8 16. Nc3) 13. Ne5+ Kc8 14. Ng6 Rg8 15. Nxf8 Rxf8 16. Re1) 6. Nc3 Nxe5 (6... dxe5 7. Qe2
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Nf6 8. Be3
+Be6 9. Bb5 Nd7 10. Bxc6 bxc6 11. Qa6 Rb8 12. O-O Rxb2 13. Rfd1 Qf6 14. Qc8+ Qd8 15. Qxd8+ Kxd8 16.
+Nxe5) 7. Nd5 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}
+7... Qd7 (7... Nxf3+ 8. Qxf3 Qd7 9. O-O c6 10. a4 Kd8 11. Ne3 Nf6 12. e5) 8. Nxe5 dxe5 9. Qf3 c6 10.
+a4 Bd6 11. O-O Kf8 12. Ne3 Qe7 13. b3 Nf6 14. Bb2 g6 15. Rad1 Bc5 16. Qg3) (4... Nxd4 5. Nxe5 Ne6 6.
+Bxe6 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.}) 5. Nxd4
+Nf6 (5... Ne5 6. Bb3 Nf6 (6... Bc5 7. Nc3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... d6 8. Be3
+Nf6 9. f4 Neg4 10. Bg1 O-O 11. Qd3 Bxd4 12. Bxd4 c5 13. Bg1 Qe7 14. h3 b5 15. Bd5 b4 16. Bxa8) 7.
+Nc3 {Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Bb4 8.
+f4 Ng6 (8... Bxc3+ 9. bxc3 Nc6 (9... Ng6 10. e5 Nh7 (10... Ne4 11. O-O O-O 12. Ba3 d5 13. Bxf8 Nxf8
+14. c4 c5 15. Ne2 b5 16. a4) 11. Ba3 d6 12. Qh5 Qh4+ 13. Qxh4) 10. e5 Ne4 11. Nf5 d5 12. Qxd5 Qxd5
+13. Nxg7+ Kf8 14. Bxd5 Nxc3 15. Bxc6 Kxg7 16. Bf3) 9. e5 Ne4 10. O-O Nxc3 11. Qd3 Na4 12. Bxa4 O-O
+13. Be3 Bc5 14. c3 d6 15. e6 f5 16. Nxf5) (5... Bc5 6. Bxf7+ Kxf7 7. Qh5+
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 7... Kf8 (7...
+g6 8. Qxc5 d6 (8... Nxd4 9. Qxd4 Nf6 (9... Qf6 10. Qd3 d6 (10... Ne7 11. Nc3) 11. Nc3) 10. e5) 9.
+Nxc6) 8. Qxc5+ d6 9. Nxc6 bxc6 10. Qxc6) 6. Nc3 Bb4 (6... d6 7. Nxc6 bxc6 8. O-O Be7 9. Bd3
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 9... O-O 10. f4
+Bg4 11. Qe1 Re8 12. b3 Nh5 13. h3 Bd7 14. Qe3 c5 15. Ne2 Bc6 16. Qf3) 7. Nxc6 bxc6 8. e5
+{Começa o meio-jogo: daqui em diante, lances de mestres conferidos pelo Stockfish.} 8... Ne4 9. O-O
+Nxc3 10. bxc3 Bxc3 11. Qf3

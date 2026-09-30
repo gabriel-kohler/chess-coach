@@ -9,6 +9,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Chess } from 'chess.js';
 import { parsePgn } from '../src/lib/chess/pgn.ts';
+import { INACCURACY, MISTAKE, winDrop, winPct } from '../src/lib/repertoire/accept.ts';
 import { compileChapter, epdOf, mergeSides, turnOf } from '../src/lib/repertoire/compile.ts';
 import { createPool, scoreOf } from './lib/uci-engine.mjs';
 
@@ -26,7 +27,6 @@ const ENGINES = Number(args.engines ?? 2);
 const MAX_PLY = Number(args['max-ply'] ?? 40);
 const only = typeof args.only === 'string' ? args.only : null;
 
-const winPct = (cp) => 50 + 50 * (2 / (1 + Math.exp(-0.00368208 * Math.max(-1000, Math.min(1000, cp)))) - 1);
 
 // ---------------------------------------------------------------- compile
 const files = readdirSync(SRC).filter((f) => f.endsWith('.pgn') && (!only || f.includes(only))).sort();
@@ -177,12 +177,13 @@ async function engineCheck() {
           ourScore = -scoreOf(childLines[0]);
         }
         const bestScore = scoreOf(best);
-        const drop = winPct(bestScore) - winPct(ourScore);
-        if (drop >= 5) {
+        // The same rule the app uses for gap suggestions (src/lib/repertoire/accept.ts).
+        const drop = winDrop(bestScore, ourScore);
+        if (drop >= INACCURACY) {
           const c = new Chess(pos.fen);
           const bestSan = best ? c.move({ from: best.move.slice(0, 2), to: best.move.slice(2, 4), promotion: best.move[4] }).san : '?';
           const msg = `${where} ... ${move.san}: engine prefers ${bestSan} (${(bestScore / 100).toFixed(2)} vs ${(ourScore / 100).toFixed(2)}, -${drop.toFixed(1)} win%)`;
-          (drop >= 10 ? problems : warnings).push(msg);
+          (drop >= MISTAKE ? problems : warnings).push(msg);
         }
       } else if (pos.ply <= 20 && pos.moves.length > 0) {
         const covered = new Set(pos.moves.map((m) => m.uci));

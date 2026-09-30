@@ -1,3 +1,5 @@
+import type { SrsCardBase } from './srs/types.ts';
+
 export type Color = 'white' | 'black';
 export type TimeClass = 'bullet' | 'blitz' | 'rapid' | 'daily';
 export type Outcome = 'win' | 'loss' | 'draw';
@@ -120,7 +122,10 @@ export const RESCORABLE_VERSION = 2;
 export interface GameAnalysis {
   gameId: string;
   version?: number;
+  /** Depth asked for. */
   depth: number;
+  /** Lowest depth a position actually reached (a time cap can stop a search earlier). */
+  minDepth?: number;
   createdAt: number;
   evals: PositionEval[]; // index = ply (0 = initial position)
   moves: MoveReview[];
@@ -141,6 +146,15 @@ export interface ThemeStat extends Glicko {
   lastAt: number;
 }
 
+/** Tática > Cálculo: its own rating, difficulty shift and history, apart from the tactics ones. */
+export interface CalcState {
+  rating: Glicko;
+  /** Rolling record of the last Cálculo puzzles, true = solved. */
+  recent: boolean[];
+  stretch: number;
+  history: Array<{ day: string; rating: number }>;
+}
+
 export interface TacticsState {
   rating: Glicko;
   themes: Record<string, ThemeStat>;
@@ -151,10 +165,14 @@ export interface TacticsState {
   stretch: number;
   /** Rating history, one point per day with activity. */
   history: Array<{ day: string; rating: number }>;
+  /** Missing in a state saved before Cálculo: made on load from the tactics rating. */
+  calc?: CalcState;
   updatedAt: number;
 }
 
-export type PuzzleSource = 'lichess' | 'mine';
+/** lichess: the puzzle bank. mine: your own games (before Posições). opening: a move you missed studying an opening. */
+/** punish: an opponent's common mistake at your level in one of your decks (lib/punish). */
+export type PuzzleSource = 'lichess' | 'mine' | 'opening' | 'punish';
 
 export interface Puzzle {
   id: string;
@@ -172,6 +190,8 @@ export interface Puzzle {
   ply?: number;
   note?: string;
   tags?: MoveTag[];
+  /** punish: win-chance points the setup move (the opponent's mistake) gives up. */
+  loss?: number;
 }
 
 export interface PuzzleAttempt {
@@ -185,10 +205,35 @@ export interface PuzzleAttempt {
   ratingBefore: number;
   ratingAfter: number;
   themes: string[];
-  mode: 'new' | 'review' | 'mine' | 'placement';
+  /**
+   * warmup: the short, easier puzzles before games. punish: punishing an
+   * opening mistake (Aberturas > Punir, Treinar). Neither moves the rating nor
+   * counts as the day's tactics. calc: Tática > Cálculo, rated on its own
+   * rating (ratingBefore and ratingAfter are that one).
+   */
+  mode: 'new' | 'review' | 'mine' | 'placement' | 'warmup' | 'punish' | 'calc';
 }
 
-/** Spaced repetition card for a puzzle that was failed (or an own-game mistake). */
+/** A Lichess puzzle you failed, scheduled by FSRS (srsCards, kind 'puzzle'). */
+export interface PuzzleSrsCard extends SrsCardBase {
+  kind: 'puzzle';
+  puzzle: Puzzle;
+}
+
+/** One of your positions in the repertoire, scheduled by FSRS (srsCards, kind 'rep'). */
+export interface RepCard extends SrsCardBase {
+  kind: 'rep';
+  side: Color;
+  epd: string;
+  /** A deck built from any opening; absent for your repertoire. */
+  deck?: string;
+}
+
+/**
+ * Before FSRS (database v4): a failed puzzle or an own-game mistake on a
+ * fixed ladder of intervals. Read only by the v5 migration; the table stays
+ * as a backup.
+ */
 export interface PuzzleCard {
   id: string; // puzzle id
   puzzle: Puzzle;
@@ -201,6 +246,7 @@ export interface PuzzleCard {
   mastered: boolean;
 }
 
+/** Before FSRS (database v4). Read only by the v5 migration, like PuzzleCard. */
 export interface RepertoireCard {
   key: string; // `${side}|${epd}`
   side: Color;

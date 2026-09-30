@@ -11,23 +11,29 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "postinstall": "node scripts/copy-engine.mjs",
+    "setup:maia": "node scripts/setup-maia.mjs",
     "build:puzzles": "node scripts/build-puzzles.mjs",
     "build:openings": "node scripts/build-openings.mjs",
-    "build:repertoire": "node scripts/build-repertoire.mjs"
+    "build:repertoire": "node scripts/build-repertoire.mjs",
+    "extend:repertoire": "node scripts/extend-repertoire.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",
+    "@tanstack/react-query": "^5.102.8",
     "chess.js": "^1.4.0",
     "clsx": "^2.1.1",
     "dexie": "^4.4.5",
     "dexie-react-hooks": "^4.4.0",
     "lucide-react": "^1.44.0",
+    "onnxruntime-web": "^1.29.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-router": "^8.3.1",
-    "stockfish": "^18.0.8"
+    "stockfish": "^18.0.8",
+    "ts-fsrs": "^5.4.2"
   },
   "devDependencies": {
+    "@open-spaced-repetition/binding": "^0.5.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.0.0",
     "@types/react": "^19.3.0",

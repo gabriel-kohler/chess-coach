@@ -5,7 +5,13 @@ import { PageHeader, Panel } from '@/components/Layout';
 import { SyncButton } from '@/components/SyncButton';
 import { syncAccount, type SyncProgress } from '@/lib/chesscom/sync';
 import { db } from '@/lib/db';
+import { savePositionsSettings, usePositionsSettings } from '@/lib/positions/settings';
+import { syncPositionCards } from '@/lib/positions/store';
 import { saveSettings, useAccount, useSettings } from '@/lib/settings';
+import { LEGACY_MINE_KEY } from '@/lib/srs/migrate';
+import { TRAINING } from '@/lib/training/config';
+import { TRAINING_SESSION_KEYS } from '@/lib/training/keys';
+import { saveTrainingSettings, useTrainingSettings } from '@/lib/training/settings';
 
 export function ConnectAccount({ onDone }: { onDone?: () => void }) {
   const [username, setUsername] = useState('snowww_99');
@@ -61,8 +67,23 @@ export default function Settings() {
   const navigate = useNavigate();
   const [confirmReset, setConfirmReset] = useState(false);
 
+  const positionLimits = usePositionsSettings();
+  const training = useTrainingSettings();
+
   const resetTraining = async () => {
-    await Promise.all([db.attempts.clear(), db.puzzleCards.clear(), db.repCards.clear(), db.kv.delete('tactics')]);
+    await Promise.all([
+      db.attempts.clear(),
+      db.puzzleCards.clear(),
+      db.repCards.clear(),
+      db.srsCards.clear(),
+      db.reviewLogs.clear(),
+      db.kv.delete('tactics'),
+      db.kv.delete(LEGACY_MINE_KEY),
+      // The sessions point at the cards that just went.
+      ...TRAINING_SESSION_KEYS.map((k) => db.kv.delete(k)),
+    ]);
+    // Positions come back as new cards from the same analyses.
+    await syncPositionCards().catch(() => undefined);
     setConfirmReset(false);
   };
 
@@ -126,6 +147,18 @@ export default function Settings() {
         <Panel title="Treino">
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5 text-sm">
+              <span className="font-bold text-ink-2">Treino do dia</span>
+              <select
+                id="training-daily-minutes"
+                className="rounded-md border border-line bg-panel-2 px-3 py-2"
+                value={training.dailyMinutes}
+                onChange={(e) => saveTrainingSettings({ dailyMinutes: Number(e.target.value) }, training)}
+              >
+                {TRAINING.dailyChoices.map((n) => <option key={n} value={n}>{n} min{n === TRAINING.dailyMinutes ? ' (recomendado)' : ''}</option>)}
+              </select>
+              <span className="text-ink-4">Vale a partir do próximo dia; o de hoje segue como foi montado.</span>
+            </label>
+            <label className="flex flex-col gap-1.5 text-sm">
               <span className="font-bold text-ink-2">Puzzles por sessão</span>
               <select
                 className="rounded-md border border-line bg-panel-2 px-3 py-2"
@@ -139,11 +172,55 @@ export default function Settings() {
               <input type="checkbox" checked={settings.sound} onChange={(e) => saveSettings({ sound: e.target.checked }, settings)} className="h-4 w-4 accent-[var(--color-go)]" />
               Sons do tabuleiro
             </label>
+            <label className="flex flex-col gap-1.5 text-sm">
+              <span className="font-bold text-ink-2">Posições novas por dia</span>
+              <select
+                id="positions-new-per-day"
+                className="rounded-md border border-line bg-panel-2 px-3 py-2"
+                value={positionLimits.newPerDay}
+                onChange={(e) => savePositionsSettings({ newPerDay: Number(e.target.value) }, positionLimits)}
+              >
+                {[0, 5, 10, 15, 20, 30].map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </label>
+            <label className="flex flex-col gap-1.5 text-sm">
+              <span className="font-bold text-ink-2">Revisões de posições por dia</span>
+              <select
+                id="positions-reviews-per-day"
+                className="rounded-md border border-line bg-panel-2 px-3 py-2"
+                value={positionLimits.maxReviewsPerDay}
+                onChange={(e) => savePositionsSettings({ maxReviewsPerDay: Number(e.target.value) }, positionLimits)}
+              >
+                {[50, 100, 150, 200, 300].map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </label>
+            <label className="flex flex-col gap-1.5 text-sm">
+              <span className="font-bold text-ink-2">Sequências novas por dia</span>
+              <select
+                id="positions-seq-new-per-day"
+                className="rounded-md border border-line bg-panel-2 px-3 py-2"
+                value={positionLimits.seqNewPerDay}
+                onChange={(e) => savePositionsSettings({ seqNewPerDay: Number(e.target.value) }, positionLimits)}
+              >
+                {[0, 3, 5, 8, 10].map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </label>
+            <label className="flex flex-col gap-1.5 text-sm">
+              <span className="font-bold text-ink-2">Revisões de sequências por dia</span>
+              <select
+                id="positions-seq-reviews-per-day"
+                className="rounded-md border border-line bg-panel-2 px-3 py-2"
+                value={positionLimits.seqMaxReviewsPerDay}
+                onChange={(e) => savePositionsSettings({ seqMaxReviewsPerDay: Number(e.target.value) }, positionLimits)}
+              >
+                {[20, 50, 100].map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </label>
           </div>
           <div className="mt-5 border-t border-line pt-4">
             {confirmReset ? (
               <div className="flex flex-wrap items-center gap-3 text-sm">
-                <span className="text-ink-2">Apagar rating tático, histórico de puzzles e revisões?</span>
+                <span className="text-ink-2">Apagar rating tático, histórico de puzzles, revisões e o progresso das posições?</span>
                 <button type="button" className="btn-flat" onClick={resetTraining}>Apagar</button>
                 <button type="button" className="text-ink-3 hover:text-ink" onClick={() => setConfirmReset(false)}>Cancelar</button>
               </div>

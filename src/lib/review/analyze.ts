@@ -11,8 +11,16 @@ import { gameAccuracy } from './scoring.ts';
 export interface AnalyzeOptions {
   depth: number;
   workers: number;
+  /**
+   * Time cap per position. The default 4 s keeps a manual analysis quick, but
+   * on a busy machine it stops before the depth: the automatic analysis uses
+   * a long safety cap instead, so its depth really is fixed.
+   */
+  movetime?: number;
   onProgress?: (done: number, total: number) => void;
   signal?: AbortSignal;
+  /** Awaited before each position: background work pausing while you train. */
+  wait?: (signal?: AbortSignal) => Promise<void>;
 }
 
 function isTerminal(fen: string): boolean {
@@ -24,13 +32,13 @@ export async function analyzeGame(game: StoredGame, opts: AnalyzeOptions): Promi
   const initial = game.initialFen ?? START_FEN;
   const plies = replay(game.moves, initial);
   const fens = [initial, ...plies.map((p) => p.fenAfter)];
-  const limits: SearchLimits = { depth: opts.depth, movetime: 4000, multipv: 2 };
+  const limits: SearchLimits = { depth: opts.depth, movetime: opts.movetime ?? 4000, multipv: 2 };
 
   const pool = new EnginePool(opts.workers);
   let lines;
   try {
     const todo = fens.map((f, i) => ({ f, i })).filter(({ f }) => !isTerminal(f));
-    const results = await pool.analyseMany(todo.map((t) => t.f), limits, opts.onProgress, opts.signal);
+    const results = await pool.analyseMany(todo.map((t) => t.f), limits, opts.onProgress, opts.signal, opts.wait);
     lines = new Array(fens.length).fill(null).map(() => [] as PositionEval['lines']);
     todo.forEach((t, k) => (lines[t.i] = results[k]!));
   } finally {
@@ -39,8 +47,20 @@ export async function analyzeGame(game: StoredGame, opts: AnalyzeOptions): Promi
   const evals: PositionEval[] = fens.map((fen, i) => ({ fen, lines: lines[i]! }));
 
   const analysis = await scoreGame(game, evals, opts.depth);
-  await db.analyses.put(analysis);
+  const reached = evals.map((e) => e.lines[0]?.depth).filter((d): d is number => d !== undefined && d > 0);
+  if (reached.length) analysis.minDepth = Math.min(...reached);
+  await saveAnalysis(analysis);
   return analysis;
+}
+
+/**
+ * Saves an analysis only if its game is still there: an account switch
+ * clears the games while a background analysis may still be running.
+ */
+async function saveAnalysis(analysis: GameAnalysis) {
+  await db.transaction('rw', db.games, db.analyses, async () => {
+    if (await db.games.get(analysis.gameId)) await db.analyses.put(analysis);
+  });
 }
 
 /** Classification and accuracy from engine lines; no engine needed. */
@@ -78,7 +98,8 @@ export function canRescore(analysis: GameAnalysis): boolean {
 
 export async function rescoreGame(game: StoredGame, analysis: GameAnalysis): Promise<GameAnalysis> {
   const fresh = await scoreGame(game, analysis.evals, analysis.depth, analysis.createdAt);
-  await db.analyses.put(fresh);
+  if (analysis.minDepth !== undefined) fresh.minDepth = analysis.minDepth;
+  await saveAnalysis(fresh);
   return fresh;
 }
 
